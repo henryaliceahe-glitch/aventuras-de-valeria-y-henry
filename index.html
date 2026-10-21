@@ -614,11 +614,11 @@
   // ==================================================================
   const CONFIG = {
     // Día en que empezaron las aventuras (AAAA-MM-DD). Sirve para "Día X de aventuras".
-    fechaInicio: "2025-09-01", // CAMBIAR
+    fechaInicio: "2026-10-08",
 
     // Fechas especiales en formato MM-DD (mes-día). Ese día sale confeti y un mensaje.
-    cumpleValeria: "03-15", // CAMBIAR
-    aniversario: "09-01", // CAMBIAR
+    cumpleValeria: "08-08",
+    aniversario: "10-08",
     mensajeCumple: "¡Feliz cumpleaños, Valeria! Hoy la guía no paga ni el café ☕💙",
     mensajeAniversario: "¡Feliz aniversario! Otra vuelta al sol siguiendo a mi guía favorita 💙",
 
@@ -627,7 +627,7 @@
 
     // Perfil de la guía
     nombreGuia: "Valeria",
-    cafeFavorito: "Latte con leche de avena y un toque de vainilla", // CAMBIAR
+    cafeFavorito: "Café frío", // CAMBIAR si quieres ser más específico (ej. "Café frío de vainilla")
     datoBonito: "Encuentra el mejor sitio para un cafecito en cualquier pueblo de la isla.", // CAMBIAR
 
     // Carta secreta: se abre al tocar al turista 10 veces seguidas.
@@ -650,7 +650,8 @@
     // PASAPORTE CAFETERO: las cafeterías que han probado.
     // tacitas: del 1 al 5. Borra "muestra: true" cuando pongas una de verdad.
     CAFES: [
-      { nombre: "Cafetería de ejemplo", lugar: "Viejo San Juan", pidioGuia: "Latte de vainilla", pidioTurista: "Café negro", tacitas: 4, muestra: true }, // CAMBIAR
+      // Nuestro primer café juntos
+      { nombre: "Primer café juntos", lugar: "Plaza Las Américas", pidioGuia: "Café frío", pidioTurista: "", tacitas: 0 }, // CAMBIAR: nombre de la cafetería, lo que pidió el turista y las tacitas
     ],
 
     // FIREBASE (opcional): para que Valeria pueda comentar y proponer aventuras.
@@ -737,7 +738,7 @@
     {
       id: "plaza", emoji: "🛍️", nombre: "Plaza Las Américas", lugar: "Hato Rey, San Juan",
       lat: 18.4224, lon: -66.0716, zona: "sj", color: "#2F5D8A", rot: -3, chico: true,
-      texto: "Un día en Plaza Las Américas con la guía.", // CAMBIAR (escribe la historia)
+      texto: "Aquí probamos nuestro primer café juntos ☕", // CAMBIAR (añade más de la historia)
       fecha: "", // CAMBIAR
       tacitas: 0, // CAMBIAR
       versionGuia: "", // CAMBIAR (opcional)
