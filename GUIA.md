@@ -1,58 +1,109 @@
 # Guía de la página "Aventuras de Valeria y Henry"
 
-## 1. Dónde están los datos
+Todo se cambia en un solo archivo: `index.html`. Los datos están arriba del todo, dentro de `CONFIG` y `AVENTURAS`.
+Si dejas algo vacío (`""`), esa parte simplemente no sale.
 
-Todo está al principio del `<script>` de `index.html`, en `CONFIG` y en `AVENTURAS`.
+## 1. Editar desde el celular (GitHub)
+
+1. Abre github.com en el navegador (no hace falta la app) y entra con tu cuenta.
+2. Ve al repositorio `aventuras-de-valeria-y-henry` y toca `index.html`.
+3. Toca el lápiz ✏️ (arriba a la derecha) para editar.
+4. Haz el cambio (los pasos de abajo dicen dónde).
+5. Toca **Commit changes** → **Commit changes**.
+6. Abre `sw.js`, toca el lápiz y sube el número de `VERSION` (por ejemplo `vh-v8` → `vh-v9`). Guarda igual. Así los celulares ven el cambio.
+7. En 1 o 2 minutos se ve en la página.
+
+> Consejo: para encontrar algo dentro del archivo, en la computadora usa Ctrl+F; en el celular, el menú del navegador → "Buscar en la página".
+
+## 2. Añadir un lugar nuevo
+
+Busca `PLANTILLA PARA AÑADIR UNO`. Copia la línea de la plantilla y pégala dentro de `AVENTURAS`, **al final, justo antes de la línea `];`**:
+
+```js
+{ nombre: "", emoji: "", lugar: "", fecha: "AAAA-MM-DD", lat: null, lon: null, tipos: [], texto: "", nota: null },
+```
+
+Ejemplo lleno:
+
+```js
+{ nombre: "Café en Jayuya", emoji: "☕", lugar: "Jayuya", fecha: "2026-11-02", lat: 18.2186, lon: -66.5916, tipos: ["cafe"], texto: "Café recién tostado en la montaña.", nota: 9 },
+```
+
+- **tipos** (para los filtros del mapa): `"cafe"`, `"comida"`, `"playa"`, `"diversion"`, `"paseo"`, `"especial"`. Puede tener varios: `["cafe", "especial"]`.
+- **nota**: la nota de la guía sobre 10 (se convierte sola en tacitas: 9 = 4 tacitas y media). Si no hay nota, deja `null`.
+- Si es un sitio de smash burgers, añade `smash: true` (entra en el ranking si tiene nota).
+- Si no tiene coordenadas, deja `lat: null, lon: null`: sale en la línea de tiempo y el pasaporte, pero sin pin.
+- El id, el color, el giro del sello y la zona del mapa se ponen solos.
+- Ojo con las comillas: el texto va entre `"..."`. Si el texto lleva comillas dobles, escribe `\"` o usa comillas simples por fuera.
+
+## 3. Sacar las coordenadas en Google Maps
+
+- **Celular:** abre Google Maps, busca el sitio y **mantén el dedo** sobre el punto exacto. Sale un pin y arriba, en el buscador, dos números (ej. `18.4224, -66.0716`). Toca para copiarlos.
+- **Computadora:** haz clic derecho sobre el sitio; el primer renglón del menú son los números. Haz clic para copiarlos.
+- El primer número es `lat` y el segundo es `lon` (el segundo siempre empieza con `-66` o `-67` en Puerto Rico).
+
+## 4. Ponerle título a un día nuevo
+
+Busca `TITULOS_DIAS` y añade una línea con la fecha y el título:
+
+```js
+"2026-11-02": "Cafecito en la montaña",
+```
+
+Los lugares con la misma fecha salen juntos como un día ("Día 11 · 2 de noviembre — Cafecito en la montaña").
+
+## 5. Pasar un deseo a visitado
+
+1. En `DESEOS`, busca el lugar (ej. Rincón) y **borra su línea**.
+2. Añádelo como lugar nuevo en `AVENTURAS` (paso 2), copiando su emoji, nombre, `lat` y `lon`, y poniéndole la fecha y la historia.
+
+## 6. Añadir una frase célebre
+
+Busca `FRASES` y añade una línea:
+
+```js
+{ texto: "Lo que dijo", quien: "La guía", donde: "en Caguas" },
+```
+
+Con 1 o 2 frases se ven fijas; con 3 o más se convierten solas en carrusel.
+
+## 7. Escribir una cápsula del tiempo
+
+Busca `CAPSULAS`. Cada una tiene su fecha; escribe la carta dentro de `carta: "..."`. Para bajar de línea usa `\n`:
+
+```js
+{ titulo: "San Valentín", emoji: "💙", fecha: "2027-02-14", carta: "Valeria:\nFeliz San Valentín..." },
+```
+
+- Una cápsula con la carta vacía no se muestra (si todas están vacías, la sección no aparece).
+- Antes de su fecha sale con candado y "Faltan X días"; desde ese día (hora de Puerto Rico) se puede leer.
+- Ojo: la carta va dentro del código de la página, así que alguien que sepa ver el código podría leerla antes.
+
+## 8. Otros datos de `CONFIG`
 
 | Campo | Qué es |
 |---|---|
-| `fechaInicio` | El día en que empezaron (AAAA-MM-DD). Sirve para "Día X de aventuras" |
-| `cumpleValeria`, `aniversario` | Mes-día (MM-DD). Ese día sale confeti y un mensaje |
-| `mensajeCumple`, `mensajeAniversario` | El mensaje de esos días |
+| `fechaInicio` | El día en que empezaron (AAAA-MM-DD): "Día X de aventuras", mensaje de cada mes y logros de tiempo |
+| `cumpleValeria`, `cumpleHenry`, `aniversario` | Mes-día (MM-DD). Ese día sale confeti y un mensaje |
 | `cancion` | Enlace de Spotify (Compartir → Copiar enlace). Mientras diga `CAMBIAR`, el botón no aparece |
-| `nombreGuia`, `cafeFavorito`, `datoBonito` | Su perfil (`datoBonito` vacío = no sale) |
-| `cartaSecreta` | La carta que sale al tocar al turista 10 veces (`\n` = bajar de línea) |
-| `DESEOS` | Lugares por visitar |
-| `CAFES` | Cafeterías probadas: nombre, lugar, qué pidió cada uno, `tacitas` o `nota` |
-| `RANKING_SMASH`, `notaRanking` | El ranking de smash de la guía (se ordena solo por nota) |
-| `AVENTURAS` | Los lugares (ver abajo) |
+| `cafeFavorito`, `datoBonito` | El perfil de la guía |
+| `cartaSecreta` | La carta que sale al tocar al turista 10 veces |
+| `CAFES` | El pasaporte cafetero |
+| `PLANES` | Ideas para la ruleta "¿Qué hacemos hoy?" (también usa la lista de deseos) |
 
-Si dejas algo vacío (`""` o `0`), esa parte simplemente no sale.
+Para las frases que dice el turista al tocarlo, busca `const FRASES = [` (más abajo, en la parte del turista) y añade una línea entre comillas.
 
-## 2. Añadir un lugar
+## 9. Probar fechas sin esperar
 
-Cada bloque de `AVENTURAS` es un **lugar** con su pin. Los lugares con la **misma fecha** forman una salida (un "Día" en la línea de tiempo).
+Añade al final del enlace:
+- `?hoy=2026-11-08` hace que la página crea que hoy es ese día (mensaje del mes, "Un día como hoy", cápsulas, logros).
+- `?probar=cumple`, `?probar=cumpleHenry`, `?probar=aniversario` o `?probar=mes` muestran ese mensaje especial.
 
-```js
-{
-  id: "nombre-corto", emoji: "☕", nombre: "Nombre del sitio", lugar: "Pueblo",
-  lat: 18.4224, lon: -66.0716, zona: "sj", fecha: "2026-10-25", nota: 8,
-  texto: "Lo que pasó.",
-  versionGuia: "",
-},
-```
+## 10. Compartir una aventura
 
-- `id`: corto, sin espacios ni acentos, que no se repita.
-- `lat`/`lon`: en Google Maps toca el sitio y copia los dos números.
-- `zona`: `"sj"` (área de San Juan), `"caguas"` o bórralo si es en otro sitio.
-- `tacitas` (1 a 5, acepta medios como `3.5`) o `nota` (de la guía, sobre 10; 7 = 3.5 tacitas).
-- `versionGuia`: cómo lo cuenta Valeria; si está vacío no sale el botón.
-- `smash: true` si es un sitio de smash burgers.
-- `secreto: true` para que no salga en el mapa ("ubicación clasificada").
+Cada aventura tiene **Compartir**: en el celular abre el menú de compartir; en la computadora copia el link. El link lleva directo a esa aventura (termina en `#nombre`, por ejemplo `#pergamino`).
 
-**Cuando visiten un lugar de la lista de deseos:** bórrenlo de `DESEOS` y creen un bloque nuevo en `AVENTURAS`.
-
-**Para probar las fechas especiales sin esperar:** abre la página con `?probar=cumple` o `?probar=aniversario` al final del enlace.
-
-## 3. Cómo editar desde el celular o la computadora
-
-1. Entra a github.com → repositorio `aventuras-de-valeria-y-henry`.
-2. Toca `index.html` → el lápiz ✏️ (Edit).
-3. Cambia lo que quieras → **Commit changes** → **Commit changes**.
-4. Abre `sw.js` y sube el número de `VERSION` (por ejemplo de `vh-v6` a `vh-v7`) para que los celulares vean el cambio.
-5. En 1 o 2 minutos se ve en la página.
-
-## 4. Dominio propio (ej. valeriayhenry.com)
+## 11. Dominio propio (ej. valeriayhenry.com)
 
 Cuesta unos $10–15 al año (no es gratis).
 
@@ -60,11 +111,11 @@ Cuesta unos $10–15 al año (no es gratis).
 2. En el panel de DNS del dominio crea:
    - 4 registros **A** con nombre `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
    - 1 registro **CNAME** con nombre `www` → `henryaliceahe-glitch.github.io`
-3. En GitHub → repositorio → **Settings → Pages → Custom domain** → escribe `valeriayhenry.com` → **Save**. (GitHub crea un archivo `CNAME`.)
+3. En GitHub → repositorio → **Settings → Pages → Custom domain** → escribe `valeriayhenry.com` → **Save**.
 4. Espera (de minutos a 24 h) y marca **Enforce HTTPS**.
-5. En `index.html` cambia las 2 direcciones de `og:url` y `og:image` al dominio nuevo.
+5. En `index.html` cambia las direcciones de `og:url`, `og:image` y `twitter:image` al dominio nuevo.
 
-## 5. Instalarla en el celular
+## 12. Instalarla en el celular
 
 - **iPhone (Safari):** botón Compartir → **Agregar a pantalla de inicio**.
 - **Android (Chrome):** menú ⋮ → **Instalar app** (o "Agregar a la pantalla principal").
@@ -73,5 +124,6 @@ Cuesta unos $10–15 al año (no es gratis).
 
 - `index.html` — la página
 - `manifest.json`, `sw.js` — para instalarla como app
-- `icon.svg`, `icon-*.png` — íconos (azul y café)
-- `og.svg` — imagen de vista previa (editable); `og.png` — la misma, lista para WhatsApp
+- `icon.svg`, `icon-*.png` — íconos
+- `og.svg` — imagen de vista previa (editable); `og.png` — la misma, lista para WhatsApp. Si la cambias, sube el `?v=2` de `og:image` y `twitter:image` a `?v=3` para que WhatsApp no use la vieja.
+- La página tiene `noindex`: no aparece en Google.
