@@ -1021,7 +1021,8 @@
   const PARAMS = new URLSearchParams(location.search);
   const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const tactil = window.matchMedia("(pointer: coarse)").matches;
-  const vibrar = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+  // Vibrar solo si la persona ya tocó la página (si no, el navegador lo bloquea y avisa en la consola)
+  const vibrar = p => { try { if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(p); } catch (e) {} };
   const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const textoPlano = s => String(s || "").replace(/<[^>]*>/g, "");
   const minus = s => textoPlano(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
