@@ -588,7 +588,6 @@
   <section class="cierre">
     <div class="contenedor">
       <p class="frase">Yo soy turista, yo te sigo a ti... a donde sea 💙</p>
-      <a class="btn cafe" href="https://henryaliceahe-glitch.github.io/turista-sigue-a-valeria/">✈️ Planear la próxima aventura</a>
       <p class="pie-pag">Hecho con café y cariño ☕💙</p>
     </div>
   </section>
@@ -1122,12 +1121,11 @@
       });
       cont.appendChild(b);
     });
-    const prox = document.createElement("a");
+    const prox = document.createElement("div");
     prox.className = "estampa proxima";
     prox.style.setProperty("--rot", "-3deg");
-    prox.href = "https://henryaliceahe-glitch.github.io/turista-sigue-a-valeria/";
+    prox.style.cursor = "default";
     prox.innerHTML = `<span aria-hidden="true">✈️</span><b>Próxima aventura</b><small>Pendiente ⏳</small>`;
-    prox.setAttribute("aria-label", "Próxima aventura: escoger el próximo plan");
     cont.appendChild(prox);
 
     const cd = $("sellos-deseos");
