@@ -1,6 +1,6 @@
 // Service worker sencillo: permite instalar la página y abrirla aunque no haya señal.
 // Si cambias algo y no se actualiza en el celular, sube el número de VERSION.
-const VERSION = "vh-v6";
+const VERSION = "vh-v7";
 const ARCHIVOS = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -13,7 +13,7 @@ self.addEventListener("activate", e => {
 
 self.addEventListener("fetch", e => {
   const req = e.request;
-  if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return; // Firebase, Spotify y fuentes van directo
+  if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return; // Spotify y las fuentes van directo
   if (req.mode === "navigate") {
     // La página: primero internet (para ver lo último), si no hay señal, la copia guardada
     e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put("index.html", c)); return r; })
