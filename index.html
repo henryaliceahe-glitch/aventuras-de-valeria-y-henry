@@ -1121,12 +1121,6 @@
       });
       cont.appendChild(b);
     });
-    const prox = document.createElement("div");
-    prox.className = "estampa proxima";
-    prox.style.setProperty("--rot", "-3deg");
-    prox.style.cursor = "default";
-    prox.innerHTML = `<span aria-hidden="true">✈️</span><b>Próxima aventura</b><small>Pendiente ⏳</small>`;
-    cont.appendChild(prox);
 
     const cd = $("sellos-deseos");
     cd.hidden = !DES.length;
