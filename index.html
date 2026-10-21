@@ -9,12 +9,19 @@
 <meta property="og:description" content="El mapa oficial de la guía y su turista favorito por Puerto Rico. Cada pin es una historia.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://henryaliceahe-glitch.github.io/aventuras-de-valeria-y-henry/">
-<meta property="og:image" content="https://henryaliceahe-glitch.github.io/aventuras-de-valeria-y-henry/og.png">
+<meta property="og:image" content="https://henryaliceahe-glitch.github.io/aventuras-de-valeria-y-henry/og.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_PR">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://henryaliceahe-glitch.github.io/aventuras-de-valeria-y-henry/og.png?v=2">
+<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1F3A5F">
+<meta name="color-scheme" content="light dark">
+<script>
+  // Modo oscuro o claro escogido a mano (se aplica antes de pintar para que no parpadee)
+  try { var t = localStorage.getItem("vh-tema"); if (t === "claro" || t === "oscuro") document.documentElement.dataset.tema = t; } catch (e) {}
+</script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -44,6 +51,10 @@
     --serif: "Fraunces", Georgia, serif;
     --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --radio: 18px;
+    --tinta: #1F3A5F;   /* títulos y texto destacado */
+    --rotulo: #2F5D8A;  /* nombres del mar en el mapa */
+    --ola: #C7D9EA;     /* olitas del mar */
+    --cumulo: #6F4E37;  /* pin con contador */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
@@ -73,7 +84,7 @@
     transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
   }
   .btn:hover { background: var(--azul); border-color: var(--azul); transform: translateY(-1px); box-shadow: var(--sombra); }
-  .btn.claro { background: transparent; color: var(--marino); border-color: rgba(31,58,95,.35); }
+  .btn.claro { background: transparent; color: var(--tinta); border-color: rgba(31,58,95,.35); }
   .btn.claro:hover { background: var(--azul-claro); border-color: var(--marino); }
   .btn.cafe { background: var(--cafe); border-color: var(--cafe); }
   .btn.cafe:hover { background: #5a3e2b; border-color: #5a3e2b; }
@@ -102,16 +113,16 @@
   @media (min-width: 920px) { .portada .contenedor { grid-template-columns: 1.3fr .7fr; } .portada { padding: 72px 0 40px; } }
   .dias {
     display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--marino); background: var(--crema); border: 1px solid var(--borde); border-radius: 999px; padding: 7px 16px 7px 8px; box-shadow: var(--sombra);
+    color: var(--tinta); background: var(--crema); border: 1px solid var(--borde); border-radius: 999px; padding: 7px 16px 7px 8px; box-shadow: var(--sombra);
   }
   .dias b { font-family: var(--serif); font-size: 15px; letter-spacing: 0; background: var(--marino); color: #fff; border-radius: 999px; padding: 2px 10px; font-weight: 600; }
-  .portada h1 { font-family: var(--serif); font-weight: 600; color: var(--marino); letter-spacing: -.025em; font-size: clamp(44px, 9vw, 88px); line-height: .98; margin: 22px 0 18px; }
+  .portada h1 { font-family: var(--serif); font-weight: 600; color: var(--tinta); letter-spacing: -.025em; font-size: clamp(44px, 9vw, 88px); line-height: .98; margin: 22px 0 18px; }
   .portada h1 em { font-style: italic; font-weight: 500; color: var(--cafe); }
   .portada h1 .y { font-weight: 500; color: var(--caramelo); font-style: italic; }
   .intro { font-size: 18px; max-width: 540px; color: var(--suave); }
   .datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 12px; margin-top: 28px; max-width: 620px; }
   .dato { background: var(--crema); border: 1px solid var(--borde); border-radius: 16px; padding: 16px 16px 14px; box-shadow: var(--sombra); }
-  .dato b { display: block; font-family: var(--serif); font-weight: 600; font-size: 36px; line-height: 1; color: var(--marino); font-variant-numeric: tabular-nums; }
+  .dato b { display: block; font-family: var(--serif); font-weight: 600; font-size: 36px; line-height: 1; color: var(--tinta); font-variant-numeric: tabular-nums; }
   .dato span { display: block; margin-top: 6px; font-size: 13px; color: var(--suave); }
   .acciones-portada { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .spotify { margin-top: 14px; max-width: 520px; }
@@ -136,7 +147,7 @@
   @keyframes saltito { 30% { transform: translateY(-22px) rotate(-4deg); } 60% { transform: translateY(0) scaleY(.94); } 80% { transform: translateY(-5px); } }
   .dicho {
     position: absolute; bottom: calc(100% - 4px); left: 50%; z-index: 5; width: max-content; max-width: min(230px, 70vw);
-    background: var(--crema); border: 1px solid var(--borde); border-radius: 16px; padding: 9px 14px; font-weight: 500; font-size: 15px; line-height: 1.35; color: var(--marino);
+    background: var(--crema); border: 1px solid var(--borde); border-radius: 16px; padding: 9px 14px; font-weight: 500; font-size: 15px; line-height: 1.35; color: var(--tinta);
     box-shadow: var(--sombra-alta); transform: translateX(-50%); pointer-events: none; animation: decir .35s cubic-bezier(.3,1.5,.5,1);
   }
   .dicho::after { content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 8px solid transparent; border-top-color: var(--crema); }
@@ -152,7 +163,7 @@
   @media (min-width: 920px) { section.bloque { padding: 56px 0; } }
   .cabeza { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 22px; }
   .ceja { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--cafe); margin-bottom: 6px; }
-  .cabeza h2 { font-family: var(--serif); font-weight: 600; color: var(--marino); font-size: clamp(30px, 5.5vw, 44px); letter-spacing: -.02em; line-height: 1.05; }
+  .cabeza h2 { font-family: var(--serif); font-weight: 600; color: var(--tinta); font-size: clamp(30px, 5.5vw, 44px); letter-spacing: -.02em; line-height: 1.05; }
   .cabeza p { color: var(--suave); max-width: 440px; }
   .tarjeta { background: var(--crema); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); }
 
@@ -162,7 +173,7 @@
   .tarjeta-mapa { padding: 12px; }
   .barra-mapa { display: flex; gap: 10px; padding: 2px 2px 12px; flex-wrap: wrap; align-items: center; }
   .segmentos { display: inline-flex; background: var(--azul-claro); border-radius: 999px; padding: 4px; gap: 2px; }
-  .segmentos button { border: 0; background: transparent; color: var(--marino); font-weight: 700; font-size: 14px; padding: 8px 16px; border-radius: 999px; min-height: 44px; cursor: pointer; transition: background .2s, box-shadow .2s; }
+  .segmentos button { border: 0; background: transparent; color: var(--tinta); font-weight: 700; font-size: 14px; padding: 8px 16px; border-radius: 999px; min-height: 44px; cursor: pointer; transition: background .2s, box-shadow .2s; }
   .segmentos button:hover { background: rgba(255,255,255,.55); }
   .segmentos button[aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(31,58,95,.2); }
   .leyenda { margin-left: auto; font-size: 13px; color: var(--suave); display: flex; gap: 14px; flex-wrap: wrap; }
@@ -177,9 +188,9 @@
   .ruta-mascara { fill: none; stroke: #fff; stroke-width: 60; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 0; }
   .ruta-mascara.dibujar { animation: dibujar 2.4s cubic-bezier(.45,0,.2,1) forwards; }
   @keyframes dibujar { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-  .rotulo { font-family: "Fraunces", serif; font-style: italic; fill: var(--azul); letter-spacing: .1em; opacity: .7; }
+  .rotulo { font-family: "Fraunces", serif; font-style: italic; fill: var(--rotulo); letter-spacing: .1em; opacity: .7; }
   .rotulo-sj { font-family: "Fraunces", serif; font-style: italic; }
-  .rotulo-sj.mar { fill: var(--azul); } .rotulo-sj.tierra-txt { fill: var(--cafe); }
+  .rotulo-sj.mar { fill: var(--rotulo); } .rotulo-sj.tierra-txt { fill: var(--cafe); }
   .mapa svg.rosa { inset: auto 10px 10px auto; width: 50px; height: 50px; opacity: .85; pointer-events: none; }
 
   .pin { position: absolute; z-index: 2; width: 34px; height: 34px; margin: -40px 0 0 -17px; border: 0; background: none; cursor: pointer; padding: 0; touch-action: manipulation; filter: drop-shadow(0 3px 4px rgba(43,26,18,.3)); }
@@ -202,9 +213,9 @@
   .detalle.entra { animation: entrar .4s cubic-bezier(.2,.8,.2,1); }
   @keyframes entrar { from { opacity: 0; transform: translateY(10px); } }
   .detalle .num { font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cafe); }
-  .detalle h3 { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.08; color: var(--marino); margin: 6px 0 4px; letter-spacing: -.01em; }
+  .detalle h3 { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.08; color: var(--tinta); margin: 6px 0 4px; letter-spacing: -.01em; }
   .detalle .lugar { font-weight: 500; font-size: 14.5px; color: var(--suave); }
-  .etiqueta-chica { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--azul-claro); color: var(--marino); margin-top: 8px; }
+  .etiqueta-chica { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--azul-claro); color: var(--tinta); margin-top: 8px; }
   .etiqueta-chica.dorada { background: #F4E5CC; color: #6B4A1F; }
   .detalle p.texto { font-size: 17px; line-height: 1.65; margin-top: 14px; }
   .detalle p.texto.guia { border-left: 3px solid var(--azul); padding-left: 14px; }
@@ -217,7 +228,7 @@
   .calificacion { white-space: nowrap; }
   .detalle .calificacion { display: block; margin-top: 10px; }
   .pasos { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--borde); }
-  .paso { font-weight: 700; font-size: 14px; color: var(--marino); background: transparent; white-space: nowrap; border: 1px solid rgba(31,58,95,.3); border-radius: 999px; padding: 8px 14px; min-height: 44px; cursor: pointer; transition: background .2s; }
+  .paso { font-weight: 700; font-size: 14px; color: var(--tinta); background: transparent; white-space: nowrap; border: 1px solid rgba(31,58,95,.3); border-radius: 999px; padding: 8px 14px; min-height: 44px; cursor: pointer; transition: background .2s; }
   .paso:hover { background: var(--azul-claro); }
   .contador { font-weight: 500; font-size: 14px; color: var(--suave); white-space: nowrap; }
   @media (max-width: 360px) { .paso .txt { display: none; } }
@@ -230,12 +241,12 @@
   .hito .caja { padding: 18px 20px 8px; transition: box-shadow .2s; }
   .hito .caja:hover { box-shadow: var(--sombra-alta); }
   .hito .fecha { font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cafe); }
-  .hito h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; line-height: 1.15; color: var(--marino); margin: 2px 0 4px; }
+  .hito h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; line-height: 1.15; color: var(--tinta); margin: 2px 0 4px; }
   .hito .cuantos { font-size: 14px; color: var(--suave); }
   .parada { padding: 14px 0; border-top: 1px solid var(--borde); margin-top: 12px; scroll-margin-top: 90px; border-radius: 10px; transition: box-shadow .2s; }
   .parada + .parada { margin-top: 0; }
   .parada.enfocado { box-shadow: 0 0 0 3px var(--azul); padding-left: 10px; padding-right: 10px; }
-  .parada h4 { font-family: var(--serif); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--marino); }
+  .parada h4 { font-family: var(--serif); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--tinta); }
   .parada .lugar { font-size: 14px; color: var(--suave); }
   .parada p.texto { margin-top: 6px; }
   .parada .pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 12px; margin-top: 4px; }
@@ -283,7 +294,7 @@
   /* ---------- Cafés ---------- */
   .cafes { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
   .cafe { position: relative; padding: 20px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
-  .cafe h3 { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--marino); line-height: 1.15; }
+  .cafe h3 { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--tinta); line-height: 1.15; }
   .cafe .lugar { font-size: 14px; color: var(--suave); }
   .cafe dl { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 15px; margin-top: 4px; }
   .cafe dt { font-weight: 700; color: var(--cafe); }
@@ -292,16 +303,16 @@
   .cafe .estampa b { display: none; }
   .cafe .etiqueta-chica { margin-top: 6px; }
   .vacio-seccion { padding: 22px; color: var(--suave); text-align: center; }
-  .sub { font-family: var(--serif); font-weight: 600; font-size: 24px; color: var(--marino); margin: 34px 0 14px; }
+  .sub { font-family: var(--serif); font-weight: 600; font-size: 24px; color: var(--tinta); margin: 34px 0 14px; }
 
   /* Ranking de smash */
   .ranking { padding: 8px 20px; max-width: 560px; }
   .ranking ol { list-style: none; }
   .ranking li { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; }
   .ranking li + li { border-top: 1px solid var(--borde); }
-  .ranking .puesto { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--marino); background: var(--azul-claro); }
+  .ranking .puesto { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--tinta); background: var(--azul-claro); }
   .ranking li:first-child .puesto { background: radial-gradient(circle at 35% 30%, #F2D9A8, var(--dorado)); color: var(--espresso); }
-  .ranking b { display: block; color: var(--marino); }
+  .ranking b { display: block; color: var(--tinta); }
   .ranking span { font-size: 14px; color: var(--suave); }
   .ranking .calif { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--cafe); white-space: nowrap; }
   .ranking .nota-pie { font-size: 13px; color: var(--suave); padding: 4px 0 10px; }
@@ -311,7 +322,7 @@
   @media (min-width: 720px) { .perfil { grid-template-columns: auto 1fr auto; gap: 26px; } }
   .perfil .avatar { width: 84px; height: 84px; border-radius: 50%; background: var(--marino); display: grid; place-items: center; box-shadow: 0 0 0 5px var(--crema), 0 0 0 6px var(--borde); }
   .perfil .avatar svg { width: 46px; height: 46px; }
-  .perfil h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--marino); }
+  .perfil h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--tinta); }
   .perfil h3 em { color: var(--cafe); }
   .perfil .fila-dato { display: flex; gap: 10px; margin-top: 8px; font-size: 16px; }
   .perfil .fila-dato b { color: var(--cafe); white-space: nowrap; }
@@ -320,7 +331,7 @@
   .logros { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
   .logro { display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; padding: 14px; }
   .logro .medalla { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; background: radial-gradient(circle at 35% 30%, #F2D9A8, var(--dorado)); box-shadow: inset 0 -3px 0 rgba(111,78,55,.35); }
-  .logro b { display: block; font-size: 15px; color: var(--marino); line-height: 1.25; }
+  .logro b { display: block; font-size: 15px; color: var(--tinta); line-height: 1.25; }
   .logro span { font-size: 13px; color: var(--suave); }
   .progreso-logros { font-size: 14px; color: var(--suave); }
   .por-descubrir { margin-top: 16px; font-weight: 700; color: var(--suave); }
@@ -328,7 +339,7 @@
 
   /* ---------- Cierre ---------- */
   .cierre { text-align: center; padding: 48px 0 calc(40px + env(safe-area-inset-bottom)); }
-  .cierre .frase { font-family: "Caveat", "Segoe Print", cursive; font-weight: 600; font-size: clamp(32px, 6vw, 46px); color: var(--marino); line-height: 1.1; margin-bottom: 22px; }
+  .cierre .frase { font-family: "Caveat", "Segoe Print", cursive; font-weight: 600; font-size: clamp(32px, 6vw, 46px); color: var(--tinta); line-height: 1.1; margin-bottom: 22px; }
   .pie-pag { margin-top: 34px; font-size: 14px; color: var(--suave); }
 
   /* ---------- Carta secreta ---------- */
@@ -343,12 +354,137 @@
   }
   .papel-carta::before { content: ""; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #E0A36E, #9A5A2F); box-shadow: 0 3px 8px rgba(43,26,18,.3); }
   @keyframes abrir { 0% { transform: translateY(60px) rotateX(70deg) scale(.7); opacity: 0; } 60% { opacity: 1; } 100% { transform: none; } }
-  .papel-carta h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 30px; color: var(--marino); margin-bottom: 14px; }
+  .papel-carta h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 30px; color: var(--tinta); margin-bottom: 14px; }
   .papel-carta .cuerpo { font-family: "Caveat", "Segoe Print", cursive; font-size: 25px; line-height: 32px; color: var(--espresso); }
   .papel-carta .fila { justify-content: flex-end; margin-top: 22px; }
   .corazones-flotan { position: absolute; inset: -40px 0 0; pointer-events: none; overflow: visible; }
   .corazones-flotan span { position: absolute; bottom: 0; font-size: 20px; animation: subir 2.6s ease-out forwards; opacity: 0; }
   @keyframes subir { 0% { transform: translateY(0) scale(.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-220px) scale(1.1); opacity: 0; } }
+
+  /* ---------- Piezas que se quedan siempre en claro (pasaporte, postal, carta) ---------- */
+  .pasaporte, .postal, .papel-carta {
+    --marino: #1F3A5F; --tinta: #1F3A5F; --cafe: #6F4E37; --texto: #2B1A12; --suave: #6B5546;
+    --papel: #FBF6EE; --crema: #FFFCF8; --azul: #2F5D8A; --borde: rgba(43, 26, 18, .12);
+  }
+
+  /* ---------- Botón de tema ---------- */
+  .b-tema { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; font-size: 18px; cursor: pointer; margin-left: 4px; transition: background .2s; }
+  .b-tema:hover { background: rgba(255,255,255,.1); }
+
+  /* ---------- Filtros del mapa ---------- */
+  .filtros { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 2px 10px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+  .filtros::-webkit-scrollbar { display: none; }
+  .filtros button { flex: none; scroll-snap-align: start; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--borde); background: transparent; color: var(--tinta); font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: background .2s; }
+  .filtros button:hover { background: var(--azul-claro); }
+  .filtros button[aria-pressed="true"] { background: var(--marino); border-color: var(--marino); color: #fff; }
+  .ruta.atenuada { opacity: .22; }
+  .ola { stroke: var(--ola); }
+
+  /* ---------- Pin con contador y su listita ---------- */
+  .tarjeta-mapa { position: relative; }
+  .pin.cumulo { width: auto; height: 34px; margin: -30px 0 0; transform: translateX(-50%); }
+  .pin.cumulo::before { content: ""; position: absolute; left: 50%; top: 31px; transform: translateX(-50%); border: 7px solid transparent; border-top-color: var(--cumulo); }
+  .pin.cumulo span { display: inline-flex; align-items: center; gap: 5px; height: 34px; padding: 0 12px; border-radius: 999px; background: var(--cumulo); color: #fff; border: 2px solid #fff; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .pin.cumulo.activo { animation: none; }
+  .pin.cumulo.activo span { box-shadow: 0 0 0 4px rgba(212,163,90,.8); }
+  .lista-cumulo { position: absolute; z-index: 25; min-width: 210px; max-width: 270px; background: var(--crema); border: 1px solid var(--borde); border-radius: 14px; box-shadow: var(--sombra-alta); padding: 6px; display: grid; gap: 2px; animation: entrar .2s ease-out; }
+  .lista-cumulo .lista-titulo { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cafe); padding: 6px 10px 4px; }
+  .lista-cumulo button { text-align: left; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--texto); font-weight: 600; font-size: 15px; cursor: pointer; }
+  .lista-cumulo button:hover, .lista-cumulo button:focus-visible { background: var(--azul-claro); }
+
+  /* ---------- Títulos de los días, compartir ---------- */
+  .titulo-dia { font-style: italic; font-weight: 500; color: var(--cafe); }
+  .compartir { display: inline-flex; align-items: center; gap: 8px; }
+  .aviso-compartir { font-size: 13px; font-weight: 700; color: var(--azul); }
+  .aviso-compartir:empty { display: none; }
+
+  /* ---------- Un día como hoy ---------- */
+  .como-hoy-cont { padding-top: 18px; display: grid; gap: 10px; }
+  .como-hoy { padding: 18px 20px; border-left: 4px solid var(--caramelo); }
+  .como-hoy h3 { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--tinta); margin-top: 2px; }
+  .como-hoy p { color: var(--suave); margin-top: 4px; }
+
+  /* ---------- Frases célebres ---------- */
+  .frases { display: grid; gap: 18px; }
+  @media (min-width: 720px) { .frases:not(.carrusel) { grid-template-columns: 1fr 1fr; } }
+  .frases.carrusel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 10px; }
+  .frases.carrusel::-webkit-scrollbar { display: none; }
+  .frases.carrusel .frase-celebre { flex: 0 0 min(560px, 88%); scroll-snap-align: start; }
+  .frase-celebre { position: relative; margin: 0; padding: 34px 26px 22px; }
+  .frase-celebre::before { content: "“"; position: absolute; top: -8px; left: 16px; font-family: var(--serif); font-size: 92px; line-height: 1; color: var(--caramelo); }
+  .frase-celebre blockquote { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(22px, 3.2vw, 29px); line-height: 1.3; color: var(--tinta); }
+  .frase-celebre blockquote::after { content: "”"; color: var(--caramelo); }
+  .frase-celebre figcaption { margin-top: 14px; font-weight: 700; color: var(--cafe); }
+
+  /* ---------- Ruleta ---------- */
+  .ruleta { padding: 28px 22px; text-align: center; }
+  .ruleta h2 { font-family: var(--serif); font-weight: 600; color: var(--tinta); font-size: clamp(28px, 5vw, 38px); line-height: 1.1; }
+  .ruleta-ayuda { color: var(--suave); margin-top: 6px; }
+  .ruleta-plan { margin: 20px auto 18px; max-width: 520px; min-height: 96px; display: grid; place-items: center; padding: 16px; border-radius: 16px; border: 2px dashed var(--caramelo); background: var(--papel); font-family: var(--serif); font-weight: 600; font-size: clamp(21px, 4vw, 28px); line-height: 1.25; color: var(--tinta); }
+  .ruleta-plan.baraja { animation: barajar .14s ease-out; }
+  .ruleta-plan.elegido { border-style: solid; animation: elegir .55s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes barajar { from { transform: translateY(-12px) rotate(-2deg); opacity: .35; } }
+  @keyframes elegir { 0% { transform: scale(.85); } 100% { transform: none; } }
+  .ruleta-botones { justify-content: center; }
+
+  /* ---------- Estadísticas graciosas ---------- */
+  .curiosos { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 22px; }
+  .curioso { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; background: var(--crema); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
+  .curioso .e { grid-row: span 2; font-size: 26px; }
+  .curioso b { font-family: var(--serif); font-weight: 600; font-size: 24px; line-height: 1; color: var(--tinta); }
+  .curioso span:last-child { font-size: 13px; color: var(--suave); line-height: 1.3; }
+
+  /* ---------- Cápsulas del tiempo ---------- */
+  .capsulas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .capsula { padding: 22px; text-align: center; }
+  .capsula .cap-emoji { font-size: 42px; display: block; }
+  .capsula h3 { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--tinta); margin: 6px 0 4px; }
+  .capsula .cap-candado { color: var(--suave); font-size: 14px; }
+  .capsula .cap-faltan { font-weight: 700; color: var(--cafe); margin-top: 6px; }
+  .capsula.cerrada { background: repeating-linear-gradient(135deg, var(--crema) 0 14px, var(--papel) 14px 28px); }
+  .capsula.cerrada .cap-emoji { filter: grayscale(.7); opacity: .65; }
+  .capsula.abierta { animation: desbloquear .8s cubic-bezier(.3,1.5,.5,1); }
+  .capsula.abierta .btn { margin-top: 12px; }
+  .cap-carta { text-align: left; margin-top: 14px; padding: 16px; border-radius: 12px; background: var(--papel); font-family: "Caveat", "Segoe Print", cursive; font-size: 23px; line-height: 1.35; color: var(--texto); animation: entrar .4s ease-out; }
+  @keyframes desbloquear { 0% { transform: scale(.92) rotate(-1deg); } 60% { transform: scale(1.03); } 100% { transform: none; } }
+
+  /* ---------- Modo oscuro (automático o escogido con el botón) ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --latte: #0E1A2B; --crema: #2A1D16; --papel: #33241B; --tierra: #6B5443; --azul-claro: #1B3150;
+      --texto: #F3E9DC; --suave: #CDB9A4; --tinta: #F3E3CC; --cafe: #D4A373; --marino: #2F5D8A; --azul: #8FB8E0;
+      --borde: rgba(243, 233, 220, .14); --rotulo: #9FC0E0; --ola: #24406A; --cumulo: #8A5A3B;
+      --sombra: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px -12px rgba(0,0,0,.7);
+      --sombra-alta: 0 2px 4px rgba(0,0,0,.35), 0 22px 44px -16px rgba(0,0,0,.8);
+      color-scheme: dark;
+    }
+  }
+  :root[data-tema="oscuro"] {
+    --latte: #0E1A2B; --crema: #2A1D16; --papel: #33241B; --tierra: #6B5443; --azul-claro: #1B3150;
+    --texto: #F3E9DC; --suave: #CDB9A4; --tinta: #F3E3CC; --cafe: #D4A373; --marino: #2F5D8A; --azul: #8FB8E0;
+    --borde: rgba(243, 233, 220, .14); --rotulo: #9FC0E0; --ola: #24406A; --cumulo: #8A5A3B;
+    --sombra: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px -12px rgba(0,0,0,.7);
+    --sombra-alta: 0 2px 4px rgba(0,0,0,.35), 0 22px 44px -16px rgba(0,0,0,.8);
+    color-scheme: dark;
+  }
+  :root[data-tema="claro"] { color-scheme: light; }
+  /* Detalles que no se arreglan solo con los colores */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) .btn:hover { background: #3E6E9E; border-color: #3E6E9E; }
+    :root:not([data-tema="claro"]) .btn.cafe { background: #8A5A3B; border-color: #8A5A3B; }
+    :root:not([data-tema="claro"]) .btn.claro { border-color: rgba(243, 227, 204, .35); }
+    :root:not([data-tema="claro"]) .segmentos button:hover { background: rgba(255,255,255,.08); }
+    :root:not([data-tema="claro"]) .segmentos button[aria-pressed="true"] { background: #2F5D8A; color: #fff; box-shadow: none; }
+    :root:not([data-tema="claro"]) .etiqueta-chica.dorada { background: #4A3524; color: #F1D9B5; }
+    :root:not([data-tema="claro"]) .perfil { background: linear-gradient(135deg, #2A1D16, #3A281D); }
+  }
+  :root[data-tema="oscuro"] .btn:hover { background: #3E6E9E; border-color: #3E6E9E; }
+  :root[data-tema="oscuro"] .btn.cafe { background: #8A5A3B; border-color: #8A5A3B; }
+  :root[data-tema="oscuro"] .btn.claro { border-color: rgba(243, 227, 204, .35); }
+  :root[data-tema="oscuro"] .segmentos button:hover { background: rgba(255,255,255,.08); }
+  :root[data-tema="oscuro"] .segmentos button[aria-pressed="true"] { background: #2F5D8A; color: #fff; box-shadow: none; }
+  :root[data-tema="oscuro"] .etiqueta-chica.dorada { background: #4A3524; color: #F1D9B5; }
+  :root[data-tema="oscuro"] .perfil { background: linear-gradient(135deg, #2A1D16, #3A281D); }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -371,10 +507,12 @@
       <a href="#cafes-sec">Cafés</a>
       <a href="#logros-sec">Logros</a>
     </nav>
+    <button class="b-tema" id="b-tema" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
   </div>
 </header>
 
 <div class="fiesta" id="fiesta" role="status" hidden></div>
+<div class="contenedor como-hoy-cont" id="como-hoy" hidden></div>
 
 <main id="inicio">
   <section class="portada">
@@ -411,6 +549,7 @@
       </div>
       <div class="atlas">
         <div class="tarjeta tarjeta-mapa">
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar los pines del mapa"></div>
           <div class="barra-mapa">
             <div class="segmentos" role="group" aria-label="Vista del mapa">
               <button data-vista="isla" aria-pressed="true">Toda la isla</button>
@@ -423,7 +562,7 @@
             <svg id="svg" viewBox="0 0 2042 680" preserveAspectRatio="none" aria-hidden="true">
               <defs>
                 <pattern id="olas" width="60" height="30" patternUnits="userSpaceOnUse">
-                  <path d="M0 15 q15 -8 30 0 t30 0" fill="none" stroke="#C7D9EA" stroke-width="2"/>
+                  <path class="ola" d="M0 15 q15 -8 30 0 t30 0" fill="none" stroke-width="2"/>
                 </pattern>
                 <mask id="mascaraRuta" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="9000" height="7000">
                   <path id="rutaMascara" class="ruta-mascara" pathLength="1" d=""/>
@@ -470,6 +609,15 @@
     </div>
   </section>
 
+  <section class="bloque" id="frases-sec" aria-labelledby="t-frases" hidden>
+    <div class="contenedor">
+      <div class="cabeza">
+        <div><span class="ceja">Para la historia</span><h2 id="t-frases">Frases célebres</h2></div>
+      </div>
+      <div class="frases" id="frases"></div>
+    </div>
+  </section>
+
   <div class="separador" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 13h16v6a8 8 0 0 1-16 0z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M22 15h2.5a3 3 0 0 1 0 6H22" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 28h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
 
   <section class="bloque" id="pasaporte-sec" aria-labelledby="t-pas">
@@ -483,6 +631,22 @@
         </div>
         <div class="hoja" id="sellos"></div>
         <div class="hoja" id="sellos-deseos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque" id="ruleta-sec" aria-labelledby="t-ruleta">
+    <div class="contenedor">
+      <div class="tarjeta ruleta">
+        <span class="ceja">¿No saben qué hacer?</span>
+        <h2 id="t-ruleta">La ruleta de la próxima cita</h2>
+        <p class="ruleta-ayuda">Que decida la suerte: sale uno de los planes o de la lista de deseos.</p>
+        <div class="ruleta-plan" id="ruleta-plan" aria-hidden="true">🎲</div>
+        <p class="sr" id="ruleta-anuncio" role="status"></p>
+        <div class="fila ruleta-botones">
+          <button class="btn" id="b-ruleta" type="button">🎲 ¿Qué hacemos hoy?</button>
+          <span class="compartir"><button class="btn cafe" id="ruleta-vamos" type="button" hidden>¡Vamos! 💙</button><span class="aviso-compartir" role="status"></span></span>
+        </div>
       </div>
     </div>
   </section>
@@ -517,8 +681,19 @@
         <div><span class="ceja">Medallas del equipo</span><h2 id="t-logros">Logros</h2></div>
         <p class="progreso-logros" id="progresoLogros"></p>
       </div>
+      <div class="curiosos" id="curiosos" aria-label="Datos curiosos"></div>
       <div class="logros" id="logros"></div>
       <p class="por-descubrir" id="porDescubrir"></p>
+    </div>
+  </section>
+
+  <section class="bloque" id="capsulas-sec" aria-labelledby="t-capsulas" hidden>
+    <div class="contenedor">
+      <div class="cabeza">
+        <div><span class="ceja">Cartas para el futuro</span><h2 id="t-capsulas">Cápsulas del tiempo</h2></div>
+        <p>Cada una se abre sola en su fecha. Antes, ni con trampa.</p>
+      </div>
+      <div class="capsulas" id="capsulas"></div>
     </div>
   </section>
 
@@ -548,13 +723,17 @@
   //  Si dejas un campo vacío ("") esa parte simplemente no se muestra.
   // ==================================================================
   const CONFIG = {
-    // Día en que empezaron las aventuras (AAAA-MM-DD). Sirve para "Día X de aventuras".
+    // Día en que empezaron las aventuras (AAAA-MM-DD). Sirve para "Día X de aventuras",
+    // para el mensaje de cada mes y para los logros de tiempo.
     fechaInicio: "2026-10-08",
 
     // Fechas especiales en formato MM-DD (mes-día). Ese día sale confeti y un mensaje.
+    // Si caen el mismo día manda: cumpleaños de Valeria > cumpleaños de Henry > aniversario > mensaje del mes.
     cumpleValeria: "08-08",
+    cumpleHenry: "01-03",
     aniversario: "10-08",
     mensajeCumple: "¡Feliz cumpleaños, Valeria! Hoy la guía no paga ni el café ☕💙",
+    mensajeCumpleHenry: "¡Hoy cumple el turista! 🎂 La guía invita el café ☕",
     mensajeAniversario: "¡Feliz aniversario! Otra vuelta al sol siguiendo a mi guía favorita 💙",
 
     // Nuestra canción: pega el enlace de Spotify (Compartir → Copiar enlace).
@@ -577,6 +756,20 @@
       "Gracias por ser mi guía favorita. Yo soy turista, yo te sigo a ti… a donde sea.\n\n" +
       "Con todo mi cariño,\nel turista ☕💙",
 
+    // TÍTULO DE CADA DÍA (salida): "fecha": "título". Un día sin título sale solo con su número y fecha.
+    TITULOS_DIAS: {
+      "2026-10-08": "El día de las 4 paradas",
+      "2026-10-09": "Pizza, paseo y playa",
+      "2026-10-11": "La revancha que todavía no llega",
+      "2026-10-12": "Gym, Qdoba y el primer beso",
+      "2026-10-13": "De vuelta a donde nos conocimos",
+      "2026-10-15": "Brincos, pies y luna",
+      "2026-10-17": "Smash y sustos en Caguas",
+      "2026-10-18": "Clasificado 🤫",
+      "2026-10-19": "Estudio, llaves perdidas y tren",
+      "2026-10-20": "La Malcriada",
+    },
+
     // LISTA DE DESEOS: lugares a los que queremos ir. Salen en el mapa como pines
     // transparentes y en el pasaporte como sellos "Por visitar".
     // CUANDO VISITEN UNO: bórrenlo de esta lista y copien sus datos (emoji, nombre,
@@ -590,6 +783,31 @@
       { nombre: "Haciendas de café en Adjuntas", emoji: "☕", lat: 18.1627, lon: -66.7224, nota: "Montaña, neblina y cafecito." },
     ],
 
+    // PLANES para la ruleta "¿Qué hacemos hoy?" (además de la lista de deseos).
+    PLANES: [
+      "Probar una cafetería nueva ☕",
+      "Otra smash burger para el ranking 🍔",
+      "Revancha en la bolera 🎳",
+      "Playa al atardecer 🌅",
+      "Noche de película 🍿",
+    ],
+
+    // FRASES CÉLEBRES: { texto, quien, donde }. Con 3 o más se convierten solas en carrusel.
+    FRASES: [
+      { texto: "Tú siempre me ganas, ya era hora que te ganara.", quien: "La guía", donde: "en la bolera" },
+      { texto: "Mami, me voy a quedar con Valeria, no me esperes.", quien: "El turista", donde: "" },
+    ],
+
+    // CÁPSULAS DEL TIEMPO: cartas que se abren solas en su fecha (hora de Puerto Rico).
+    // Una cápsula con la carta vacía ("") no se muestra. Puedes bajar de línea con \n
+    CAPSULAS: [
+      { titulo: "Despedida de año", emoji: "🎆", fecha: "2026-12-31", carta: "" },
+      { titulo: "El cumpleaños del turista", emoji: "🎂", fecha: "2027-01-03", carta: "" },
+      { titulo: "Día de Reyes", emoji: "👑", fecha: "2027-01-06", carta: "" },
+      { titulo: "San Valentín", emoji: "💙", fecha: "2027-02-14", carta: "" },
+      { titulo: "El día que el turista se va a basic", emoji: "🪖", fecha: "2027-06-22", carta: "" },
+    ],
+
     // PASAPORTE CAFETERO: las cafeterías que han probado.
     // tacitas: del 1 al 5 (acepta medios, ej. 3.5). nota: la nota de la guía sobre 10
     // (si no hay tacitas, se convierten: 7/10 = 3.5 tacitas). etiqueta: texto corto opcional.
@@ -598,46 +816,48 @@
       { nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan (el turista no se acuerda del nombre 🙈)", pidioGuia: "Café", nota: 7 },
       { nombre: "Bookmar", lugar: "San Patricio, Guaynabo", pidioGuia: "Café frío", nota: 7 },
     ],
-
-    // RANKING DE SMASH DE LA GUÍA: nota sobre 10. Se ordena solo, de mayor a menor.
-    RANKING_SMASH: [
-      { nombre: "El Nido", lugar: "Bayamón", nota: 8 },
-      { nombre: "La Malcriada", lugar: "Cupey, San Juan", nota: 7 },
-    ],
-    notaRanking: "Smash Burger & Crispy no entra: la guía no comió 😅",
+    // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
 
-  // ====== LOS LUGARES (para añadir uno, copia un bloque y cambia los datos) ======
+  // ====== LOS LUGARES ======
   // Cada bloque es un LUGAR con su pin. Los lugares con la misma fecha forman una salida (un día).
-  // fecha: "AAAA-MM-DD" (ordena la línea de tiempo y la ruta del mapa; el mismo día, va en el orden de la lista).
-  // lat/lon: coordenadas (en Google Maps: toca el sitio y copia los números). Sin lat/lon no sale en el mapa.
-  // zona: "sj" (área de San Juan), "caguas" o nada. Las que dicen "// VERIFICAR" son aproximadas.
-  // tacitas: del 1 al 5 (acepta medios). nota: la nota de la guía sobre 10.
-  // versionGuia: cómo lo cuenta Valeria (si está vacío, no sale el botón).
-  // smash: true si es un sitio de smash burgers (cuenta para el logro "Ruta smash").
+  //
+  // PLANTILLA PARA AÑADIR UNO (copia esta línea, quítale las // y llénala):
+  // { nombre: "", emoji: "", lugar: "", fecha: "AAAA-MM-DD", lat: null, lon: null, tipos: [], texto: "", nota: null },
+  //
+  //   nombre   el nombre del sitio                    emoji   un emoji
+  //   lugar    el pueblo o la zona                     fecha   "AAAA-MM-DD" (ordena la línea de tiempo y la ruta)
+  //   lat/lon  coordenadas (Google Maps: mantén el dedo en el sitio y copia los dos números). Sin ellas no sale pin
+  //   tipos    para los filtros: "cafe", "comida", "playa", "diversion", "paseo", "especial" (ej. ["cafe", "especial"])
+  //   texto    la historia (puedes usar <i>itálica</i> y <br> para bajar de línea)
+  //   nota     la nota de la guía sobre 10 (7 = 3.5 tacitas). O usa tacitas: del 1 al 5
+  // Opcionales: smash: true (sitio de smash burgers), versionGuia: "cómo lo cuenta Valeria",
+  //   secreto: true (no sale en el mapa), sinNota: "por qué no tiene nota" (para el ranking de smash).
+  // El id, el color, el giro del sello y la zona del mapa se ponen solos si faltan.
+  // Las coordenadas que dicen "// VERIFICAR" son aproximadas.
   const AVENTURAS = [
     // ---------- Día 1 · 8 de octubre ----------
     {
       id: "pergamino", emoji: "☕", nombre: "Pergamino Coffee", lugar: "Plaza Las Américas, Hato Rey",
-      lat: 18.4224, lon: -66.0716, zona: "sj", fecha: "2026-10-08", tacitas: 5,
+      lat: 18.4224, lon: -66.0716, zona: "sj", fecha: "2026-10-08", tipos: ["cafe", "especial"], tacitas: 5,
       texto: "Nuestra primera parada y nuestro primer café juntos. Ella pidió café frío; el turista, agua de coco 🥥 (sí, en una cafetería). 5 tacitas por ser la primera vez.",
       versionGuia: "",
     },
     {
       id: "cineplaza", emoji: "🍿", nombre: "Cine de Plaza Las Américas", lugar: "Plaza Las Américas, Hato Rey",
-      lat: 18.4231, lon: -66.0725, zona: "sj", fecha: "2026-10-08",
+      lat: 18.4231, lon: -66.0725, zona: "sj", fecha: "2026-10-08", tipos: ["diversion"],
       texto: "Después del café, al cine de Plaza. Primera película juntos.",
       versionGuia: "",
     },
     {
       id: "daveandbusters", emoji: "🕹️", nombre: "Dave & Buster's", lugar: "Plaza Las Américas, Hato Rey",
-      lat: 18.4217, lon: -66.0707, zona: "sj", fecha: "2026-10-08", // VERIFICAR
+      lat: 18.4217, lon: -66.0707, zona: "sj", fecha: "2026-10-08", tipos: ["diversion"], // VERIFICAR
       texto: "Ronda de juegos en Dave & Buster's. Primer día y ya había competencia.",
       versionGuia: "",
     },
     {
       id: "sectorsixty", emoji: "🏎️", nombre: "Sector Sixty", lugar: "The Shops at Caguas, Caguas",
-      lat: 18.2400, lon: -66.0420, zona: "caguas", fecha: "2026-10-08", // VERIFICAR
+      lat: 18.2400, lon: -66.0420, zona: "caguas", fecha: "2026-10-08", tipos: ["diversion"], // VERIFICAR
       texto: "Y para cerrar el primer día: go-karts. Cuatro paradas en un solo día. Así empezó todo.",
       versionGuia: "",
     },
@@ -645,19 +865,19 @@
     // ---------- Día 2 · 9 de octubre ----------
     {
       id: "pirilo", emoji: "🍕", nombre: "Pirilo Pizza", lugar: "Viejo San Juan",
-      lat: 18.4652, lon: -66.1172, zona: "sj", fecha: "2026-10-09", // VERIFICAR
+      lat: 18.4652, lon: -66.1172, zona: "sj", fecha: "2026-10-09", tipos: ["comida"], // VERIFICAR
       texto: "Pizza en Pirilo, en el Viejo San Juan. Segundo día y ya teníamos ruta.",
       versionGuia: "",
     },
     {
       id: "paseoprincesa", emoji: "🌴", nombre: "Paseo de la Princesa", lugar: "Viejo San Juan",
-      lat: 18.4626, lon: -66.1186, zona: "sj", fecha: "2026-10-09",
+      lat: 18.4626, lon: -66.1186, zona: "sj", fecha: "2026-10-09", tipos: ["paseo"],
       texto: "Caminata por el Paseo de la Princesa después de la pizza.",
       versionGuia: "",
     },
     {
       id: "condado", emoji: "🌊", nombre: "Playa del Condado", lugar: "Condado, San Juan",
-      lat: 18.4588, lon: -66.0745, zona: "sj", fecha: "2026-10-09",
+      lat: 18.4588, lon: -66.0745, zona: "sj", fecha: "2026-10-09", tipos: ["playa"],
       texto: "Terminamos el día en la playa del Condado.",
       versionGuia: "",
     },
@@ -665,13 +885,13 @@
     // ---------- Día 3 · 11 de octubre ----------
     {
       id: "bolera", emoji: "🎳", nombre: "Bolera", lugar: "Cupey, San Juan",
-      lat: 18.3640, lon: -66.0550, zona: "sj", fecha: "2026-10-11",
+      lat: 18.3640, lon: -66.0550, zona: "sj", fecha: "2026-10-11", tipos: ["diversion"],
       texto: 'Récord histórico: la guía por fin le ganó al turista. 🏆<br><i>"Tú siempre me ganas, ya era hora que te ganara."</i><br>(Revancha pendiente 😤)',
       versionGuia: "",
     },
     {
       id: "anagelato", emoji: "🍦", nombre: "Ana Gelato", lugar: "Condado, San Juan",
-      lat: 18.4572, lon: -66.0712, zona: "sj", fecha: "2026-10-11", // VERIFICAR
+      lat: 18.4572, lon: -66.0712, zona: "sj", fecha: "2026-10-11", tipos: ["comida"], // VERIFICAR
       texto: "Mantecados de pie porque no había ni un sitio pa' sentarse. Ni falta que hizo: la compañía estaba brutal.",
       versionGuia: "",
     },
@@ -679,13 +899,13 @@
     // ---------- Día 4 · 12 de octubre ----------
     {
       id: "planetfitness", emoji: "💪", nombre: "Planet Fitness", lugar: "Caguas",
-      lat: 18.2440, lon: -66.0265, zona: "caguas", fecha: "2026-10-12", // VERIFICAR
+      lat: 18.2440, lon: -66.0265, zona: "caguas", fecha: "2026-10-12", tipos: ["diversion"], // VERIFICAR
       texto: "Cita de gimnasio: espalda, bíceps y abs. Romance con pesas.",
       versionGuia: "",
     },
     {
       id: "qdoba", emoji: "🌯", nombre: "Qdoba", lugar: "Caguas",
-      lat: 18.2428, lon: -66.0282, zona: "caguas", fecha: "2026-10-12", // VERIFICAR
+      lat: 18.2428, lon: -66.0282, zona: "caguas", fecha: "2026-10-12", tipos: ["comida", "especial"], // VERIFICAR
       texto: "Después del gym, Qdoba. Y en el estacionamiento... nuestro primer beso 💙.",
       versionGuia: "",
     },
@@ -693,13 +913,13 @@
     // ---------- Día 5 · 13 de octubre ----------
     {
       id: "cafecupey", emoji: "☕", nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan",
-      lat: 18.3598, lon: -66.0500, zona: "sj", fecha: "2026-10-13", nota: 7,
+      lat: 18.3598, lon: -66.0500, zona: "sj", fecha: "2026-10-13", tipos: ["cafe"], nota: 7,
       texto: "La acompañé a una cafetería en Cupey. El turista no se acuerda del nombre 🙈. Nota de la guía: 7/10.",
       versionGuia: "",
     },
     {
       id: "uagm", emoji: "🎓", nombre: "UAGM Cupey", lugar: "Universidad Ana G. Méndez, Recinto de Cupey",
-      lat: 18.3606, lon: -66.0546, zona: "sj", fecha: "2026-10-13", // VERIFICAR
+      lat: 18.3606, lon: -66.0546, zona: "sj", fecha: "2026-10-13", tipos: ["especial"], // VERIFICAR
       texto: "La llevé a la UAGM de Cupey: el lugar donde nos conocimos. Donde empezó la historia antes de que existiera este mapa 💙.",
       versionGuia: "",
     },
@@ -707,46 +927,46 @@
     // ---------- Día 6 · 15 de octubre ----------
     {
       id: "trampolin", emoji: "🤸", nombre: "Trampoline Park", lugar: "Carolina",
-      lat: 18.4080, lon: -65.9880, zona: "sj", fecha: "2026-10-15", // VERIFICAR
+      lat: 18.4080, lon: -65.9880, zona: "sj", fecha: "2026-10-15", tipos: ["diversion"], // VERIFICAR
       texto: "Por poco nos caemos de un sitio bien alto 😱. Sobrevivimos juntos, que es lo que importa.",
       versionGuia: "",
     },
     {
       id: "halloween", emoji: "🎃", nombre: "Halloween Guaynabo", lugar: "Guaynabo",
-      lat: 18.3570, lon: -66.1110, zona: "sj", fecha: "2026-10-15",
+      lat: 18.3570, lon: -66.1110, zona: "sj", fecha: "2026-10-15", tipos: ["diversion"],
       texto: "Comimos pie 🥧 y el turista le compró flores a la guía 💐. Atracción cinco estrellas.",
       versionGuia: "",
     },
     {
       id: "islaverde", emoji: "🌊", nombre: "Isla Verde", lugar: "Carolina",
-      lat: 18.4440, lon: -66.0180, zona: "sj", fecha: "2026-10-15",
+      lat: 18.4440, lon: -66.0180, zona: "sj", fecha: "2026-10-15", tipos: ["playa"],
       texto: "Una noche en la playa bajo la luna que el turista no va a olvidar nunca 💛🌙",
       versionGuia: "",
     },
 
     // ---------- Día 7 · 17 de octubre ----------
     {
-      id: "smash", emoji: "🍔", nombre: "Smash Burger & Crispy", lugar: "Caguas", smash: true,
-      lat: 18.2356, lon: -66.0380, zona: "caguas", fecha: "2026-10-17", // VERIFICAR
+      id: "smash", emoji: "🍔", nombre: "Smash Burger & Crispy", lugar: "Caguas", smash: true, sinNota: "la guía no comió",
+      lat: 18.2356, lon: -66.0380, zona: "caguas", fecha: "2026-10-17", tipos: ["comida"], // VERIFICAR
       texto: "El turista se comió un smash; la guía no quiso nada. (Por eso no entra en el ranking 😅)",
       versionGuia: "",
     },
     {
       id: "plazacaguas", emoji: "⛲", nombre: "Plaza de Caguas", lugar: "Caguas",
-      lat: 18.2341, lon: -66.0367, zona: "caguas", fecha: "2026-10-17",
+      lat: 18.2341, lon: -66.0367, zona: "caguas", fecha: "2026-10-17", tipos: ["paseo"],
       texto: "Paseo por la plaza pública de Caguas.",
       versionGuia: "",
     },
     {
       id: "soul", emoji: "👻", nombre: "Soul Cream", lugar: "Jardín Botánico de Caguas",
-      lat: 18.2275, lon: -66.0530, zona: "caguas", fecha: "2026-10-17",
+      lat: 18.2275, lon: -66.0530, zona: "caguas", fecha: "2026-10-17", tipos: ["diversion"],
       texto: "Casas embrujadas en Caguas. El turista se asustó con unos payasos 🤡 y la guía tuvo que ser la valiente. (No vamos a hablar de eso.)",
       versionGuia: "",
     },
 
     // ---------- Día 8 · 18 de octubre ----------
     {
-      id: "noche", emoji: "🌙", nombre: "Noche fuera", lugar: "Ubicación clasificada 🤫", secreto: true, fecha: "2026-10-18",
+      id: "noche", emoji: "🌙", nombre: "Noche fuera", lugar: "Ubicación clasificada 🤫", secreto: true, fecha: "2026-10-18", tipos: [],
       texto: 'El turista llamó a casa: <i>"Mami, me voy a quedar con Valeria, no me esperes."</i> 😌 Reporte enviado a la base.',
       versionGuia: "",
     },
@@ -754,33 +974,33 @@
     // ---------- Día 9 · 19 de octubre ----------
     {
       id: "bookmar", emoji: "📚", nombre: "Bookmar", lugar: "San Patricio, Guaynabo",
-      lat: 18.4077, lon: -66.1047, zona: "sj", fecha: "2026-10-19", nota: 7, // VERIFICAR
+      lat: 18.4077, lon: -66.1047, zona: "sj", fecha: "2026-10-19", tipos: ["cafe"], nota: 7, // VERIFICAR
       texto: "Cita de estudio en Bookmar, en San Patricio. Ella con su café frío. Nota de la guía: 7/10.",
       versionGuia: "",
     },
     {
       id: "escambron", emoji: "🔑", nombre: "El Escambrón", lugar: "San Juan",
-      lat: 18.4672, lon: -66.0885, zona: "sj", fecha: "2026-10-19",
+      lat: 18.4672, lon: -66.0885, zona: "sj", fecha: "2026-10-19", tipos: ["playa"],
       texto: "Playa de noche. Se me perdieron las llaves... y las encontré en el agua 🌊. Turista sin GPS, pero con suerte.",
       versionGuia: "",
     },
     {
       id: "elnido", emoji: "🍔", nombre: "El Nido", lugar: "Bayamón", smash: true,
-      lat: 18.3990, lon: -66.1560, zona: "sj", fecha: "2026-10-19", nota: 8, // VERIFICAR
+      lat: 18.3990, lon: -66.1560, zona: "sj", fecha: "2026-10-19", tipos: ["comida"], nota: 8, // VERIFICAR
       texto: "Smash en El Nido. Nota de la guía: 8/10, la mejor hasta ahora.",
       versionGuia: "",
     },
     {
       id: "tren", emoji: "🚆", nombre: "Tren Urbano", lugar: "Estación de Bayamón",
-      lat: 18.3993, lon: -66.1525, zona: "sj", fecha: "2026-10-19", // VERIFICAR
-      texto: "Paseo en el Tren Urbano.",
+      lat: 18.3993, lon: -66.1525, zona: "sj", fecha: "2026-10-19", tipos: ["paseo", "especial"], // VERIFICAR
+      texto: "La primera vez que la guía se montó en el Tren Urbano 🚆. Por una vez, el turista fue el guía.",
       versionGuia: "",
     },
 
     // ---------- Día 10 · 20 de octubre ----------
     {
       id: "malcriada", emoji: "🍔", nombre: "La Malcriada", lugar: "Cupey Bajo, San Juan", smash: true,
-      lat: 18.3510, lon: -66.0560, zona: "sj", fecha: "2026-10-20", nota: 7, // VERIFICAR
+      lat: 18.3510, lon: -66.0560, zona: "sj", fecha: "2026-10-20", tipos: ["comida"], nota: 7, // VERIFICAR
       texto: "Otra smash burger, ahora en La Malcriada. Nota de la guía: 7/10. El Nido sigue ganando.",
       versionGuia: "",
     },
@@ -790,9 +1010,17 @@
   //  DE AQUÍ PARA ABAJO NO HACE FALTA TOCAR NADA
   // ==================================================================
   const PALETA = ["#1F3A5F", "#6F4E37", "#2F5D8A", "#8A5A3B", "#3E6E9E", "#4A3020", "#24507A", "#9A6435"];
+  // Color de cada lugar según su primer tipo (azules y cafés)
+  const COLOR_TIPO = { cafe: "#6F4E37", comida: "#8A5A3B", playa: "#2F5D8A", diversion: "#1F3A5F", paseo: "#3E6E9E", especial: "#24507A" };
+  const FILTROS = [
+    ["todos", "Todos"], ["cafe", "☕ Cafés"], ["comida", "🍔 Comida"], ["playa", "🌊 Playas"],
+    ["diversion", "🎢 Diversión"], ["paseo", "🚶 Paseos"], ["especial", "💙 Especiales"],
+  ];
   const GIROS = [-5, 4, -3, 6, -6, 3, -4, 5];
   const ZONA_HORARIA = "America/Puerto_Rico";
+  const PARAMS = new URLSearchParams(location.search);
   const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tactil = window.matchMedia("(pointer: coarse)").matches;
   const vibrar = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
   const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const textoPlano = s => String(s || "").replace(/<[^>]*>/g, "");
@@ -800,14 +1028,23 @@
   const $ = id => document.getElementById(id);
   const lista = v => Array.isArray(v) ? v : [];
   const scrollA = (el, block) => el && el.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: block || "start" });
+  const conSaltos = s => esc(s).replace(/\n/g, "<br>");
+  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
 
-  // Fecha de hoy en Puerto Rico (AAAA-MM-DD)
-  const hoyPR = () => new Intl.DateTimeFormat("en-CA", { timeZone: ZONA_HORARIA, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  // Fecha de hoy en Puerto Rico (AAAA-MM-DD). Para probar: ?hoy=2026-11-08 al final del enlace.
   const esFecha = f => typeof f === "string" && /^\d{4}-\d{2}-\d{2}$/.test(f);
+  const HOY_PRUEBA = PARAMS.get("hoy");
+  const hoyPR = () => esFecha(HOY_PRUEBA) ? HOY_PRUEBA
+    : new Intl.DateTimeFormat("en-CA", { timeZone: ZONA_HORARIA, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   const diaUTC = f => { const [y, m, d] = f.split("-").map(Number); return Date.UTC(y, m - 1, d); };
   const fechaEs = (f, opciones) => esFecha(f) ? new Date(diaUTC(f) + 12 * 3600e3).toLocaleDateString("es-PR", { ...opciones, timeZone: "UTC" }) : "";
   const fechaBonita = f => fechaEs(f, { day: "numeric", month: "long", year: "numeric" });
   const fechaCorta = f => fechaEs(f, { day: "numeric", month: "long" });
+  // Meses completos entre dos fechas (8 oct → 8 nov = 1)
+  function mesesEntre(desde, hasta) {
+    const [y1, m1, d1] = desde.split("-").map(Number), [y2, m2, d2] = hasta.split("-").map(Number);
+    return (y2 - y1) * 12 + (m2 - m1) - (d2 < d1 ? 1 : 0);
+  }
 
   // ====== CALIFICACIONES: tacitas (acepta medios) o nota de la guía sobre 10 ======
   function calif(a) {
@@ -845,9 +1082,18 @@
   const tieneCoords = a => !a.secreto && typeof a.lat === "number" && typeof a.lon === "number" && isFinite(a.lat) && isFinite(a.lon);
 
   // ====== DATOS: lugares en orden cronológico y agrupados por día ======
+  const slug = s => minus(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30) || "lugar";
+  const numeroDe = s => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
   let AV = [], DES = [], DIAS = [];
   function prepararDatos() {
-    const todas = lista(AVENTURAS).filter(a => a && a.nombre).map((a, i) => ({ ...a, orden: i }));
+    const usados = new Set();
+    const todas = lista(AVENTURAS).filter(a => a && a.nombre).map((a, i) => {
+      // id automático a partir del nombre (y que no se repita)
+      let id = a.id ? String(a.id) : slug(a.nombre), n = 2;
+      while (usados.has(id)) id = (a.id || slug(a.nombre)) + "-" + n++;
+      usados.add(id);
+      return { ...a, id, tipos: lista(a.tipos), orden: i };
+    });
     // Orden: por fecha; el mismo día (o sin fecha), en el orden de la lista
     todas.sort((a, b) => {
       const fa = esFecha(a.fecha) ? a.fecha : "9999", fb = esFecha(b.fecha) ? b.fecha : "9999";
@@ -855,7 +1101,12 @@
     });
     DIAS = [];
     AV = todas.map((a, i) => {
-      const r = { ...a, n: i + 1, color: a.color || PALETA[i % PALETA.length], rot: typeof a.rot === "number" ? a.rot : GIROS[i % GIROS.length], conPin: tieneCoords(a) };
+      const r = {
+        ...a, n: i + 1,
+        color: a.color || COLOR_TIPO[a.tipos[0]] || PALETA[i % PALETA.length],
+        rot: typeof a.rot === "number" ? a.rot : GIROS[numeroDe(a.id) % GIROS.length],
+        conPin: tieneCoords(a),
+      };
       if (r.conPin) {
         Object.assign(r, aXY(a.lon, a.lat));
         r.zonaMapa = a.zona && ZONAS[a.zona] ? a.zona : zonaDe(a.lon, a.lat);
@@ -863,7 +1114,10 @@
       }
       const clave = esFecha(a.fecha) ? a.fecha : "";
       let dia = DIAS[DIAS.length - 1];
-      if (!dia || dia.fecha !== clave) { dia = { fecha: clave, n: DIAS.length + 1, lugares: [] }; DIAS.push(dia); }
+      if (!dia || dia.fecha !== clave) {
+        dia = { fecha: clave, n: DIAS.length + 1, titulo: (CONFIG.TITULOS_DIAS || {})[clave] || "", lugares: [] };
+        DIAS.push(dia);
+      }
       dia.lugares.push(r);
       r.dia = dia.n;
       return r;
@@ -876,9 +1130,45 @@
   }
   const tituloDia = d => `Día ${d.n}${d.fecha ? " · " + fechaCorta(d.fecha) : ""}`;
 
+  // ====== COMPARTIR ======
+  // En celular usa el menú de compartir; si no hay, copia el link y avisa
+  async function compartir(datos, boton) {
+    if (navigator.share && tactil) {
+      try { await navigator.share(datos); return; } catch (e) { if (e && e.name === "AbortError") return; }
+    }
+    let texto = "Link copiado ✓";
+    const contenido = datos.url ? (datos.text ? datos.text + " " : "") + datos.url : datos.text;
+    try { await navigator.clipboard.writeText(contenido); }
+    catch (e) {
+      // Plan B para navegadores que no dejan usar el portapapeles moderno
+      const t = document.createElement("textarea");
+      t.value = contenido; t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;opacity:0;left:-9999px";
+      document.body.appendChild(t); t.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (er) {}
+      t.remove();
+      if (boton) boton.focus();
+      if (!ok) texto = "No se pudo copiar 😕";
+    }
+    const aviso = boton && boton.parentElement && boton.parentElement.querySelector(".aviso-compartir");
+    if (aviso) { aviso.textContent = texto; clearTimeout(aviso._t); aviso._t = setTimeout(() => { aviso.textContent = ""; }, 2500); }
+  }
+  const enlaceDe = id => location.origin + location.pathname + "#" + encodeURIComponent(id);
+  const compartirLugar = (a, boton) => compartir({ title: "Aventuras de Valeria y Henry", text: `${a.emoji || "📍"} ${textoPlano(a.nombre)}`, url: enlaceDe(a.id) }, boton);
+  const botonCompartir = a => a.secreto ? "" :
+    `<span class="compartir"><button class="enlace" data-compartir="${esc(a.id)}">Compartir ↗</button><span class="aviso-compartir" role="status"></span></span>`;
+  function activarCompartir(cont) {
+    cont.querySelectorAll("[data-compartir]").forEach(b => b.addEventListener("click", () => {
+      const a = AV.find(x => x.id === b.dataset.compartir);
+      if (a) compartirLugar(a, b);
+    }));
+  }
+
   // ====== MAPA ======
   const mapa = $("mapa"), svg = $("svg"), ruta = $("ruta"), rutaMascara = $("rutaMascara"), capaSJ = $("capaSJ");
-  let vistaActual = "isla", caja = null, pines = {}, grupos = {};
+  const tarjetaMapa = mapa.closest(".tarjeta-mapa");
+  let vistaActual = "isla", caja = null, pines = {}, grupos = {}, cumulos = [], filtro = "todos";
+  const pasaFiltro = a => a.deseo ? filtro === "todos" : (filtro === "todos" || lista(a.tipos).includes(filtro));
 
   function cajaPara(nombre) {
     const v = VISTAS[nombre];
@@ -906,9 +1196,22 @@
     capaSJ.appendChild(t);
   });
 
+  // Filtros
+  const contFiltros = $("filtros");
+  contFiltros.innerHTML = FILTROS.map(([k, t]) => `<button data-filtro="${k}" aria-pressed="${k === filtro}">${t}</button>`).join("");
+  function ponerFiltro(k) {
+    filtro = k;
+    contFiltros.querySelectorAll("[data-filtro]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filtro === k)));
+    ruta.classList.toggle("atenuada", k !== "todos");
+    cerrarLista();
+    construirPines();
+    pintar();
+  }
+  contFiltros.addEventListener("click", e => { const b = e.target.closest("[data-filtro]"); if (b) ponerFiltro(b.dataset.filtro); });
+
   function construirPines() {
     mapa.querySelectorAll(".pin").forEach(p => p.remove());
-    pines = {};
+    pines = {}; cumulos = [];
     const crear = (a, clase, alTocar) => {
       const b = document.createElement("button");
       b.className = "pin " + clase;
@@ -922,10 +1225,10 @@
     DES.filter(d => d.conPin).forEach(d => crear(d, "deseo", () => verDeseo(d.id)));
     AV.filter(a => a.conPin).forEach(a => crear(a, "", () => seleccionar(a.id, true)));
 
-    // Una etiqueta por zona con 2 o más lugares (los pines están muy juntos). Va encima, para no tapar otros pines
+    // Una etiqueta por zona con 2 o más lugares (en "Toda la isla"). Va encima, para no tapar otros pines
     grupos = {};
     Object.entries(ZONAS).forEach(([k, z]) => {
-      const de = AV.filter(a => a.conPin && a.zonaMapa === k);
+      const de = AV.filter(a => a.conPin && a.zonaMapa === k && pasaFiltro(a));
       if (de.length < 2) return;
       const g = document.createElement("button");
       g.className = "pin grupo";
@@ -956,6 +1259,20 @@
     rutaMascara.classList.add("dibujar");
   }
 
+  // Pin con contador para los lugares que se tapan entre sí en la vista actual
+  function botonCumulo(i) {
+    if (!cumulos[i]) {
+      const b = document.createElement("button");
+      b.className = "pin cumulo";
+      b.setAttribute("aria-haspopup", "true");
+      b.setAttribute("aria-expanded", "false");
+      b.addEventListener("click", e => { e.stopPropagation(); abrirLista(b); });
+      mapa.appendChild(b);
+      cumulos[i] = b;
+    }
+    return cumulos[i];
+  }
+
   function pintar() {
     if (!(caja.w > 0 && caja.h > 0)) return;
     svg.setAttribute("viewBox", `${caja.x} ${caja.y} ${caja.w} ${caja.h}`);
@@ -968,25 +1285,35 @@
       const p = pines[a.id]; if (!p) return;
       const [l, t] = pos(a.x, a.y);
       const fuera = l < -5 || l > 105 || t < -5 || t > 110;
-      p.hidden = fuera || (agrupar && !a.deseo && !!grupos[a.zonaMapa]);
-      if (p.hidden) { p.style.left = l + "%"; p.style.top = t + "%"; }
-      else visibles.push({ p, x: l / 100 * W, y: t / 100 * H });
+      p.hidden = fuera || !pasaFiltro(a) || (agrupar && !a.deseo && !!grupos[a.zonaMapa]);
+      p.style.left = l + "%"; p.style.top = t + "%";
+      if (!p.hidden) visibles.push({ a, p, x: l / 100 * W, y: t / 100 * H });
     });
-    // Pines encimados (mismo centro comercial, mismo pueblo...): se ponen en fila, uno al lado del otro,
-    // a la misma altura (así la punta sigue en tierra) para poder tocarlos todos
-    const usados = new Set();
+    // Juntar los que se tapan (a menos de 30 px), incluyendo los que se tocan en cadena
+    const usados = new Set(), juntos = [];
     visibles.forEach((v, i) => {
       if (usados.has(i)) return;
       const g = [v]; usados.add(i);
-      for (let j = i + 1; j < visibles.length; j++) {
-        if (!usados.has(j) && g.some(w => Math.hypot(visibles[j].x - w.x, visibles[j].y - w.y) < 34)) { g.push(visibles[j]); usados.add(j); }
+      for (let k = 0; k < g.length; k++) {
+        visibles.forEach((w, j) => {
+          if (!usados.has(j) && Math.hypot(w.x - g[k].x, w.y - g[k].y) < 30) { g.push(w); usados.add(j); }
+        });
       }
-      if (g.length < 2) return;
-      const cx = g.reduce((s, w) => s + w.x, 0) / g.length, cy = g.reduce((s, w) => s + w.y, 0) / g.length;
-      g.sort((a, b) => a.x - b.x);
-      g.forEach((w, k) => { w.x = cx + (k - (g.length - 1) / 2) * 36; w.y = cy; });
+      if (g.length > 1) juntos.push(g);
     });
-    visibles.forEach(v => { v.p.style.left = (v.x / W * 100) + "%"; v.p.style.top = (v.y / H * 100) + "%"; });
+    juntos.forEach((g, i) => {
+      g.forEach(v => { v.p.hidden = true; });
+      const b = botonCumulo(i);
+      const cx = g.reduce((s, v) => s + v.x, 0) / g.length, cy = g.reduce((s, v) => s + v.y, 0) / g.length;
+      b.hidden = false;
+      b.style.left = (cx / W * 100) + "%"; b.style.top = (cy / H * 100) + "%";
+      b._lugares = g.map(v => v.a);
+      const html = `<span>${g[0].a.emoji || "📍"} ${g.length}</span>`;
+      if (b.innerHTML !== html) b.innerHTML = html;
+      b.setAttribute("aria-label", `${g.length} lugares juntos: ${g.map(v => textoPlano(v.a.nombre)).join(", ")}. Toca para elegir uno`);
+      b.classList.toggle("activo", g.some(v => v.a.id === idActual));
+    });
+    for (let i = juntos.length; i < cumulos.length; i++) cumulos[i].hidden = true;
     Object.values(grupos).forEach(g => {
       const [gl, gt] = pos(g.x, g.y);
       g.el.hidden = !agrupar;
@@ -994,10 +1321,52 @@
     });
   }
 
+  // Listita de lugares de un pin con contador
+  const listaCumulo = document.createElement("div");
+  listaCumulo.className = "lista-cumulo";
+  listaCumulo.hidden = true;
+  listaCumulo.setAttribute("role", "dialog");
+  listaCumulo.setAttribute("aria-label", "Lugares en este punto");
+  tarjetaMapa.appendChild(listaCumulo);
+  let cumuloAbierto = null;
+  function cerrarLista(devolverFoco) {
+    if (listaCumulo.hidden) return;
+    listaCumulo.hidden = true;
+    if (cumuloAbierto) { cumuloAbierto.setAttribute("aria-expanded", "false"); if (devolverFoco) cumuloAbierto.focus(); }
+    cumuloAbierto = null;
+  }
+  function abrirLista(b) {
+    if (cumuloAbierto === b) { cerrarLista(); return; }
+    cerrarLista();
+    cumuloAbierto = b;
+    b.setAttribute("aria-expanded", "true");
+    listaCumulo.innerHTML = `<p class="lista-titulo">${b._lugares.length} lugares aquí</p>` + b._lugares.map(a =>
+      `<button data-elegir="${esc(a.id)}">${a.emoji || "📍"} ${a.deseo ? "Por visitar: " + esc(a.nombre) : a.nombre}</button>`).join("");
+    listaCumulo.hidden = false;
+    const rT = tarjetaMapa.getBoundingClientRect(), rB = b.getBoundingClientRect();
+    const ancho = listaCumulo.offsetWidth, alto = listaCumulo.offsetHeight;
+    const izq = Math.max(8, Math.min(rT.width - ancho - 8, rB.left + rB.width / 2 - rT.left - ancho / 2));
+    let arriba = rB.bottom - rT.top + 10;
+    if (arriba + alto > rT.height - 8) arriba = Math.max(8, rB.top - rT.top - alto - 10);
+    listaCumulo.style.left = izq + "px"; listaCumulo.style.top = arriba + "px";
+    listaCumulo.querySelector("button").focus();
+  }
+  listaCumulo.addEventListener("click", e => {
+    e.stopPropagation();
+    const b = e.target.closest("[data-elegir]");
+    if (!b) return;
+    const id = b.dataset.elegir;
+    cerrarLista();
+    if (id.startsWith("deseo-")) verDeseo(id); else seleccionar(id, true);
+  });
+  document.addEventListener("click", e => { if (!listaCumulo.contains(e.target)) cerrarLista(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarLista(true); });
+
   let animando = null;
   function cambiarVista(nombre, rapido) {
     const cambio = nombre !== vistaActual;
     vistaActual = nombre;
+    cerrarLista();
     document.querySelectorAll("[data-vista]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.vista === nombre)));
     const destino = cajaPara(nombre);
     cancelAnimationFrame(animando);
@@ -1024,6 +1393,7 @@
     if (id !== idActual) verGuia = false;
     actual = i; idActual = id;
     const a = AV[actual];
+    if (!pasaFiltro(a)) ponerFiltro("todos");
     Object.values(pines).forEach(p => p.classList.remove("activo"));
     if (pines[a.id]) {
       // si está en una zona agrupada, acercamos a esa zona; si no, volvemos a toda la isla
@@ -1042,7 +1412,10 @@
       ${guia ? `<p class="quien" id="quien">${verGuia ? "La versión de la guía 💙" : "La versión del turista ☕"}</p>` : ""}
       <p class="texto${verGuia && guia ? " guia" : ""}" id="det-texto">${verGuia && guia ? guia : a.texto}</p>
       ${califHTML(a)}
-      ${guia ? `<div class="fila" style="margin-top:12px"><button class="btn claro chico" id="b-version" aria-pressed="${verGuia}">${verGuia ? "Mi versión ☕" : "La versión de la guía 💙"}</button></div>` : ""}
+      <div class="fila" style="margin-top:12px">
+        ${guia ? `<button class="btn claro chico" id="b-version" aria-pressed="${verGuia}">${verGuia ? "Mi versión ☕" : "La versión de la guía 💙"}</button>` : ""}
+        ${botonCompartir(a)}
+      </div>
       <div class="pasos">
         <button class="paso" data-mover="-1" aria-label="Lugar anterior">◀<span class="txt"> Anterior</span></button>
         <span class="contador">${actual + 1} de ${AV.length}</span>
@@ -1050,8 +1423,10 @@
       </div>`;
     detalle.classList.remove("entra"); void detalle.offsetWidth; detalle.classList.add("entra");
     detalle.querySelectorAll("[data-mover]").forEach(b => b.addEventListener("click", () => mover(Number(b.dataset.mover))));
+    activarCompartir(detalle);
     const bv = $("b-version");
     if (bv) bv.addEventListener("click", () => { verGuia = !verGuia; seleccionar(a.id); $("b-version") && $("b-version").focus(); });
+    if (caja) pintar();
     if (desdePin) vibrar(20);
   }
   const mover = d => { if (AV.length) seleccionar(AV[(actual + d + AV.length) % AV.length].id); };
@@ -1070,9 +1445,23 @@
       <div class="pasos"><button class="paso" id="b-volver">◀ Volver a nuestros lugares</button></div>`;
     detalle.classList.remove("entra"); void detalle.offsetWidth; detalle.classList.add("entra");
     $("b-volver").addEventListener("click", () => AV.length && seleccionar(AV[actual].id));
+    if (caja) pintar();
   }
 
   function verEnMapa(id) { seleccionar(id); scrollA($("mapa-sec")); }
+
+  // Un enlace con #id (ej. #pergamino) abre esa aventura
+  function abrirDesdeEnlace() {
+    let id = "";
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+    if (!AV.some(a => a.id === id)) return;
+    seleccionar(id);
+    cambiarVista(vistaActual, true); // sin animación: el mapa salta directo a la zona
+    const ir = () => window.scrollTo({ top: $("mapa-sec").getBoundingClientRect().top + window.scrollY - 64, behavior: "instant" });
+    if (document.readyState === "complete") setTimeout(ir, 30);
+    else window.addEventListener("load", () => setTimeout(ir, 30), { once: true });
+  }
+  window.addEventListener("hashchange", abrirDesdeEnlace);
 
   // ====== ENCABEZADO: días, datos, canción, fecha especial ======
   function pintarEncabezado() {
@@ -1095,6 +1484,52 @@
     ].filter(Boolean).join(" ");
   }
 
+  // Fechas especiales. Manda: cumpleaños de Valeria > cumpleaños de Henry > aniversario > mensaje de cada mes
+  function fechaEspecial() {
+    const prueba = PARAMS.get("probar"), hoy = hoyPR(), md = hoy.slice(5);
+    const inicio = esFecha(CONFIG.fechaInicio) ? CONFIG.fechaInicio : "";
+    const empezo = !inicio || hoy >= inicio;
+    const meses = inicio && hoy > inicio ? mesesEntre(inicio, hoy) : 0;
+    let msg = "", sub = "Hoy es un día especial ☕💙";
+    if (prueba === "cumple" || (empezo && CONFIG.cumpleValeria && md === CONFIG.cumpleValeria)) {
+      msg = CONFIG.mensajeCumple || "¡Feliz cumpleaños, Valeria! 💙";
+    } else if (prueba === "cumpleHenry" || (empezo && CONFIG.cumpleHenry && md === CONFIG.cumpleHenry)) {
+      msg = CONFIG.mensajeCumpleHenry || "¡Hoy cumple el turista! 🎂";
+    } else if (prueba === "aniversario" || (inicio && hoy > inicio && CONFIG.aniversario && md === CONFIG.aniversario)) {
+      msg = CONFIG.mensajeAniversario || "¡Feliz aniversario! 💙";
+      const anos = Math.floor(meses / 12);
+      if (anos >= 1) sub = `${plural(anos, "año", "años")} de aventuras 💙`;
+    } else if (prueba === "mes" || (meses >= 1 && hoy.slice(8) === inicio.slice(8))) {
+      msg = `${plural(Math.max(1, meses), "mes", "meses")} de aventuras 💙`;
+      sub = "Gracias por cada aventura, guía ☕";
+    }
+    if (!msg) return;
+    const f = $("fiesta");
+    f.innerHTML = `${esc(msg)}<small>${esc(sub)}</small>`;
+    f.hidden = false;
+    confeti();
+  }
+
+  // "Un día como hoy": una salida del mismo día del mes, hace 1 o más meses (o años)
+  function pintarComoHoy() {
+    const hoy = hoyPR(), cont = $("como-hoy");
+    const coinciden = DIAS.filter(d => d.fecha && d.fecha < hoy && d.fecha.slice(8) === hoy.slice(8) && mesesEntre(d.fecha, hoy) >= 1);
+    cont.hidden = !coinciden.length;
+    if (!coinciden.length) return;
+    cont.innerHTML = coinciden.map(d => {
+      const m = mesesEntre(d.fecha, hoy);
+      const hace = m % 12 === 0 ? plural(m / 12, "año", "años") : plural(m, "mes", "meses");
+      return `
+        <div class="tarjeta como-hoy">
+          <span class="ceja">📅 Un día como hoy, hace ${hace}...</span>
+          <h3>${tituloDia(d)}${d.titulo ? `<span class="titulo-dia"> — ${esc(d.titulo)}</span>` : ""}</h3>
+          <p>${d.lugares.map(a => `${a.emoji || "📍"} ${a.nombre}`).join(" · ")}</p>
+          <button class="enlace" data-ir-dia="${d.n}">Ver ese día →</button>
+        </div>`;
+    }).join("");
+    cont.querySelectorAll("[data-ir-dia]").forEach(b => b.addEventListener("click", () => irADia(Number(b.dataset.irDia))));
+  }
+
   function prepararCancion() {
     const url = String(CONFIG.cancion || "").trim();
     if (!/^https:\/\//.test(url) || /CAMBIAR/.test(url)) return;
@@ -1108,19 +1543,6 @@
       caja.hidden = !abrir;
       b.setAttribute("aria-expanded", String(abrir));
     });
-  }
-
-  function fechaEspecial() {
-    const prueba = new URLSearchParams(location.search).get("probar");
-    const md = hoyPR().slice(5);
-    let msg = "";
-    if (prueba === "cumple" || (CONFIG.cumpleValeria && md === CONFIG.cumpleValeria)) msg = CONFIG.mensajeCumple || "¡Feliz cumpleaños, Valeria! 💙";
-    else if (prueba === "aniversario" || (CONFIG.aniversario && md === CONFIG.aniversario)) msg = CONFIG.mensajeAniversario || "¡Feliz aniversario! 💙";
-    if (!msg) return;
-    const f = $("fiesta");
-    f.innerHTML = `${esc(msg)}<small>Hoy es un día especial ☕💙</small>`;
-    f.hidden = false;
-    confeti();
   }
 
   function confeti() {
@@ -1169,8 +1591,8 @@
         <span class="punto" aria-hidden="true">${d.n}</span>
         <div class="tarjeta caja">
           ${d.fecha ? `<div class="fecha">${fechaEs(d.fecha, { weekday: "long" })}</div>` : ""}
-          <h3>${tituloDia(d)}</h3>
-          <div class="cuantos">${d.lugares.length} ${d.lugares.length === 1 ? "parada" : "paradas"}</div>
+          <h3>${tituloDia(d)}${d.titulo ? `<span class="titulo-dia"> — ${esc(d.titulo)}</span>` : ""}</h3>
+          <div class="cuantos">${plural(d.lugares.length, "parada", "paradas")}</div>
           ${d.lugares.map(a => `
             <div class="parada" id="hito-${esc(a.id)}">
               <h4>${a.emoji || "📍"} ${a.nombre}</h4>
@@ -1178,13 +1600,17 @@
               <p class="texto">${a.texto || ""}</p>
               <div class="pie">
                 <span>${califHTML(a)}</span>
-                ${a.conPin ? `<button class="enlace" data-ver="${esc(a.id)}">Ver en el mapa →</button>` : ""}
+                <span class="fila">
+                  ${botonCompartir(a)}
+                  ${a.conPin ? `<button class="enlace" data-ver="${esc(a.id)}">Ver en el mapa →</button>` : ""}
+                </span>
               </div>
             </div>`).join("")}
         </div>`;
       cont.appendChild(art);
     });
     cont.querySelectorAll("[data-ver]").forEach(b => b.addEventListener("click", () => verEnMapa(b.dataset.ver)));
+    activarCompartir(cont);
     boton.hidden = DIAS.length <= DIAS_VISIBLES;
     boton.textContent = verTodos ? `Ver solo los últimos ${DIAS_VISIBLES} días` : `Ver todos los días (${DIAS.length})`;
     boton.setAttribute("aria-expanded", String(verTodos));
@@ -1194,6 +1620,38 @@
     pintarLinea();
     if (!verTodos) scrollA($("tiempo-sec"));
   });
+  function irADia(n) {
+    if (!$("dia-" + n)) { verTodos = true; pintarLinea(); }
+    scrollA($("dia-" + n));
+  }
+
+  // ====== FRASES CÉLEBRES ======
+  function pintarFrases() {
+    const frases = lista(CONFIG.FRASES).filter(f => f && textoPlano(f.texto).trim());
+    const sec = $("frases-sec"), cont = $("frases");
+    sec.hidden = !frases.length;
+    if (!frases.length) return;
+    const carrusel = frases.length >= 3;
+    cont.className = "frases" + (carrusel ? " carrusel" : "");
+    cont.innerHTML = frases.map(f => `
+      <figure class="tarjeta frase-celebre">
+        <blockquote>${esc(f.texto)}</blockquote>
+        <figcaption>— ${esc(f.quien || "")}${f.donde ? ", " + esc(f.donde) : ""}</figcaption>
+      </figure>`).join("");
+    if (!carrusel) return;
+    cont.setAttribute("tabindex", "0");
+    cont.setAttribute("aria-label", "Frases célebres, deslizable");
+    if (reducido) return;
+    // Pasa sola cada 6 segundos; se detiene un rato cuando la tocan, la pasan o la enfocan
+    let pausa = 0;
+    const pausar = () => { pausa = Date.now() + 12000; };
+    ["pointerdown", "wheel", "focusin", "mouseenter"].forEach(ev => cont.addEventListener(ev, pausar, { passive: true }));
+    setInterval(() => {
+      if (Date.now() < pausa || document.hidden) return;
+      const fin = cont.scrollLeft + cont.clientWidth >= cont.scrollWidth - 4;
+      cont.scrollTo({ left: fin ? 0 : cont.scrollLeft + cont.firstElementChild.offsetWidth + 16, behavior: "smooth" });
+    }, 6000);
+  }
 
   // ====== PASAPORTE ======
   const tamNombre = (a) => { const l = textoPlano(a.nombre).length; return l > 16 ? "9.5px" : l > 11 ? "10px" : "11px"; };
@@ -1227,12 +1685,54 @@
       b.setAttribute("aria-label", `Por visitar: ${d.nombre}. Verlo en el mapa`);
       b.innerHTML = `<span aria-hidden="true">${d.emoji || "📍"}</span><b style="--tam:${tamNombre(d)}">${esc(d.nombre)}</b><small>Por visitar</small>`;
       b.addEventListener("click", () => {
+        if (filtro !== "todos") ponerFiltro("todos");
         if (d.conPin && vistaActual !== "isla" && d.zonaMapa !== vistaActual) cambiarVista("isla");
         verDeseo(d.id); scrollA($("mapa-sec"));
       });
       cd.appendChild(b);
     });
   }
+
+  // ====== RULETA: ¿QUÉ HACEMOS HOY? ======
+  let ultimoPlan = null, girando = false;
+  const opcionesRuleta = () => [
+    ...DES.map(d => `${d.nombre} ${d.emoji || ""}`.trim()),
+    ...lista(CONFIG.PLANES),
+  ].filter(p => textoPlano(p).trim());
+  function girarRuleta() {
+    const ops = opcionesRuleta(), pantalla = $("ruleta-plan"), vamos = $("ruleta-vamos"), anuncio = $("ruleta-anuncio");
+    if (girando || !ops.length) return;
+    let elegido;
+    do { elegido = ops[Math.floor(Math.random() * ops.length)]; } while (ops.length > 1 && elegido === ultimoPlan);
+    ultimoPlan = elegido;
+    vamos.hidden = true;
+    anuncio.textContent = "";
+    pantalla.classList.remove("elegido");
+    const terminar = () => {
+      girando = false;
+      pantalla.textContent = elegido;
+      pantalla.classList.remove("baraja"); void pantalla.offsetWidth; pantalla.classList.add("elegido");
+      vamos.hidden = false;
+      anuncio.textContent = "El plan de hoy: " + elegido;
+      vibrar([20, 40, 20]);
+    };
+    if (reducido) { terminar(); return; }
+    girando = true;
+    let paso = 0, espera = 70, ultimo = -1;
+    const barajar = () => {
+      let i; do { i = Math.floor(Math.random() * ops.length); } while (ops.length > 1 && i === ultimo);
+      ultimo = i;
+      pantalla.textContent = ops[i];
+      pantalla.classList.remove("baraja"); void pantalla.offsetWidth; pantalla.classList.add("baraja");
+      if (++paso < 14) { espera *= 1.13; setTimeout(barajar, espera); } else setTimeout(terminar, espera);
+    };
+    barajar();
+  }
+  $("b-ruleta").addEventListener("click", girarRuleta);
+  $("ruleta-vamos").addEventListener("click", e => {
+    if (!ultimoPlan) return;
+    compartir({ title: "¿Qué hacemos hoy?", text: `Plan para hoy: ${ultimoPlan} 💙`, url: location.origin + location.pathname }, e.currentTarget);
+  });
 
   // ====== LA GUÍA Y SU CAFÉ: perfil, cafés y ranking de smash ======
   function pintarPerfil() {
@@ -1263,17 +1763,52 @@
       </article>`).join("");
   }
 
+  // Ranking de smash: los lugares con smash: true y nota, de mayor a menor
   function pintarRanking() {
-    const filas = lista(CONFIG.RANKING_SMASH).filter(r => r && r.nombre && Number(r.nota) > 0).sort((a, b) => b.nota - a.nota);
-    $("ranking-cont").hidden = !filas.length;
-    if (!filas.length) return;
-    $("ranking").innerHTML = `<ol>${filas.map((r, i) => `
+    const smash = AV.filter(a => a.smash);
+    const conNota = smash.filter(a => Number(a.nota) > 0).sort((a, b) => b.nota - a.nota || a.n - b.n);
+    const sinNota = smash.filter(a => !(Number(a.nota) > 0));
+    $("ranking-cont").hidden = !smash.length;
+    if (!smash.length) return;
+    $("ranking").innerHTML = (conNota.length ? `<ol>${conNota.map((a, i) => `
       <li>
         <span class="puesto" aria-hidden="true">${i + 1}</span>
-        <div><b>${esc(r.nombre)}</b>${r.lugar ? `<span>${esc(r.lugar)}</span>` : ""}</div>
-        <span class="calif"><span class="sr">Nota de la guía: </span>${r.nota}/10</span>
-      </li>`).join("")}</ol>
-      ${CONFIG.notaRanking ? `<p class="nota-pie">${esc(CONFIG.notaRanking)}</p>` : ""}`;
+        <div><b>${a.nombre}</b>${a.lugar ? `<span>${a.lugar}</span>` : ""}</div>
+        <span class="calif"><span class="sr">Nota de la guía: </span>${a.nota}/10</span>
+      </li>`).join("")}</ol>` : "") +
+      sinNota.map(a => `<p class="nota-pie">${a.emoji || "🍔"} ${a.nombre}: sin nota${a.sinNota ? ": " + esc(a.sinNota) : ""}.</p>`).join("");
+  }
+
+  // ====== ESTADÍSTICAS GRACIOSAS ======
+  const PUEBLOS = ["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Añasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamón","Cabo Rojo","Caguas","Camuy","Canóvanas","Carolina","Cataño","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerío","Corozal","Culebra","Dorado","Fajardo","Florida","Guánica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Díaz","Juncos","Lajas","Lares","Las Marías","Las Piedras","Loíza","Luquillo","Manatí","Maricao","Maunabo","Mayagüez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Peñuelas","Ponce","Quebradillas","Rincón","Río Grande","Sabana Grande","Salinas","San Germán","San Juan","San Lorenzo","San Sebastián","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+  // Sectores de San Juan que pueden salir en "lugar" sin decir "San Juan"
+  const SECTORES_SJ = ["hato rey", "condado", "cupey", "santurce", "rio piedras", "viejo san juan", "miramar", "ocean park"];
+  function pueblosVisitados() {
+    const vistos = new Set();
+    AV.filter(a => !a.secreto).forEach(a => {
+      const t = minus(a.lugar);
+      PUEBLOS.forEach(p => { if (t.includes(minus(p))) vistos.add(p); });
+      if (SECTORES_SJ.some(s => t.includes(s))) vistos.add("San Juan");
+    });
+    return [...vistos];
+  }
+  function pintarCuriosos() {
+    const cafes = lista(CONFIG.CAFES).filter(c => c && c.nombre);
+    const pueblos = pueblosVisitados();
+    const datos = [
+      ["🍔", AV.filter(a => a.smash).length, "smash burgers probadas"],
+      ["🌊", AV.filter(a => a.tipos.includes("playa")).length, "playas visitadas"],
+      ["🧊", cafes.filter(c => minus(c.pidioGuia).includes("frio")).length, "cafés fríos de la guía"],
+      ["🏙️", pueblos.length, pueblos.length === 1 ? "pueblo visitado" : "pueblos visitados", pueblos.join(", ")],
+      ["🔑", 1, "juego de llaves perdido (y encontrado)"],
+      ["🏆", 1, "derrota del turista en la bolera"],
+      ["🤡", 1, "turista asustado por payasos"],
+    ];
+    $("curiosos").innerHTML = datos.map(([e, n, t, extra]) => `
+      <div class="curioso"${extra ? ` title="${esc(extra)}"` : ""}>
+        <span class="e" aria-hidden="true">${e}</span>
+        <b>${n}</b><span>${t}</span>
+      </div>`).join("");
   }
 
   // ====== LOGROS (se calculan solos; solo se ven los desbloqueados) ======
@@ -1281,15 +1816,18 @@
     const cafes = lista(CONFIG.CAFES).filter(c => c && c.nombre);
     const tiene = palabra => AV.some(a => minus(a.nombre + " " + a.lugar + " " + a.texto).includes(palabra));
     const fue = id => AV.some(a => a.id === id);
+    const hoy = hoyPR(), inicio = esFecha(CONFIG.fechaInicio) ? CONFIG.fechaInicio : "";
+    const meses = inicio && hoy >= inicio ? mesesEntre(inicio, hoy) : 0;
     const LOGROS = [
       { e: "🧭", n: "Primera aventura", d: "El turista siguió a la guía por primera vez.", ok: AV.length >= 1 },
-      { e: "🏖️", n: "Primera playa", d: "Arena, mar y cero llaves perdidas (casi).", ok: tiene("playa") },
+      { e: "🏖️", n: "Primera playa", d: "Arena, mar y cero llaves perdidas (casi).", ok: AV.some(a => a.tipos.includes("playa")) || tiene("playa") },
       { e: "🖐️", n: "5 lugares", d: "Cinco sellos en el pasaporte.", ok: AV.length >= 5 },
       { e: "🔟", n: "10 lugares", d: "Diez lugares juntos.", ok: AV.length >= 10 },
       { e: "🗺️", n: "20 lugares", d: "Veinte pines y contando.", ok: AV.length >= 20 },
       { e: "🏃", n: "Día maratón", d: "Cuatro o más lugares en un solo día.", ok: DIAS.some(d => d.lugares.length >= 4) },
       { e: "🎓", n: "Donde todo empezó", d: "Volvieron a la UAGM de Cupey, donde se conocieron.", ok: fue("uagm") },
       { e: "💙", n: "Primer beso", d: "El estacionamiento de Qdoba ya es histórico.", ok: fue("qdoba") },
+      { e: "🚆", n: "El turista fue el guía", d: "La primera vez de la guía en el Tren Urbano.", ok: fue("tren") },
       { e: "🍔", n: "Ruta smash", d: "Probaron tres sitios de smash burgers.", ok: AV.filter(a => a.smash).length >= 3 },
       { e: "🤡", n: "Sobrevivió a los payasos", d: "La guía fue la valiente.", ok: tiene("payaso") },
       { e: "☕", n: "Primer café juntos", d: "El primer sello del pasaporte cafetero.", ok: cafes.length >= 1 },
@@ -1298,27 +1836,90 @@
       { e: "🚗", n: "Fuera del área metro", d: "Salieron de San Juan y alrededores.", ok: AV.some(a => a.conPin && !a.sj) },
       { e: "🌱", n: "Cazadores de haciendas", d: "Visitaron una hacienda de café.", ok: tiene("hacienda") || cafes.some(c => minus(c.nombre + " " + c.lugar).includes("hacienda")) },
       { e: "🏝️", n: "Isla nena", d: "Llegaron a Culebra o Vieques.", ok: tiene("culebra") || tiene("vieques") },
+      // De tiempo: solo aparecen cuando se cumplen (no cuentan como "por descubrir")
+      { e: "🗓️", n: "1 mes de aventuras", d: "Un mes siguiendo a la guía.", ok: meses >= 1, tiempo: true },
+      { e: "🗓️", n: "2 meses de aventuras", d: "Dos meses y contando.", ok: meses >= 2, tiempo: true },
+      { e: "🗓️", n: "3 meses de aventuras", d: "Tres meses de cafecitos.", ok: meses >= 3, tiempo: true },
+      { e: "🌟", n: "6 meses de aventuras", d: "Medio año juntos.", ok: meses >= 6, tiempo: true },
+      { e: "💙", n: "1 año de aventuras", d: "Una vuelta al sol siguiendo a la guía.", ok: meses >= 12, tiempo: true },
     ];
-    const ganados = LOGROS.filter(l => l.ok), faltan = LOGROS.length - ganados.length;
+    const ganados = LOGROS.filter(l => l.ok), faltan = LOGROS.filter(l => !l.ok && !l.tiempo).length;
     $("progresoLogros").textContent = `${ganados.length} ${ganados.length === 1 ? "desbloqueado" : "desbloqueados"}`;
     $("logros").innerHTML = ganados.map(l => `
       <div class="tarjeta logro">
         <span class="medalla" aria-hidden="true">${l.e}</span>
         <div><b>${l.n}</b><span>${l.d}</span></div>
       </div>`).join("");
-    $("porDescubrir").textContent = faltan ? `${faltan} ${faltan === 1 ? "logro" : "logros"} por descubrir 🔒` : "";
+    $("porDescubrir").textContent = faltan ? `${plural(faltan, "logro", "logros")} por descubrir 🔒` : "";
   }
+
+  // ====== CÁPSULAS DEL TIEMPO ======
+  function pintarCapsulas() {
+    const caps = lista(CONFIG.CAPSULAS).filter(c => c && esFecha(c.fecha) && textoPlano(c.carta).trim())
+      .sort((a, b) => a.fecha < b.fecha ? -1 : 1);
+    const sec = $("capsulas-sec"), cont = $("capsulas");
+    sec.hidden = !caps.length;
+    if (!caps.length) return;
+    const hoy = hoyPR();
+    cont.innerHTML = caps.map((c, i) => {
+      if (hoy < c.fecha) {
+        const faltan = Math.round((diaUTC(c.fecha) - diaUTC(hoy)) / 864e5);
+        return `
+          <article class="tarjeta capsula cerrada">
+            <span class="cap-emoji" aria-hidden="true">${esc(c.emoji || "💌")}</span>
+            <h3>${esc(c.titulo)}</h3>
+            <p class="cap-candado">🔒 Se abre el ${fechaBonita(c.fecha)}</p>
+            <p class="cap-faltan">${faltan === 1 ? "Falta 1 día" : `Faltan ${faltan} días`}</p>
+          </article>`;
+      }
+      return `
+        <article class="tarjeta capsula abierta">
+          <span class="cap-emoji" aria-hidden="true">${esc(c.emoji || "💌")}</span>
+          <h3>${esc(c.titulo)}</h3>
+          <p class="cap-candado">🔓 Se abrió el ${fechaBonita(c.fecha)}</p>
+          <button class="btn claro chico" data-capsula="${i}" aria-expanded="false" aria-controls="carta-cap-${i}">Leer la carta 💌</button>
+          <div class="cap-carta" id="carta-cap-${i}" hidden>${conSaltos(c.carta)}</div>
+        </article>`;
+    }).join("");
+    cont.querySelectorAll("[data-capsula]").forEach(b => b.addEventListener("click", () => {
+      const carta = $("carta-cap-" + b.dataset.capsula), abrir = carta.hidden;
+      carta.hidden = !abrir;
+      b.setAttribute("aria-expanded", String(abrir));
+      b.textContent = abrir ? "Cerrar la carta" : "Leer la carta 💌";
+    }));
+  }
+
+  // ====== MODO OSCURO ======
+  const oscuroSistema = window.matchMedia("(prefers-color-scheme: dark)");
+  const temaActual = () => document.documentElement.dataset.tema || (oscuroSistema.matches ? "oscuro" : "claro");
+  function pintarBotonTema() {
+    const b = $("b-tema"), oscuro = temaActual() === "oscuro";
+    b.textContent = oscuro ? "☀️" : "🌙";
+    b.setAttribute("aria-label", oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+    b.setAttribute("title", oscuro ? "Modo claro" : "Modo oscuro");
+  }
+  $("b-tema").addEventListener("click", () => {
+    const nuevo = temaActual() === "oscuro" ? "claro" : "oscuro";
+    document.documentElement.dataset.tema = nuevo;
+    try { localStorage.setItem("vh-tema", nuevo); } catch (e) {}
+    pintarBotonTema();
+  });
+  if (oscuroSistema.addEventListener) oscuroSistema.addEventListener("change", pintarBotonTema);
 
   function todo() {
     prepararDatos();
     construirPines();
     pintarEncabezado();
+    pintarComoHoy();
     pintarLinea();
     pintarPasaporte();
+    pintarRanking();
+    pintarCuriosos();
     pintarLogros();
     cambiarVista(vistaActual, true);
     if (AV.length) seleccionar(AV[0].id);
     Object.values(pines).forEach(p => p.classList.remove("activo"));
+    idActual = AV.length ? AV[0].id : null;
     cambiarVista("isla", true);
   }
 
@@ -1430,13 +2031,16 @@
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
   // ====== ARRANQUE ======
+  pintarBotonTema();
   prepararCancion();
   pintarPerfil();
   pintarCafes();
-  pintarRanking();
+  pintarFrases();
   todo();
+  pintarCapsulas();
   dibujarRuta();
   fechaEspecial();
+  abrirDesdeEnlace();
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
     addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
   }
