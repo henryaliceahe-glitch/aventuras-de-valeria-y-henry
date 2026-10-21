@@ -429,6 +429,7 @@
             <div class="segmentos" role="group" aria-label="Vista del mapa">
               <button data-vista="isla" aria-pressed="true">Toda la isla</button>
               <button data-vista="sj" aria-pressed="false">San Juan</button>
+              <button data-vista="caguas" aria-pressed="false">Caguas</button>
             </div>
             <div class="leyenda" aria-hidden="true"><span><i class="l-ruta"></i>ruta</span><span><i class="l-deseo"></i>por visitar</span></div>
           </div>
@@ -733,6 +734,46 @@
       tacitas: 0, // CAMBIAR
       versionGuia: "", // CAMBIAR (opcional)
     },
+    {
+      id: "plaza", emoji: "🛍️", nombre: "Plaza Las Américas", lugar: "Hato Rey, San Juan",
+      lat: 18.4224, lon: -66.0716, zona: "sj", color: "#2F5D8A", rot: -3, chico: true,
+      texto: "Un día en Plaza Las Américas con la guía.", // CAMBIAR (escribe la historia)
+      fecha: "", // CAMBIAR
+      tacitas: 0, // CAMBIAR
+      versionGuia: "", // CAMBIAR (opcional)
+    },
+    {
+      id: "sanpatricio", emoji: "🌴", nombre: "San Patricio", lugar: "Guaynabo",
+      lat: 18.4077, lon: -66.1047, zona: "sj", color: "#6F4E37", rot: 6,
+      texto: "Paseo por San Patricio.", // CAMBIAR (escribe la historia)
+      fecha: "", // CAMBIAR
+      tacitas: 0, // CAMBIAR
+      versionGuia: "", // CAMBIAR (opcional)
+    },
+    {
+      id: "pirilo", emoji: "🍕", nombre: "Pirilo", lugar: "Viejo San Juan",
+      lat: 18.4615, lon: -66.1100, zona: "sj", color: "#1F3A5F", rot: -5,
+      texto: "Pizza en Pirilo, en el Viejo San Juan.", // CAMBIAR (escribe la historia)
+      fecha: "", // CAMBIAR
+      tacitas: 0, // CAMBIAR
+      versionGuia: "", // CAMBIAR (opcional)
+    },
+    {
+      id: "smash", emoji: "🍔", nombre: "Smash burgers", lugar: "Caguas",
+      lat: 18.2350, lon: -66.0620, zona: "caguas", color: "#8A5A3B", rot: 4, chico: true,
+      texto: "Smash burgers en Caguas.", // CAMBIAR (escribe la historia)
+      fecha: "", // CAMBIAR
+      tacitas: 0, // CAMBIAR
+      versionGuia: "", // CAMBIAR (opcional)
+    },
+    {
+      id: "sectorsixty", emoji: "✨", nombre: "Sector Sixty", lugar: "Caguas",
+      lat: 18.2460, lon: -66.0260, zona: "caguas", color: "#24507A", rot: -4,
+      texto: "Fuimos a Sector Sixty en Caguas.", // CAMBIAR (escribe la historia)
+      fecha: "", // CAMBIAR
+      tacitas: 0, // CAMBIAR
+      versionGuia: "", // CAMBIAR (opcional)
+    },
   ];
 
   // ==================================================================
@@ -769,12 +810,17 @@
   const LON0 = -67.35, LAT0 = 18.56, K = 1000, C = Math.cos(18.2 * Math.PI / 180);
   const aXY = (lon, lat) => ({ x: (lon - LON0) * K * C, y: (LAT0 - lat) * K });
   const aLonLat = (x, y) => ({ lon: x / (K * C) + LON0, lat: LAT0 - y / K });
-  const SJ = { lon0: -66.185, lat0: 18.505, lon1: -65.985, lat1: 18.345 };
-  const enCajaSJ = (lon, lat) => lon >= SJ.lon0 && lon <= SJ.lon1 && lat <= SJ.lat0 && lat >= SJ.lat1;
-  const VISTAS = {
-    isla: { x0: aXY(-67.30, 18.54).x, y0: aXY(-67.30, 18.54).y, x1: aXY(-65.22, 17.90).x, y1: aXY(-65.22, 17.90).y },
-    sj:   { x0: aXY(SJ.lon0, SJ.lat0).x, y0: aXY(SJ.lon0, SJ.lat0).y, x1: aXY(SJ.lon1, SJ.lat1).x, y1: aXY(SJ.lon1, SJ.lat1).y },
+  // Zonas que se pueden acercar. En "Toda la isla", sus aventuras salen agrupadas en una etiqueta.
+  // etiqueta: latitud donde va esa etiqueta (encima de los pines).
+  const ZONAS = {
+    sj: { nombre: "San Juan", lon0: -66.185, lat0: 18.505, lon1: -65.985, lat1: 18.345, etiqueta: 18.545 },
+    caguas: { nombre: "Caguas", lon0: -66.105, lat0: 18.285, lon1: -65.995, lat1: 18.195, etiqueta: 18.30 },
   };
+  const enCaja = (z, lon, lat) => lon >= z.lon0 && lon <= z.lon1 && lat <= z.lat0 && lat >= z.lat1;
+  const zonaDe = (lon, lat) => Object.keys(ZONAS).find(k => enCaja(ZONAS[k], lon, lat)) || null;
+  const cajaDe = (lon0, lat0, lon1, lat1) => ({ x0: aXY(lon0, lat0).x, y0: aXY(lon0, lat0).y, x1: aXY(lon1, lat1).x, y1: aXY(lon1, lat1).y });
+  const VISTAS = { isla: cajaDe(-67.30, 18.54, -65.22, 17.90) };
+  Object.entries(ZONAS).forEach(([k, z]) => { VISTAS[k] = cajaDe(z.lon0, z.lat0, z.lon1, z.lat1); });
   const tieneCoords = a => !a.secreto && typeof a.lat === "number" && typeof a.lon === "number" && isFinite(a.lat) && isFinite(a.lon);
 
   // ====== DATOS COMBINADOS (aventuras + las guardadas en Firebase) ======
@@ -794,19 +840,23 @@
     });
     AV = todas.map((a, i) => {
       const r = { ...a, n: i + 1, color: a.color || PALETA[i % PALETA.length], rot: typeof a.rot === "number" ? a.rot : GIROS[i % GIROS.length], conPin: tieneCoords(a) };
-      if (r.conPin) { Object.assign(r, aXY(a.lon, a.lat)); r.sj = a.zona ? a.zona === "sj" : enCajaSJ(a.lon, a.lat); }
+      if (r.conPin) {
+        Object.assign(r, aXY(a.lon, a.lat));
+        r.zonaMapa = a.zona && ZONAS[a.zona] ? a.zona : zonaDe(a.lon, a.lat);
+        r.sj = r.zonaMapa === "sj";
+      }
       return r;
     });
     DES = lista(CONFIG.DESEOS).filter(d => d && d.nombre).map((d, i) => {
       const r = { ...d, id: "deseo-" + i, deseo: true, conPin: tieneCoords(d), rot: GIROS[(i + 2) % GIROS.length] };
-      if (r.conPin) { Object.assign(r, aXY(d.lon, d.lat)); r.sj = enCajaSJ(d.lon, d.lat); }
+      if (r.conPin) { Object.assign(r, aXY(d.lon, d.lat)); r.zonaMapa = zonaDe(d.lon, d.lat); r.sj = r.zonaMapa === "sj"; }
       return r;
     });
   }
 
   // ====== MAPA ======
   const mapa = $("mapa"), svg = $("svg"), ruta = $("ruta"), rutaMascara = $("rutaMascara"), capaSJ = $("capaSJ");
-  let vistaActual = "isla", caja = null, pines = {}, grupo = null, centroSJ = null, nuevoPin = null, marca = null;
+  let vistaActual = "isla", caja = null, pines = {}, grupos = {}, nuevoPin = null, marca = null;
 
   function cajaPara(nombre) {
     const v = VISTAS[nombre];
@@ -823,6 +873,7 @@
     ["Océano Atlántico", -66.07, 18.50, "mar"], ["Condado", -66.066, 18.449, "tierra-txt"],
     ["Santurce", -66.06, 18.437, "tierra-txt"], ["Carolina", -65.995, 18.41, "tierra-txt"],
     ["Bayamón", -66.16, 18.376, "tierra-txt"], ["Cupey", -66.055, 18.356, "tierra-txt"], ["Guaynabo", -66.111, 18.349, "tierra-txt"],
+    ["Caguas", -66.035, 18.215, "tierra-txt"],
   ].forEach(([txt, lon, lat, tipo]) => {
     const p = aXY(lon, lat), t = document.createElementNS("http://www.w3.org/2000/svg", "text");
     t.setAttribute("class", "rotulo-sj " + tipo);
@@ -849,18 +900,19 @@
     DES.filter(d => d.conPin).forEach(d => crear(d, "deseo", () => verDeseo(d.id)));
     AV.filter(a => a.conPin).forEach(a => crear(a, a.propuesta ? "propuesta" : "", () => seleccionar(a.id, true)));
 
-    const deSJ = AV.filter(a => a.conPin && a.sj);
-    grupo = null;
-    if (deSJ.length) {
-      grupo = document.createElement("button");
-      grupo.className = "pin grupo";
-      grupo.setAttribute("aria-label", `Zona de San Juan: ${deSJ.length} aventuras. Toca para acercar.`);
-      grupo.innerHTML = `<span>San Juan · ${deSJ.length}</span>`;
-      grupo.addEventListener("click", e => { e.stopPropagation(); cambiarVista("sj"); });
-      mapa.appendChild(grupo);
-      // La etiqueta del grupo va en el mar, encima de San Juan, para no tapar otros pines
-      centroSJ = { x: deSJ.reduce((s, a) => s + a.x, 0) / deSJ.length, y: aXY(-66.07, 18.545).y };
-    }
+    // Una etiqueta por zona con 2 o más aventuras (los pines están muy juntos). Va encima, para no tapar otros pines
+    grupos = {};
+    Object.entries(ZONAS).forEach(([k, z]) => {
+      const de = AV.filter(a => a.conPin && a.zonaMapa === k);
+      if (de.length < 2) return;
+      const g = document.createElement("button");
+      g.className = "pin grupo";
+      g.setAttribute("aria-label", `Zona de ${z.nombre}: ${de.length} aventuras. Toca para acercar.`);
+      g.innerHTML = `<span>${z.nombre} · ${de.length}</span>`;
+      g.addEventListener("click", e => { e.stopPropagation(); cambiarVista(k); });
+      mapa.appendChild(g);
+      grupos[k] = { el: g, x: de.reduce((s, a) => s + a.x, 0) / de.length, y: aXY(0, z.etiqueta).y };
+    });
 
     // Ruta: curvas suaves entre aventuras, en orden de fecha
     const enMapa = AV.filter(a => a.conPin);
@@ -892,14 +944,14 @@
       const p = pines[a.id]; if (!p) return;
       const [l, t] = pos(a.x, a.y);
       const fuera = l < -5 || l > 105 || t < -5 || t > 110;
-      p.hidden = fuera || (agrupar && a.sj && !a.deseo);
+      p.hidden = fuera || (agrupar && !a.deseo && !!grupos[a.zonaMapa]);
       p.style.left = l + "%"; p.style.top = t + "%";
     });
-    if (grupo) {
-      const [gl, gt] = pos(centroSJ.x, centroSJ.y);
-      grupo.hidden = !agrupar;
-      grupo.style.left = gl + "%"; grupo.style.top = gt + "%";
-    }
+    Object.values(grupos).forEach(g => {
+      const [gl, gt] = pos(g.x, g.y);
+      g.el.hidden = !agrupar;
+      g.el.style.left = gl + "%"; g.el.style.top = gt + "%";
+    });
     if (nuevoPin && marca) {
       const q = aXY(marca.lon, marca.lat), [l, t] = pos(q.x, q.y);
       nuevoPin.style.left = l + "%"; nuevoPin.style.top = t + "%";
@@ -939,8 +991,9 @@
     Object.values(pines).forEach(p => p.classList.remove("activo"));
     if (pines[a.id]) {
       // si está en San Juan y estamos viendo toda la isla, acercamos
-      if (a.sj && vistaActual !== "sj") cambiarVista("sj");
-      if (!a.sj && vistaActual === "sj") cambiarVista("isla");
+      // si está en una zona agrupada, acercamos a esa zona; si no, volvemos a toda la isla
+      const destino = grupos[a.zonaMapa] ? a.zonaMapa : (a.zonaMapa === vistaActual ? vistaActual : "isla");
+      if (destino !== vistaActual) cambiarVista(destino);
       void pines[a.id].offsetWidth;
       pines[a.id].classList.add("activo");
     }
@@ -1132,7 +1185,7 @@
       b.setAttribute("aria-label", `Por visitar: ${d.nombre}. Verlo en el mapa`);
       b.innerHTML = `<span aria-hidden="true">${d.emoji || "📍"}</span><b style="--tam:${tamNombre(d)}">${esc(d.nombre)}</b><small>Por visitar</small>`;
       b.addEventListener("click", () => {
-        if (d.conPin && vistaActual === "sj" && !d.sj) cambiarVista("isla");
+        if (d.conPin && vistaActual !== "isla" && d.zonaMapa !== vistaActual) cambiarVista("isla");
         verDeseo(d.id); scrollA($("mapa-sec"));
       });
       cd.appendChild(b);
