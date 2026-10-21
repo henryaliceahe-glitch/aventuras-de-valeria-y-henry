@@ -1,6 +1,6 @@
 // Service worker sencillo: permite instalar la página y abrirla aunque no haya señal.
 // Si cambias algo y no se actualiza en el celular, sube el número de VERSION.
-const VERSION = "vh-v5";
+const VERSION = "vh-v6";
 const ARCHIVOS = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

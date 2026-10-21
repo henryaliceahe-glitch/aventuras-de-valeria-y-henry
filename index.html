@@ -171,7 +171,6 @@
   .leyenda i.l-deseo { width: 12px; height: 12px; border-radius: 50%; border: 2px dashed var(--azul); }
   .mapa { position: relative; aspect-ratio: 3 / 2; background: var(--azul-claro); overflow: hidden; border-radius: 12px; touch-action: manipulation; box-shadow: inset 0 0 0 1px rgba(31,58,95,.1); }
   .mapa > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .mapa.marcando { cursor: crosshair; box-shadow: inset 0 0 0 3px var(--caramelo); }
   .tierra { fill: var(--tierra); stroke: var(--cafe); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
   .agua { fill: var(--azul-claro); stroke: var(--cafe); stroke-width: 1; vector-effect: non-scaling-stroke; }
   .ruta { fill: none; stroke: var(--caramelo); stroke-width: 2.4; stroke-dasharray: 7 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
@@ -192,14 +191,10 @@
   .pin.deseo { filter: none; opacity: .8; }
   .pin.deseo .gota { background: rgba(255,252,248,.55); border: 2px dashed var(--azul); }
   .pin.deseo .ico { opacity: .75; }
-  .pin.propuesta .gota { border-color: var(--dorado); }
-  .pin.nuevo { pointer-events: none; z-index: 4; }
-  .pin.nuevo .gota { background: var(--caramelo); }
   @keyframes rebote { 40% { transform: translateY(-12px); } }
   .pin.grupo { width: auto; height: 34px; margin: -30px 0 0; transform: translateX(-50%); }
   .pin.grupo::before { content: ""; position: absolute; left: 50%; top: 31px; transform: translateX(-50%); border: 7px solid transparent; border-top-color: var(--marino); }
   .pin.grupo span { display: inline-flex; align-items: center; gap: 4px; height: 34px; padding: 0 13px; border-radius: 999px; background: var(--marino); color: #fff; border: 2px solid #fff; font-weight: 700; font-size: 14px; white-space: nowrap; }
-  .aviso-marcar { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); z-index: 6; background: var(--cafe); color: #fff; font-weight: 700; font-size: 13.5px; padding: 6px 14px; border-radius: 999px; box-shadow: var(--sombra); white-space: nowrap; pointer-events: none; }
   .nota-mapa { font-size: 14px; color: var(--suave); margin: 10px 4px 2px; }
 
   /* Tarjeta de detalle */
@@ -216,35 +211,36 @@
   .quien { font-size: 13px; font-weight: 700; color: var(--azul); margin-top: 14px; }
   .tacitas { font-size: 17px; letter-spacing: 1px; }
   .tacitas .vacia { opacity: .22; filter: grayscale(1); }
-  .detalle .tacitas { display: block; margin-top: 10px; }
+  /* media tacita: una vacía con la mitad izquierda llena encima */
+  .tacitas .media, .tac .media { position: relative; display: inline-block; }
+  .tacitas .media .llena, .tac .media .llena { position: absolute; left: 0; top: 0; width: 50%; overflow: hidden; white-space: nowrap; }
+  .calificacion { white-space: nowrap; }
+  .detalle .calificacion { display: block; margin-top: 10px; }
   .pasos { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--borde); }
   .paso { font-weight: 700; font-size: 14px; color: var(--marino); background: transparent; white-space: nowrap; border: 1px solid rgba(31,58,95,.3); border-radius: 999px; padding: 8px 14px; min-height: 44px; cursor: pointer; transition: background .2s; }
   .paso:hover { background: var(--azul-claro); }
   .contador { font-weight: 500; font-size: 14px; color: var(--suave); white-space: nowrap; }
   @media (max-width: 360px) { .paso .txt { display: none; } }
 
-  /* Comentarios */
-  .comentarios { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--borde); }
-  .comentarios h4 { font-size: 14px; font-weight: 700; color: var(--marino); margin-bottom: 10px; }
-  .com { background: var(--papel); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; font-size: 15px; }
-  .com .meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--suave); font-weight: 700; }
-  .com .meta button { background: none; border: 0; color: var(--suave); cursor: pointer; min-height: 32px; min-width: 44px; font-size: 12.5px; text-decoration: underline; }
-  .com-form { display: grid; gap: 8px; margin-top: 10px; }
-  .vacio-com { font-size: 14px; color: var(--suave); }
-
-  /* ---------- Línea de tiempo ---------- */
+  /* ---------- Línea de tiempo (por días) ---------- */
   .linea { position: relative; display: grid; gap: 22px; padding-left: 34px; }
   .linea::before { content: ""; position: absolute; left: 13px; top: 8px; bottom: 8px; border-left: 2px dashed rgba(192,133,82,.55); }
   .hito { position: relative; scroll-margin-top: 90px; }
-  .hito .punto { position: absolute; left: -34px; top: 18px; width: 28px; height: 28px; border-radius: 50%; background: var(--color); color: #fff; display: grid; place-items: center; font-size: 14px; box-shadow: 0 0 0 4px var(--latte); }
-  .hito .caja { padding: 18px 20px; transition: transform .2s, box-shadow .2s; }
-  .hito .caja:hover { transform: translateY(-2px); box-shadow: var(--sombra-alta); }
-  .hito.enfocado .caja { box-shadow: 0 0 0 3px var(--azul), var(--sombra); }
+  .hito .punto { position: absolute; left: -34px; top: 18px; width: 28px; height: 28px; border-radius: 50%; background: var(--color); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; font-family: var(--serif); box-shadow: 0 0 0 4px var(--latte); }
+  .hito .caja { padding: 18px 20px 8px; transition: box-shadow .2s; }
+  .hito .caja:hover { box-shadow: var(--sombra-alta); }
   .hito .fecha { font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cafe); }
-  .hito h3 { font-family: var(--serif); font-weight: 600; font-size: 24px; line-height: 1.15; color: var(--marino); margin: 4px 0 2px; }
-  .hito .lugar { font-size: 14px; color: var(--suave); }
-  .hito p.texto { margin-top: 10px; }
-  .hito .pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; margin-top: 12px; }
+  .hito h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; line-height: 1.15; color: var(--marino); margin: 2px 0 4px; }
+  .hito .cuantos { font-size: 14px; color: var(--suave); }
+  .parada { padding: 14px 0; border-top: 1px solid var(--borde); margin-top: 12px; scroll-margin-top: 90px; border-radius: 10px; transition: box-shadow .2s; }
+  .parada + .parada { margin-top: 0; }
+  .parada.enfocado { box-shadow: 0 0 0 3px var(--azul); padding-left: 10px; padding-right: 10px; }
+  .parada h4 { font-family: var(--serif); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--marino); }
+  .parada .lugar { font-size: 14px; color: var(--suave); }
+  .parada p.texto { margin-top: 6px; }
+  .parada .pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 12px; margin-top: 4px; }
+  .ver-todos { display: flex; justify-content: center; margin-top: 26px; }
+  .nota { font-size: 13px; font-weight: 700; color: var(--cafe); margin-left: 6px; letter-spacing: 0; }
   .enlace { background: none; border: 0; cursor: pointer; font-weight: 700; font-size: 14px; color: var(--azul); text-decoration: underline; text-underline-offset: 3px; padding: 8px 0; min-height: 44px; }
   @media (min-width: 920px) {
     .linea { padding-left: 0; grid-template-columns: 1fr 1fr; column-gap: 72px; }
@@ -282,8 +278,6 @@
   .estampa .tac { font-size: 8px; letter-spacing: 0; }
   .estampa .tac .vacia { opacity: .25; filter: grayscale(1); }
   .estampa.deseo { --color: #2F5D8A; border-style: dashed; outline-style: dotted; background: transparent; opacity: .85; }
-  .estampa.proxima { --color: #9A6435; background: rgba(192,133,82,.12); text-decoration: none; }
-  .estampa.muestra::after { content: "muestra"; position: absolute; bottom: -8px; font-size: 9px; font-weight: 700; background: var(--caramelo); color: #fff; padding: 1px 8px; border-radius: 999px; }
   .estampa { position: relative; }
 
   /* ---------- Cafés ---------- */
@@ -296,7 +290,21 @@
   .cafe .estampa { width: 74px; height: 74px; outline-offset: -8px; cursor: default; }
   .cafe .estampa > span { font-size: 22px; }
   .cafe .estampa b { display: none; }
+  .cafe .etiqueta-chica { margin-top: 6px; }
   .vacio-seccion { padding: 22px; color: var(--suave); text-align: center; }
+  .sub { font-family: var(--serif); font-weight: 600; font-size: 24px; color: var(--marino); margin: 34px 0 14px; }
+
+  /* Ranking de smash */
+  .ranking { padding: 8px 20px; max-width: 560px; }
+  .ranking ol { list-style: none; }
+  .ranking li { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; }
+  .ranking li + li { border-top: 1px solid var(--borde); }
+  .ranking .puesto { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--marino); background: var(--azul-claro); }
+  .ranking li:first-child .puesto { background: radial-gradient(circle at 35% 30%, #F2D9A8, var(--dorado)); color: var(--espresso); }
+  .ranking b { display: block; color: var(--marino); }
+  .ranking span { font-size: 14px; color: var(--suave); }
+  .ranking .calif { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--cafe); white-space: nowrap; }
+  .ranking .nota-pie { font-size: 13px; color: var(--suave); padding: 4px 0 10px; }
 
   /* ---------- Perfil de la guía ---------- */
   .perfil { display: grid; gap: 18px; padding: 26px; align-items: center; background: linear-gradient(135deg, var(--crema), #F3E8D9); }
@@ -314,30 +322,9 @@
   .logro .medalla { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; background: radial-gradient(circle at 35% 30%, #F2D9A8, var(--dorado)); box-shadow: inset 0 -3px 0 rgba(111,78,55,.35); }
   .logro b { display: block; font-size: 15px; color: var(--marino); line-height: 1.25; }
   .logro span { font-size: 13px; color: var(--suave); }
-  .logro.bloqueado { background: #F1ECE6; box-shadow: none; }
-  .logro.bloqueado .medalla { background: #DCD5CD; filter: grayscale(1); box-shadow: none; opacity: .7; }
-  .logro.bloqueado b { color: #6B625B; }
   .progreso-logros { font-size: 14px; color: var(--suave); }
-
-  /* ---------- Formularios ---------- */
-  .form { padding: 22px; display: grid; gap: 16px; }
-  @media (min-width: 920px) { .form { grid-template-columns: 1fr 1fr; gap: 16px 24px; } .form .ancho { grid-column: 1 / -1; } }
-  .campo { display: grid; gap: 6px; }
-  .campo > label, .campo > .etq { font-weight: 700; font-size: 14px; color: var(--cafe); }
-  .campo small { color: var(--suave); font-size: 13px; }
-  .entrada-txt, .campo input[type=text], .campo input[type=date], .campo input[type=password], .campo textarea, .campo select {
-    width: 100%; border: 1px solid rgba(43,26,18,.22); border-radius: 12px; padding: 10px 12px; background: #fff; min-height: 46px; font-size: 16px;
-  }
-  .campo textarea, textarea.entrada-txt { min-height: 96px; resize: vertical; }
-  .campo input:focus, .campo textarea:focus, .campo select:focus, .entrada-txt:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(47,93,138,.18); }
-  .opciones { display: flex; flex-wrap: wrap; gap: 6px; }
-  .opciones button { min-width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--borde); background: #fff; font-size: 20px; cursor: pointer; padding: 0 10px; }
-  .opciones button[aria-pressed="true"] { border-color: var(--marino); background: var(--azul-claro); box-shadow: inset 0 0 0 1px var(--marino); }
-  .opciones.texto button { font-size: 14px; font-weight: 700; }
+  .por-descubrir { margin-top: 16px; font-weight: 700; color: var(--suave); }
   .fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .msg-ok { color: var(--azul); font-weight: 700; font-size: 14px; }
-  .msg-error { color: #9B2C2C; font-weight: 700; font-size: 14px; }
-  .acceso { padding: 22px; display: grid; gap: 12px; }
 
   /* ---------- Cierre ---------- */
   .cierre { text-align: center; padding: 48px 0 calc(40px + env(safe-area-inset-bottom)); }
@@ -383,7 +370,6 @@
       <a href="#pasaporte-sec">Pasaporte</a>
       <a href="#cafes-sec">Cafés</a>
       <a href="#logros-sec">Logros</a>
-      <a href="#proponer-sec" data-fb hidden>Proponer</a>
     </nav>
   </div>
 </header>
@@ -477,9 +463,10 @@
     <div class="contenedor">
       <div class="cabeza">
         <div><span class="ceja">Nuestro diario</span><h2 id="t-tiempo">Línea de tiempo</h2></div>
-        <p>Cada aventura en el orden en que pasó, como las páginas de un diario.</p>
+        <p>Cada salida con sus paradas, en el orden en que pasó, como las páginas de un diario.</p>
       </div>
       <div class="linea" id="linea"></div>
+      <div class="ver-todos"><button class="btn claro" id="b-todos" aria-expanded="false" aria-controls="linea" hidden>Ver todos los días</button></div>
     </div>
   </section>
 
@@ -503,23 +490,23 @@
   <section class="bloque" id="cafes-sec" aria-labelledby="t-cafes">
     <div class="contenedor">
       <div class="cabeza">
-        <div><span class="ceja">Una taza a la vez</span><h2 id="t-cafes">Pasaporte cafetero</h2></div>
-        <p>Las cafeterías que hemos probado juntos y lo que pidió cada uno.</p>
+        <div><span class="ceja">Una taza a la vez</span><h2 id="t-cafes">La guía y su café</h2></div>
+        <p>Su perfil, las cafeterías que hemos probado juntos y su ranking de smash burgers.</p>
       </div>
-      <div class="cafes" id="cafes"></div>
-    </div>
-  </section>
-
-  <section class="bloque" aria-labelledby="t-guia">
-    <div class="contenedor">
       <div class="tarjeta perfil">
         <div class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 20h22v9a11 11 0 0 1-22 0z" fill="#FFFCF8"/><path d="M32 22h3.5a4.5 4.5 0 0 1 0 9H32" fill="none" stroke="#FFFCF8" stroke-width="2.5"/><path d="M16 8c-2 3 2 4 0 7M22 8c-2 3 2 4 0 7M28 8c-2 3 2 4 0 7" fill="none" stroke="#D4A35A" stroke-width="2" stroke-linecap="round"/><path d="M6 42h30" stroke="#D4A35A" stroke-width="2.5" stroke-linecap="round"/></svg></div>
         <div>
           <span class="ceja">Perfil de la guía</span>
-          <h3 id="t-guia">La guía oficial: <em id="guia-nombre">Valeria</em></h3>
+          <h3>La guía oficial: <em id="guia-nombre">Valeria</em></h3>
           <div id="guia-datos"></div>
         </div>
         <span class="etiqueta-chica dorada">Guía certificada ✦ 5 tacitas</span>
+      </div>
+      <h3 class="sub">Pasaporte cafetero</h3>
+      <div class="cafes" id="cafes"></div>
+      <div id="ranking-cont">
+        <h3 class="sub">Ranking de smash de la guía 🍔</h3>
+        <div class="tarjeta ranking" id="ranking"></div>
       </div>
     </div>
   </section>
@@ -531,58 +518,7 @@
         <p class="progreso-logros" id="progresoLogros"></p>
       </div>
       <div class="logros" id="logros"></div>
-    </div>
-  </section>
-
-  <section class="bloque" id="proponer-sec" aria-labelledby="t-prop" data-fb hidden>
-    <div class="contenedor">
-      <div class="cabeza">
-        <div><span class="ceja">Solo para Valeria y Henry</span><h2 id="t-prop">Proponer una aventura</h2></div>
-        <p>Lo que escriban aquí aparece en el mapa y en la línea de tiempo enseguida, para los dos.</p>
-      </div>
-      <div class="tarjeta acceso" id="acceso"></div>
-      <form class="tarjeta form" id="form-prop" novalidate hidden>
-        <div class="campo">
-          <span class="etq" id="etq-autor">¿Quién la escribe?</span>
-          <div class="opciones texto" role="group" aria-labelledby="etq-autor" id="p-autor"></div>
-        </div>
-        <div class="campo">
-          <label for="p-nombre">¿A dónde fuimos (o vamos)? *</label>
-          <input type="text" id="p-nombre" maxlength="40" placeholder="Ej.: Hacienda de café en Jayuya" required>
-        </div>
-        <div class="campo">
-          <label for="p-lugar">¿Dónde queda?</label>
-          <input type="text" id="p-lugar" maxlength="60" placeholder="Ej.: Jayuya">
-        </div>
-        <div class="campo">
-          <label for="p-fecha">¿Cuándo?</label>
-          <input type="date" id="p-fecha">
-        </div>
-        <div class="campo ancho">
-          <span class="etq" id="etq-emoji">Su emoji</span>
-          <div class="opciones" role="group" aria-labelledby="etq-emoji" id="p-emojis"></div>
-        </div>
-        <div class="campo ancho">
-          <label for="p-texto">La historia *</label>
-          <textarea id="p-texto" maxlength="600" placeholder="¿Qué pasó? ¿Qué no queremos olvidar?" required></textarea>
-        </div>
-        <div class="campo">
-          <span class="etq" id="etq-tac">¿Cuántas tacitas?</span>
-          <div class="opciones" role="group" aria-labelledby="etq-tac" id="p-tacitas"></div>
-        </div>
-        <div class="campo">
-          <span class="etq">¿Dónde va el pin?</span>
-          <div class="fila">
-            <button type="button" class="btn claro chico" id="b-marcar">📍 Marcar en el mapa</button>
-            <span class="msg-ok" id="ubic-estado"></span>
-          </div>
-          <input type="text" id="p-coords" class="entrada-txt" placeholder="o pega coordenadas de Google Maps: 18.46, -66.11" aria-label="Coordenadas de Google Maps">
-        </div>
-        <div class="ancho fila">
-          <button type="submit" class="btn">Guardar aventura</button>
-          <span id="p-msg" role="status"></span>
-        </div>
-      </form>
+      <p class="por-descubrir" id="porDescubrir"></p>
     </div>
   </section>
 
@@ -608,8 +544,7 @@
 
 <script>
   // ==================================================================
-  //  CONFIG: TODO LO QUE TIENES QUE LLENAR ESTÁ AQUÍ ARRIBA
-  //  Busca "// CAMBIAR" para encontrar los datos de ejemplo.
+  //  CONFIG: TODOS LOS DATOS DE LA PÁGINA ESTÁN AQUÍ ARRIBA
   //  Si dejas un campo vacío ("") esa parte simplemente no se muestra.
   // ==================================================================
   const CONFIG = {
@@ -623,12 +558,13 @@
     mensajeAniversario: "¡Feliz aniversario! Otra vuelta al sol siguiendo a mi guía favorita 💙",
 
     // Nuestra canción: pega el enlace de Spotify (Compartir → Copiar enlace).
-    cancion: "https://open.spotify.com/track/CAMBIAR", // CAMBIAR
+    // Mientras diga CAMBIAR, el botón no aparece.
+    cancion: "https://open.spotify.com/track/CAMBIAR",
 
     // Perfil de la guía
     nombreGuia: "Valeria",
-    cafeFavorito: "Café frío", // CAMBIAR si quieres ser más específico (ej. "Café frío de vainilla")
-    datoBonito: "Encuentra el mejor sitio para un cafecito en cualquier pueblo de la isla.", // CAMBIAR
+    cafeFavorito: "Café frío",
+    datoBonito: "",
 
     // Carta secreta: se abre al tocar al turista 10 veces seguidas.
     // Puedes bajar de línea con \n
@@ -655,132 +591,198 @@
     ],
 
     // PASAPORTE CAFETERO: las cafeterías que han probado.
-    // tacitas: del 1 al 5. Borra "muestra: true" cuando pongas una de verdad.
+    // tacitas: del 1 al 5 (acepta medios, ej. 3.5). nota: la nota de la guía sobre 10
+    // (si no hay tacitas, se convierten: 7/10 = 3.5 tacitas). etiqueta: texto corto opcional.
     CAFES: [
-      // Nuestro primer café juntos
-      { nombre: "Primer café juntos", lugar: "Plaza Las Américas", pidioGuia: "Café frío", pidioTurista: "", tacitas: 0 }, // CAMBIAR: nombre de la cafetería, lo que pidió el turista y las tacitas
+      { nombre: "Pergamino Coffee", lugar: "Plaza Las Américas, Hato Rey", pidioGuia: "Café frío", pidioTurista: "Agua de coco", tacitas: 5, etiqueta: "Nuestro primer café" },
+      { nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan (el turista no se acuerda del nombre 🙈)", pidioGuia: "Café", nota: 7 },
+      { nombre: "Bookmar", lugar: "San Patricio, Guaynabo", pidioGuia: "Café frío", nota: 7 },
     ],
 
-    // FIREBASE (opcional): para que Valeria pueda comentar y proponer aventuras.
-    // Déjalo así de vacío y la página funciona normal sin esa parte.
-    // El código secreto NO va aquí (esta página la puede leer cualquiera):
-    // va en las reglas de Firestore. Mira las instrucciones.
-    firebase: {
-      apiKey: "",
-      authDomain: "",
-      projectId: "",
-      appId: "",
-    },
+    // RANKING DE SMASH DE LA GUÍA: nota sobre 10. Se ordena solo, de mayor a menor.
+    RANKING_SMASH: [
+      { nombre: "El Nido", lugar: "Bayamón", nota: 8 },
+      { nombre: "La Malcriada", lugar: "Cupey, San Juan", nota: 7 },
+    ],
+    notaRanking: "Smash Burger & Crispy no entra: la guía no comió 😅",
   };
 
-  // ====== LAS AVENTURAS (para añadir una, copia un bloque y cambia los datos) ======
-  // lat/lon: coordenadas del lugar (búscalas en Google Maps: clic derecho en el sitio).
-  // Sin lat/lon, la aventura sale en el pasaporte pero no en el mapa.
-  // fecha: "AAAA-MM-DD" (ordena la línea de tiempo y la ruta del mapa).
-  // tacitas: del 1 al 5 (cuánto les gustó). versionGuia: cómo lo cuenta Valeria (opcional).
+  // ====== LOS LUGARES (para añadir uno, copia un bloque y cambia los datos) ======
+  // Cada bloque es un LUGAR con su pin. Los lugares con la misma fecha forman una salida (un día).
+  // fecha: "AAAA-MM-DD" (ordena la línea de tiempo y la ruta del mapa; el mismo día, va en el orden de la lista).
+  // lat/lon: coordenadas (en Google Maps: toca el sitio y copia los números). Sin lat/lon no sale en el mapa.
+  // zona: "sj" (área de San Juan), "caguas" o nada. Las que dicen "// VERIFICAR" son aproximadas.
+  // tacitas: del 1 al 5 (acepta medios). nota: la nota de la guía sobre 10.
+  // versionGuia: cómo lo cuenta Valeria (si está vacío, no sale el botón).
+  // smash: true si es un sitio de smash burgers (cuenta para el logro "Ruta smash").
   const AVENTURAS = [
+    // ---------- Día 1 · 8 de octubre ----------
     {
-      id: "vsj", emoji: "🍦", nombre: "Viejo San Juan", lugar: "San Juan",
-      lat: 18.4655, lon: -66.1165, zona: "sj", color: "#1F3A5F", rot: -6,
-      texto: "Mantecados de pie porque no había ni un sitio pa' sentarse. Ni falta que hizo: la compañía estaba brutal.",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "pergamino", emoji: "☕", nombre: "Pergamino Coffee", lugar: "Plaza Las Américas, Hato Rey",
+      lat: 18.4224, lon: -66.0716, zona: "sj", fecha: "2026-10-08", tacitas: 5,
+      texto: "Nuestra primera parada y nuestro primer café juntos. Ella pidió café frío; el turista, agua de coco 🥥 (sí, en una cafetería). 5 tacitas por ser la primera vez.",
+      versionGuia: "",
     },
+    {
+      id: "cineplaza", emoji: "🍿", nombre: "Cine de Plaza Las Américas", lugar: "Plaza Las Américas, Hato Rey",
+      lat: 18.4231, lon: -66.0725, zona: "sj", fecha: "2026-10-08",
+      texto: "Después del café, al cine de Plaza. Primera película juntos.",
+      versionGuia: "",
+    },
+    {
+      id: "daveandbusters", emoji: "🕹️", nombre: "Dave & Buster's", lugar: "Plaza Las Américas, Hato Rey",
+      lat: 18.4217, lon: -66.0707, zona: "sj", fecha: "2026-10-08", // VERIFICAR
+      texto: "Ronda de juegos en Dave & Buster's. Primer día y ya había competencia.",
+      versionGuia: "",
+    },
+    {
+      id: "sectorsixty", emoji: "🏎️", nombre: "Sector Sixty", lugar: "The Shops at Caguas, Caguas",
+      lat: 18.2400, lon: -66.0420, zona: "caguas", fecha: "2026-10-08", // VERIFICAR
+      texto: "Y para cerrar el primer día: go-karts. Cuatro paradas en un solo día. Así empezó todo.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 2 · 9 de octubre ----------
+    {
+      id: "pirilo", emoji: "🍕", nombre: "Pirilo Pizza", lugar: "Viejo San Juan",
+      lat: 18.4652, lon: -66.1172, zona: "sj", fecha: "2026-10-09", // VERIFICAR
+      texto: "Pizza en Pirilo, en el Viejo San Juan. Segundo día y ya teníamos ruta.",
+      versionGuia: "",
+    },
+    {
+      id: "paseoprincesa", emoji: "🌴", nombre: "Paseo de la Princesa", lugar: "Viejo San Juan",
+      lat: 18.4626, lon: -66.1186, zona: "sj", fecha: "2026-10-09",
+      texto: "Caminata por el Paseo de la Princesa después de la pizza.",
+      versionGuia: "",
+    },
+    {
+      id: "condado", emoji: "🌊", nombre: "Playa del Condado", lugar: "Condado, San Juan",
+      lat: 18.4588, lon: -66.0745, zona: "sj", fecha: "2026-10-09",
+      texto: "Terminamos el día en la playa del Condado.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 3 · 11 de octubre ----------
     {
       id: "bolera", emoji: "🎳", nombre: "Bolera", lugar: "Cupey, San Juan",
-      lat: 18.3640, lon: -66.0550, zona: "sj", color: "#6F4E37", rot: 5,
+      lat: 18.3640, lon: -66.0550, zona: "sj", fecha: "2026-10-11",
       texto: 'Récord histórico: la guía por fin le ganó al turista. 🏆<br><i>"Tú siempre me ganas, ya era hora que te ganara."</i><br>(Revancha pendiente 😤)',
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      versionGuia: "",
     },
     {
-      id: "noche", emoji: "🌙", nombre: "Noche fuera", lugar: "Ubicación clasificada 🤫", secreto: true, color: "#2F5D8A", rot: -4,
-      texto: 'El turista llamó a casa: <i>"Mami, me voy a quedar con Valeria, no me esperes."</i> 😌 Reporte enviado a la base.',
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "anagelato", emoji: "🍦", nombre: "Ana Gelato", lugar: "Condado, San Juan",
+      lat: 18.4572, lon: -66.0712, zona: "sj", fecha: "2026-10-11", // VERIFICAR
+      texto: "Mantecados de pie porque no había ni un sitio pa' sentarse. Ni falta que hizo: la compañía estaba brutal.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 4 · 12 de octubre ----------
+    {
+      id: "planetfitness", emoji: "💪", nombre: "Planet Fitness", lugar: "Caguas",
+      lat: 18.2440, lon: -66.0265, zona: "caguas", fecha: "2026-10-12", // VERIFICAR
+      texto: "Cita de gimnasio: espalda, bíceps y abs. Romance con pesas.",
+      versionGuia: "",
     },
     {
-      id: "soul", emoji: "👻", nombre: "Soul Cream", lugar: "Jardín Botánico de Caguas",
-      lat: 18.2275, lon: -66.0530, zona: "caguas", color: "#4A3020", rot: 6,
-      texto: "Casas embrujadas en Caguas. El turista se asustó con unos payasos 🤡 y la guía tuvo que ser la valiente. (No vamos a hablar de eso.)",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "qdoba", emoji: "🌯", nombre: "Qdoba", lugar: "Caguas",
+      lat: 18.2428, lon: -66.0282, zona: "caguas", fecha: "2026-10-12", // VERIFICAR
+      texto: "Después del gym, Qdoba. Y en el estacionamiento... nuestro primer beso 💙.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 5 · 13 de octubre ----------
+    {
+      id: "cafecupey", emoji: "☕", nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan",
+      lat: 18.3598, lon: -66.0500, zona: "sj", fecha: "2026-10-13", nota: 7,
+      texto: "La acompañé a una cafetería en Cupey. El turista no se acuerda del nombre 🙈. Nota de la guía: 7/10.",
+      versionGuia: "",
     },
     {
-      id: "escambron", emoji: "🔑", nombre: "El Escambrón", lugar: "San Juan",
-      lat: 18.4672, lon: -66.0885, zona: "sj", color: "#3E6E9E", rot: -5, chico: true,
-      texto: "Playa de noche. Se me perdieron las llaves... y las encontré en el agua 🌊. Turista sin GPS, pero con suerte.",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "uagm", emoji: "🎓", nombre: "UAGM Cupey", lugar: "Universidad Ana G. Méndez, Recinto de Cupey",
+      lat: 18.3606, lon: -66.0546, zona: "sj", fecha: "2026-10-13", // VERIFICAR
+      texto: "La llevé a la UAGM de Cupey: el lugar donde nos conocimos. Donde empezó la historia antes de que existiera este mapa 💙.",
+      versionGuia: "",
     },
+
+    // ---------- Día 6 · 15 de octubre ----------
     {
-      id: "islaverde", emoji: "🌊", nombre: "Isla Verde", lugar: "Carolina",
-      lat: 18.4440, lon: -66.0180, zona: "sj", color: "#24507A", rot: 4,
-      texto: "Una noche en la playa bajo la luna que el turista no va a olvidar nunca 💛🌙",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "trampolin", emoji: "🤸", nombre: "Trampoline Park", lugar: "Carolina",
+      lat: 18.4080, lon: -65.9880, zona: "sj", fecha: "2026-10-15", // VERIFICAR
+      texto: "Por poco nos caemos de un sitio bien alto 😱. Sobrevivimos juntos, que es lo que importa.",
+      versionGuia: "",
     },
     {
       id: "halloween", emoji: "🎃", nombre: "Halloween Guaynabo", lugar: "Guaynabo",
-      lat: 18.3570, lon: -66.1110, zona: "sj", color: "#8A5A3B", rot: -6, chico: true,
+      lat: 18.3570, lon: -66.1110, zona: "sj", fecha: "2026-10-15",
       texto: "Comimos pie 🥧 y el turista le compró flores a la guía 💐. Atracción cinco estrellas.",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      versionGuia: "",
     },
     {
-      id: "trampolin", emoji: "🤸", nombre: "Trampoline Park", lugar: "Bayamón",
-      lat: 18.3850, lon: -66.1600, zona: "sj", color: "#9A6435", rot: 5, chico: true,
-      texto: "Por poco nos caemos de un sitio bien alto 😱. Sobrevivimos juntos, que es lo que importa.",
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "islaverde", emoji: "🌊", nombre: "Isla Verde", lugar: "Carolina",
+      lat: 18.4440, lon: -66.0180, zona: "sj", fecha: "2026-10-15",
+      texto: "Una noche en la playa bajo la luna que el turista no va a olvidar nunca 💛🌙",
+      versionGuia: "",
+    },
+
+    // ---------- Día 7 · 17 de octubre ----------
+    {
+      id: "smash", emoji: "🍔", nombre: "Smash Burger & Crispy", lugar: "Caguas", smash: true,
+      lat: 18.2356, lon: -66.0380, zona: "caguas", fecha: "2026-10-17", // VERIFICAR
+      texto: "El turista se comió un smash; la guía no quiso nada. (Por eso no entra en el ranking 😅)",
+      versionGuia: "",
     },
     {
-      id: "plaza", emoji: "🛍️", nombre: "Plaza Las Américas", lugar: "Hato Rey, San Juan",
-      lat: 18.4224, lon: -66.0716, zona: "sj", color: "#2F5D8A", rot: -3, chico: true,
-      texto: "Aquí probamos nuestro primer café juntos ☕", // CAMBIAR (añade más de la historia)
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "plazacaguas", emoji: "⛲", nombre: "Plaza de Caguas", lugar: "Caguas",
+      lat: 18.2341, lon: -66.0367, zona: "caguas", fecha: "2026-10-17",
+      texto: "Paseo por la plaza pública de Caguas.",
+      versionGuia: "",
     },
     {
-      id: "sanpatricio", emoji: "🌴", nombre: "San Patricio", lugar: "Guaynabo",
-      lat: 18.4077, lon: -66.1047, zona: "sj", color: "#6F4E37", rot: 6,
-      texto: "Paseo por San Patricio.", // CAMBIAR (escribe la historia)
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "soul", emoji: "👻", nombre: "Soul Cream", lugar: "Jardín Botánico de Caguas",
+      lat: 18.2275, lon: -66.0530, zona: "caguas", fecha: "2026-10-17",
+      texto: "Casas embrujadas en Caguas. El turista se asustó con unos payasos 🤡 y la guía tuvo que ser la valiente. (No vamos a hablar de eso.)",
+      versionGuia: "",
+    },
+
+    // ---------- Día 8 · 18 de octubre ----------
+    {
+      id: "noche", emoji: "🌙", nombre: "Noche fuera", lugar: "Ubicación clasificada 🤫", secreto: true, fecha: "2026-10-18",
+      texto: 'El turista llamó a casa: <i>"Mami, me voy a quedar con Valeria, no me esperes."</i> 😌 Reporte enviado a la base.',
+      versionGuia: "",
+    },
+
+    // ---------- Día 9 · 19 de octubre ----------
+    {
+      id: "bookmar", emoji: "📚", nombre: "Bookmar", lugar: "San Patricio, Guaynabo",
+      lat: 18.4077, lon: -66.1047, zona: "sj", fecha: "2026-10-19", nota: 7, // VERIFICAR
+      texto: "Cita de estudio en Bookmar, en San Patricio. Ella con su café frío. Nota de la guía: 7/10.",
+      versionGuia: "",
     },
     {
-      id: "pirilo", emoji: "🍕", nombre: "Pirilo", lugar: "Viejo San Juan",
-      lat: 18.4615, lon: -66.1100, zona: "sj", color: "#1F3A5F", rot: -5,
-      texto: "Pizza en Pirilo, en el Viejo San Juan.", // CAMBIAR (escribe la historia)
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "escambron", emoji: "🔑", nombre: "El Escambrón", lugar: "San Juan",
+      lat: 18.4672, lon: -66.0885, zona: "sj", fecha: "2026-10-19",
+      texto: "Playa de noche. Se me perdieron las llaves... y las encontré en el agua 🌊. Turista sin GPS, pero con suerte.",
+      versionGuia: "",
     },
     {
-      id: "smash", emoji: "🍔", nombre: "Smash burgers", lugar: "Caguas",
-      lat: 18.2350, lon: -66.0620, zona: "caguas", color: "#8A5A3B", rot: 4, chico: true,
-      texto: "Smash burgers en Caguas.", // CAMBIAR (escribe la historia)
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "elnido", emoji: "🍔", nombre: "El Nido", lugar: "Bayamón", smash: true,
+      lat: 18.3990, lon: -66.1560, zona: "sj", fecha: "2026-10-19", nota: 8, // VERIFICAR
+      texto: "Smash en El Nido. Nota de la guía: 8/10, la mejor hasta ahora.",
+      versionGuia: "",
     },
     {
-      id: "sectorsixty", emoji: "✨", nombre: "Sector Sixty", lugar: "Caguas",
-      lat: 18.2460, lon: -66.0260, zona: "caguas", color: "#24507A", rot: -4,
-      texto: "Fuimos a Sector Sixty en Caguas.", // CAMBIAR (escribe la historia)
-      fecha: "", // CAMBIAR
-      tacitas: 0, // CAMBIAR
-      versionGuia: "", // CAMBIAR (opcional)
+      id: "tren", emoji: "🚆", nombre: "Tren Urbano", lugar: "Estación de Bayamón",
+      lat: 18.3993, lon: -66.1525, zona: "sj", fecha: "2026-10-19", // VERIFICAR
+      texto: "Paseo en el Tren Urbano.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 10 · 20 de octubre ----------
+    {
+      id: "malcriada", emoji: "🍔", nombre: "La Malcriada", lugar: "Cupey Bajo, San Juan", smash: true,
+      lat: 18.3510, lon: -66.0560, zona: "sj", fecha: "2026-10-20", nota: 7, // VERIFICAR
+      texto: "Otra smash burger, ahora en La Malcriada. Nota de la guía: 7/10. El Nido sigue ganando.",
+      versionGuia: "",
     },
   ];
 
@@ -803,26 +805,37 @@
   const hoyPR = () => new Intl.DateTimeFormat("en-CA", { timeZone: ZONA_HORARIA, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   const esFecha = f => typeof f === "string" && /^\d{4}-\d{2}-\d{2}$/.test(f);
   const diaUTC = f => { const [y, m, d] = f.split("-").map(Number); return Date.UTC(y, m - 1, d); };
-  function fechaBonita(f) {
-    if (!esFecha(f)) return "";
-    return new Date(diaUTC(f) + 12 * 3600e3).toLocaleDateString("es-PR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const fechaEs = (f, opciones) => esFecha(f) ? new Date(diaUTC(f) + 12 * 3600e3).toLocaleDateString("es-PR", { ...opciones, timeZone: "UTC" }) : "";
+  const fechaBonita = f => fechaEs(f, { day: "numeric", month: "long", year: "numeric" });
+  const fechaCorta = f => fechaEs(f, { day: "numeric", month: "long" });
+
+  // ====== CALIFICACIONES: tacitas (acepta medios) o nota de la guía sobre 10 ======
+  function calif(a) {
+    let t = Number(a.tacitas) || 0;
+    if (!t && Number(a.nota) > 0) t = Number(a.nota) / 2;
+    return Math.round(Math.min(5, Math.max(0, t)) * 2) / 2;
   }
-  function tacitasHTML(n, clase) {
-    n = Math.round(Number(n) || 0);
-    if (n < 1) return "";
-    n = Math.min(5, n);
-    return `<span class="${clase || "tacitas"}" role="img" aria-label="${n} de 5 tacitas">${"☕".repeat(n)}<span class="vacia">${"☕".repeat(5 - n)}</span></span>`;
+  function tacitasHTML(t, clase) {
+    if (!(t >= .5)) return "";
+    const llenas = Math.floor(t), media = t - llenas >= .5, vacias = 5 - llenas - (media ? 1 : 0);
+    return `<span class="${clase || "tacitas"}" role="img" aria-label="${String(t).replace(".", ",")} de 5 tacitas">${"☕".repeat(llenas)}` +
+      (media ? `<span class="media" aria-hidden="true"><span class="vacia">☕</span><span class="llena">☕</span></span>` : "") +
+      `<span class="vacia">${"☕".repeat(vacias)}</span></span>`;
+  }
+  function califHTML(a) {
+    const t = calif(a);
+    if (!t) return "";
+    return `<span class="calificacion">${tacitasHTML(t)}${Number(a.nota) > 0 ? `<span class="nota">${a.nota}/10</span>` : ""}</span>`;
   }
 
   // ====== PROYECCIÓN (igual que el dibujo del mapa) ======
   const LON0 = -67.35, LAT0 = 18.56, K = 1000, C = Math.cos(18.2 * Math.PI / 180);
   const aXY = (lon, lat) => ({ x: (lon - LON0) * K * C, y: (LAT0 - lat) * K });
-  const aLonLat = (x, y) => ({ lon: x / (K * C) + LON0, lat: LAT0 - y / K });
-  // Zonas que se pueden acercar. En "Toda la isla", sus aventuras salen agrupadas en una etiqueta.
+  // Zonas que se pueden acercar. En "Toda la isla", sus lugares salen agrupados en una etiqueta.
   // etiqueta: latitud donde va esa etiqueta (encima de los pines).
   const ZONAS = {
     sj: { nombre: "San Juan", lon0: -66.185, lat0: 18.505, lon1: -65.985, lat1: 18.345, etiqueta: 18.545 },
-    caguas: { nombre: "Caguas", lon0: -66.105, lat0: 18.285, lon1: -65.995, lat1: 18.195, etiqueta: 18.30 },
+    caguas: { nombre: "Caguas", lon0: -66.075, lat0: 18.258, lon1: -66.008, lat1: 18.214, etiqueta: 18.30 },
   };
   const enCaja = (z, lon, lat) => lon >= z.lon0 && lon <= z.lon1 && lat <= z.lat0 && lat >= z.lat1;
   const zonaDe = (lon, lat) => Object.keys(ZONAS).find(k => enCaja(ZONAS[k], lon, lat)) || null;
@@ -831,21 +844,16 @@
   Object.entries(ZONAS).forEach(([k, z]) => { VISTAS[k] = cajaDe(z.lon0, z.lat0, z.lon1, z.lat1); });
   const tieneCoords = a => !a.secreto && typeof a.lat === "number" && typeof a.lon === "number" && isFinite(a.lat) && isFinite(a.lon);
 
-  // ====== DATOS COMBINADOS (aventuras + las guardadas en Firebase) ======
-  let PROPUESTAS = [], COMENTARIOS = [];
-  let AV = [], DES = [];
+  // ====== DATOS: lugares en orden cronológico y agrupados por día ======
+  let AV = [], DES = [], DIAS = [];
   function prepararDatos() {
-    const base = lista(AVENTURAS).filter(a => a && a.nombre);
-    const extra = PROPUESTAS.map(p => ({
-      id: "fb-" + p.id, fbId: p.id, emoji: p.emoji, nombre: esc(p.nombre), lugar: esc(p.lugar), fecha: p.fecha,
-      lat: p.lat, lon: p.lon, texto: esc(p.texto).replace(/\n/g, "<br>"), tacitas: p.tacitas, propuesta: true, autor: p.autor,
-    }));
-    const todas = [...base, ...extra].map((a, i) => ({ ...a, orden: i }));
-    // Orden cronológico: primero las que tienen fecha; las que no, en el orden de la lista
+    const todas = lista(AVENTURAS).filter(a => a && a.nombre).map((a, i) => ({ ...a, orden: i }));
+    // Orden: por fecha; el mismo día (o sin fecha), en el orden de la lista
     todas.sort((a, b) => {
       const fa = esFecha(a.fecha) ? a.fecha : "9999", fb = esFecha(b.fecha) ? b.fecha : "9999";
       return fa < fb ? -1 : fa > fb ? 1 : a.orden - b.orden;
     });
+    DIAS = [];
     AV = todas.map((a, i) => {
       const r = { ...a, n: i + 1, color: a.color || PALETA[i % PALETA.length], rot: typeof a.rot === "number" ? a.rot : GIROS[i % GIROS.length], conPin: tieneCoords(a) };
       if (r.conPin) {
@@ -853,6 +861,11 @@
         r.zonaMapa = a.zona && ZONAS[a.zona] ? a.zona : zonaDe(a.lon, a.lat);
         r.sj = r.zonaMapa === "sj";
       }
+      const clave = esFecha(a.fecha) ? a.fecha : "";
+      let dia = DIAS[DIAS.length - 1];
+      if (!dia || dia.fecha !== clave) { dia = { fecha: clave, n: DIAS.length + 1, lugares: [] }; DIAS.push(dia); }
+      dia.lugares.push(r);
+      r.dia = dia.n;
       return r;
     });
     DES = lista(CONFIG.DESEOS).filter(d => d && d.nombre).map((d, i) => {
@@ -861,10 +874,11 @@
       return r;
     });
   }
+  const tituloDia = d => `Día ${d.n}${d.fecha ? " · " + fechaCorta(d.fecha) : ""}`;
 
   // ====== MAPA ======
   const mapa = $("mapa"), svg = $("svg"), ruta = $("ruta"), rutaMascara = $("rutaMascara"), capaSJ = $("capaSJ");
-  let vistaActual = "isla", caja = null, pines = {}, grupos = {}, nuevoPin = null, marca = null;
+  let vistaActual = "isla", caja = null, pines = {}, grupos = {};
 
   function cajaPara(nombre) {
     const v = VISTAS[nombre];
@@ -875,13 +889,13 @@
     return { x: cx - w / 2, y: cy - h / 2, w, h };
   }
 
-  // Nombres de la zona de San Juan (solo se ven al acercar)
+  // Nombres de las zonas (solo se ven al acercar)
   [
     ["Bahía de San Juan", -66.118, 18.441, "mar"], ["Laguna San José", -66.032, 18.4235, "mar"],
     ["Océano Atlántico", -66.07, 18.50, "mar"], ["Condado", -66.066, 18.449, "tierra-txt"],
     ["Santurce", -66.06, 18.437, "tierra-txt"], ["Carolina", -65.995, 18.41, "tierra-txt"],
     ["Bayamón", -66.16, 18.376, "tierra-txt"], ["Cupey", -66.055, 18.356, "tierra-txt"], ["Guaynabo", -66.111, 18.349, "tierra-txt"],
-    ["Caguas", -66.035, 18.215, "tierra-txt"],
+    ["Caguas", -66.030, 18.2235, "tierra-txt"],
   ].forEach(([txt, lon, lat, tipo]) => {
     const p = aXY(lon, lat), t = document.createElementNS("http://www.w3.org/2000/svg", "text");
     t.setAttribute("class", "rotulo-sj " + tipo);
@@ -893,7 +907,7 @@
   });
 
   function construirPines() {
-    mapa.querySelectorAll(".pin:not(.nuevo)").forEach(p => p.remove());
+    mapa.querySelectorAll(".pin").forEach(p => p.remove());
     pines = {};
     const crear = (a, clase, alTocar) => {
       const b = document.createElement("button");
@@ -901,28 +915,28 @@
       if (a.color) b.style.setProperty("--color", a.color);
       b.setAttribute("aria-label", a.deseo ? `Por visitar: ${textoPlano(a.nombre)}` : textoPlano(a.nombre));
       b.innerHTML = `<span class="gota"></span><span class="ico" aria-hidden="true">${a.emoji || "📍"}</span>`;
-      b.addEventListener("click", e => { e.stopPropagation(); if (!marcando) alTocar(); });
+      b.addEventListener("click", e => { e.stopPropagation(); alTocar(); });
       mapa.appendChild(b);
       pines[a.id] = b;
     };
     DES.filter(d => d.conPin).forEach(d => crear(d, "deseo", () => verDeseo(d.id)));
-    AV.filter(a => a.conPin).forEach(a => crear(a, a.propuesta ? "propuesta" : "", () => seleccionar(a.id, true)));
+    AV.filter(a => a.conPin).forEach(a => crear(a, "", () => seleccionar(a.id, true)));
 
-    // Una etiqueta por zona con 2 o más aventuras (los pines están muy juntos). Va encima, para no tapar otros pines
+    // Una etiqueta por zona con 2 o más lugares (los pines están muy juntos). Va encima, para no tapar otros pines
     grupos = {};
     Object.entries(ZONAS).forEach(([k, z]) => {
       const de = AV.filter(a => a.conPin && a.zonaMapa === k);
       if (de.length < 2) return;
       const g = document.createElement("button");
       g.className = "pin grupo";
-      g.setAttribute("aria-label", `Zona de ${z.nombre}: ${de.length} aventuras. Toca para acercar.`);
+      g.setAttribute("aria-label", `Zona de ${z.nombre}: ${de.length} lugares. Toca para acercar.`);
       g.innerHTML = `<span>${z.nombre} · ${de.length}</span>`;
       g.addEventListener("click", e => { e.stopPropagation(); cambiarVista(k); });
       mapa.appendChild(g);
       grupos[k] = { el: g, x: de.reduce((s, a) => s + a.x, 0) / de.length, y: aXY(0, z.etiqueta).y };
     });
 
-    // Ruta: curvas suaves entre aventuras, en orden de fecha
+    // Ruta: curvas suaves entre lugares, en orden cronológico
     const enMapa = AV.filter(a => a.conPin);
     let d = "";
     enMapa.forEach((a, i) => {
@@ -946,24 +960,38 @@
     if (!(caja.w > 0 && caja.h > 0)) return;
     svg.setAttribute("viewBox", `${caja.x} ${caja.y} ${caja.w} ${caja.h}`);
     capaSJ.style.opacity = Math.max(0, Math.min(1, (900 - caja.w) / 400));
+    const W = mapa.clientWidth || 1, H = mapa.clientHeight || 1;
     const pos = (x, y) => [((x - caja.x) / caja.w) * 100, ((y - caja.y) / caja.h) * 100];
     const agrupar = vistaActual === "isla";
+    const visibles = [];
     [...AV, ...DES].filter(a => a.conPin).forEach(a => {
       const p = pines[a.id]; if (!p) return;
       const [l, t] = pos(a.x, a.y);
       const fuera = l < -5 || l > 105 || t < -5 || t > 110;
       p.hidden = fuera || (agrupar && !a.deseo && !!grupos[a.zonaMapa]);
-      p.style.left = l + "%"; p.style.top = t + "%";
+      if (p.hidden) { p.style.left = l + "%"; p.style.top = t + "%"; }
+      else visibles.push({ p, x: l / 100 * W, y: t / 100 * H });
     });
+    // Pines encimados (mismo centro comercial, mismo pueblo...): se ponen en fila, uno al lado del otro,
+    // a la misma altura (así la punta sigue en tierra) para poder tocarlos todos
+    const usados = new Set();
+    visibles.forEach((v, i) => {
+      if (usados.has(i)) return;
+      const g = [v]; usados.add(i);
+      for (let j = i + 1; j < visibles.length; j++) {
+        if (!usados.has(j) && g.some(w => Math.hypot(visibles[j].x - w.x, visibles[j].y - w.y) < 34)) { g.push(visibles[j]); usados.add(j); }
+      }
+      if (g.length < 2) return;
+      const cx = g.reduce((s, w) => s + w.x, 0) / g.length, cy = g.reduce((s, w) => s + w.y, 0) / g.length;
+      g.sort((a, b) => a.x - b.x);
+      g.forEach((w, k) => { w.x = cx + (k - (g.length - 1) / 2) * 36; w.y = cy; });
+    });
+    visibles.forEach(v => { v.p.style.left = (v.x / W * 100) + "%"; v.p.style.top = (v.y / H * 100) + "%"; });
     Object.values(grupos).forEach(g => {
       const [gl, gt] = pos(g.x, g.y);
       g.el.hidden = !agrupar;
       g.el.style.left = gl + "%"; g.el.style.top = gt + "%";
     });
-    if (nuevoPin && marca) {
-      const q = aXY(marca.lon, marca.lat), [l, t] = pos(q.x, q.y);
-      nuevoPin.style.left = l + "%"; nuevoPin.style.top = t + "%";
-    }
   }
 
   let animando = null;
@@ -998,7 +1026,6 @@
     const a = AV[actual];
     Object.values(pines).forEach(p => p.classList.remove("activo"));
     if (pines[a.id]) {
-      // si está en San Juan y estamos viendo toda la isla, acercamos
       // si está en una zona agrupada, acercamos a esa zona; si no, volvemos a toda la isla
       const destino = grupos[a.zonaMapa] ? a.zonaMapa : (a.zonaMapa === vistaActual ? vistaActual : "isla");
       if (destino !== vistaActual) cambiarVista(destino);
@@ -1006,32 +1033,25 @@
       pines[a.id].classList.add("activo");
     }
     const ubic = a.lugar ? `📍 ${a.lugar}` : "📍 Sin pin en el mapa (todavía)";
-    const fecha = fechaBonita(a.fecha);
+    const dia = DIAS[a.dia - 1];
     const guia = textoPlano(a.versionGuia).trim() ? a.versionGuia : "";
     detalle.innerHTML = `
-      <div class="num">Parada ${a.n}${fecha ? " · " + fecha : ""}</div>
+      <div class="num">${dia ? tituloDia(dia) : "Parada " + a.n}</div>
       <h3>${a.emoji || "📍"} ${a.nombre}</h3>
       <div class="lugar">${ubic}</div>
-      ${a.propuesta ? `<span class="etiqueta-chica dorada">${a.autor === "turista" ? "Añadida por el turista" : "Propuesta por la guía"} 💙</span>` : ""}
       ${guia ? `<p class="quien" id="quien">${verGuia ? "La versión de la guía 💙" : "La versión del turista ☕"}</p>` : ""}
       <p class="texto${verGuia && guia ? " guia" : ""}" id="det-texto">${verGuia && guia ? guia : a.texto}</p>
-      ${tacitasHTML(a.tacitas)}
+      ${califHTML(a)}
       ${guia ? `<div class="fila" style="margin-top:12px"><button class="btn claro chico" id="b-version" aria-pressed="${verGuia}">${verGuia ? "Mi versión ☕" : "La versión de la guía 💙"}</button></div>` : ""}
-      <div class="comentarios" data-fb hidden>
-        <h4>Comentarios</h4>
-        <div id="coms-lista"></div>
-        <div id="coms-form"></div>
-      </div>
       <div class="pasos">
-        <button class="paso" data-mover="-1" aria-label="Aventura anterior">◀<span class="txt"> Anterior</span></button>
+        <button class="paso" data-mover="-1" aria-label="Lugar anterior">◀<span class="txt"> Anterior</span></button>
         <span class="contador">${actual + 1} de ${AV.length}</span>
-        <button class="paso" data-mover="1" aria-label="Aventura siguiente"><span class="txt">Siguiente </span>▶</button>
+        <button class="paso" data-mover="1" aria-label="Lugar siguiente"><span class="txt">Siguiente </span>▶</button>
       </div>`;
     detalle.classList.remove("entra"); void detalle.offsetWidth; detalle.classList.add("entra");
     detalle.querySelectorAll("[data-mover]").forEach(b => b.addEventListener("click", () => mover(Number(b.dataset.mover))));
     const bv = $("b-version");
     if (bv) bv.addEventListener("click", () => { verGuia = !verGuia; seleccionar(a.id); $("b-version") && $("b-version").focus(); });
-    if (FB) { detalle.querySelector(".comentarios").hidden = false; pintarComentarios(); }
     if (desdePin) vibrar(20);
   }
   const mover = d => { if (AV.length) seleccionar(AV[(actual + d + AV.length) % AV.length].id); };
@@ -1047,7 +1067,7 @@
       <h3>${d.emoji || "📍"} ${esc(d.nombre)}</h3>
       ${d.nota ? `<p class="texto">${esc(d.nota)}</p>` : ""}
       <span class="etiqueta-chica">Todavía no hemos ido ✈️</span>
-      <div class="pasos"><button class="paso" id="b-volver">◀ Volver a las aventuras</button></div>`;
+      <div class="pasos"><button class="paso" id="b-volver">◀ Volver a nuestros lugares</button></div>`;
     detalle.classList.remove("entra"); void detalle.offsetWidth; detalle.classList.add("entra");
     $("b-volver").addEventListener("click", () => AV.length && seleccionar(AV[actual].id));
   }
@@ -1061,10 +1081,9 @@
       const n = Math.floor((diaUTC(hoyPR()) - diaUTC(CONFIG.fechaInicio)) / 864e5) + 1;
       if (n > 0) { dias.innerHTML = `Día <b>${n.toLocaleString("es-PR")}</b> de aventuras`; dias.hidden = false; }
     }
-    const conPin = AV.filter(a => a.conPin).length;
     $("datos").innerHTML = `
-      <div class="dato"><b>${AV.length}</b><span>aventuras</span></div>
-      <div class="dato"><b>${conPin}</b><span>en el mapa</span></div>
+      <div class="dato"><b>${DIAS.length}</b><span>${DIAS.length === 1 ? "salida" : "salidas"}</span></div>
+      <div class="dato"><b>${AV.length}</b><span>lugares</span></div>
       <div class="dato"><b>${DES.length}</b><span>por visitar</span></div>
       <div class="dato"><b>1</b><span>turista sin GPS</span></div>`;
 
@@ -1134,37 +1153,56 @@
     requestAnimationFrame(cuadro);
   }
 
-  // ====== LÍNEA DE TIEMPO ======
+  // ====== LÍNEA DE TIEMPO (por días) ======
+  const DIAS_VISIBLES = 4;
+  let verTodos = false;
   function pintarLinea() {
-    const cont = $("linea");
+    const cont = $("linea"), boton = $("b-todos");
+    const dias = verTodos ? DIAS : DIAS.slice(-DIAS_VISIBLES);
     cont.innerHTML = "";
-    AV.forEach(a => {
+    dias.forEach(d => {
       const art = document.createElement("article");
       art.className = "hito";
-      art.id = "hito-" + a.id;
-      art.style.setProperty("--color", a.color);
-      const fecha = fechaBonita(a.fecha);
-      const coms = COMENTARIOS.filter(c => c.aventuraId === a.id).length;
+      art.id = "dia-" + d.n;
+      art.style.setProperty("--color", d.lugares[0].color);
       art.innerHTML = `
-        <span class="punto" aria-hidden="true">${a.emoji || "📍"}</span>
+        <span class="punto" aria-hidden="true">${d.n}</span>
         <div class="tarjeta caja">
-          <div class="fecha">${fecha || "Parada " + a.n}</div>
-          <h3>${a.emoji || "📍"} ${a.nombre}</h3>
-          <div class="lugar">📍 ${a.lugar || "—"}</div>
-          ${a.propuesta ? `<span class="etiqueta-chica dorada">${a.autor === "turista" ? "Añadida por el turista" : "Propuesta por la guía"} 💙</span>` : ""}
-          <p class="texto">${a.texto || ""}</p>
-          <div class="pie">
-            <span>${tacitasHTML(a.tacitas)}${coms ? ` <span class="etiqueta-chica">💬 ${coms}</span>` : ""}</span>
-            <button class="enlace" data-ver="${esc(a.id)}">${a.conPin ? "Ver en el mapa →" : "Abrir la historia →"}</button>
-          </div>
+          ${d.fecha ? `<div class="fecha">${fechaEs(d.fecha, { weekday: "long" })}</div>` : ""}
+          <h3>${tituloDia(d)}</h3>
+          <div class="cuantos">${d.lugares.length} ${d.lugares.length === 1 ? "parada" : "paradas"}</div>
+          ${d.lugares.map(a => `
+            <div class="parada" id="hito-${esc(a.id)}">
+              <h4>${a.emoji || "📍"} ${a.nombre}</h4>
+              <div class="lugar">📍 ${a.lugar || "—"}</div>
+              <p class="texto">${a.texto || ""}</p>
+              <div class="pie">
+                <span>${califHTML(a)}</span>
+                ${a.conPin ? `<button class="enlace" data-ver="${esc(a.id)}">Ver en el mapa →</button>` : ""}
+              </div>
+            </div>`).join("")}
         </div>`;
       cont.appendChild(art);
     });
     cont.querySelectorAll("[data-ver]").forEach(b => b.addEventListener("click", () => verEnMapa(b.dataset.ver)));
+    boton.hidden = DIAS.length <= DIAS_VISIBLES;
+    boton.textContent = verTodos ? `Ver solo los últimos ${DIAS_VISIBLES} días` : `Ver todos los días (${DIAS.length})`;
+    boton.setAttribute("aria-expanded", String(verTodos));
   }
+  $("b-todos").addEventListener("click", () => {
+    verTodos = !verTodos;
+    pintarLinea();
+    if (!verTodos) scrollA($("tiempo-sec"));
+  });
 
   // ====== PASAPORTE ======
-  const tamNombre = (a) => { const l = textoPlano(a.nombre).length; return a.chico || l > 16 ? "9.5px" : l > 11 ? "10px" : "11px"; };
+  const tamNombre = (a) => { const l = textoPlano(a.nombre).length; return l > 16 ? "9.5px" : l > 11 ? "10px" : "11px"; };
+  function irAParada(id) {
+    if (!$("hito-" + id)) { verTodos = true; pintarLinea(); }
+    const e = $("hito-" + id);
+    scrollA(e, "center");
+    if (e) { e.classList.add("enfocado"); setTimeout(() => e.classList.remove("enfocado"), 2200); }
+  }
   function pintarPasaporte() {
     const cont = $("sellos");
     cont.innerHTML = `<span class="hoja-titulo">Visitados · ${AV.length}</span>`;
@@ -1174,12 +1212,8 @@
       b.style.setProperty("--rot", a.rot + "deg");
       b.style.setProperty("--color", a.color);
       b.setAttribute("aria-label", `Sello: ${textoPlano(a.nombre)}. Ver su historia`);
-      b.innerHTML = `<span aria-hidden="true">${a.emoji || "📍"}</span><b style="--tam:${tamNombre(a)}">${a.nombre}</b>${tacitasHTML(a.tacitas, "tac") || ""}<small>Visitado ✓</small>`;
-      b.addEventListener("click", () => {
-        const e = $("hito-" + a.id);
-        scrollA(e, "center");
-        if (e) { e.classList.add("enfocado"); setTimeout(() => e.classList.remove("enfocado"), 2200); }
-      });
+      b.innerHTML = `<span aria-hidden="true">${a.emoji || "📍"}</span><b style="--tam:${tamNombre(a)}">${a.nombre}</b>${tacitasHTML(calif(a), "tac")}<small>Visitado ✓</small>`;
+      b.addEventListener("click", () => irAParada(a.id));
       cont.appendChild(b);
     });
 
@@ -1200,7 +1234,15 @@
     });
   }
 
-  // ====== CAFÉS ======
+  // ====== LA GUÍA Y SU CAFÉ: perfil, cafés y ranking de smash ======
+  function pintarPerfil() {
+    $("guia-nombre").textContent = CONFIG.nombreGuia || "Valeria";
+    $("guia-datos").innerHTML = [
+      CONFIG.cafeFavorito ? `<div class="fila-dato"><b>☕ Su café:</b><span>${esc(CONFIG.cafeFavorito)}</span></div>` : "",
+      CONFIG.datoBonito ? `<div class="fila-dato"><b>💙 Dato:</b><span>${esc(CONFIG.datoBonito)}</span></div>` : "",
+    ].join("");
+  }
+
   function pintarCafes() {
     const cafes = lista(CONFIG.CAFES).filter(c => c && c.nombre);
     const cont = $("cafes");
@@ -1210,9 +1252,10 @@
         <div>
           <h3>${esc(c.nombre)}</h3>
           ${c.lugar ? `<div class="lugar">📍 ${esc(c.lugar)}</div>` : ""}
-          ${tacitasHTML(c.tacitas)}
+          ${califHTML(c)}
+          ${c.etiqueta ? `<div><span class="etiqueta-chica dorada">${esc(c.etiqueta)}</span></div>` : ""}
         </div>
-        <div class="estampa${c.muestra ? " muestra" : ""}" style="--rot:${GIROS[i % 8]}deg; --color:${PALETA[(i + 1) % PALETA.length]}" aria-hidden="true"><span>☕</span><b></b><small>Probado</small></div>
+        <div class="estampa" style="--rot:${GIROS[i % 8]}deg; --color:${PALETA[(i + 1) % PALETA.length]}" aria-hidden="true"><span>☕</span><b></b><small>Probado</small></div>
         <dl>
           ${c.pidioGuia ? `<dt>La guía</dt><dd>${esc(c.pidioGuia)}</dd>` : ""}
           ${c.pidioTurista ? `<dt>El turista</dt><dd>${esc(c.pidioTurista)}</dd>` : ""}
@@ -1220,46 +1263,53 @@
       </article>`).join("");
   }
 
-  // ====== PERFIL DE LA GUÍA ======
-  function pintarPerfil() {
-    $("guia-nombre").textContent = CONFIG.nombreGuia || "Valeria";
-    $("guia-datos").innerHTML = [
-      CONFIG.cafeFavorito ? `<div class="fila-dato"><b>☕ Su café:</b><span>${esc(CONFIG.cafeFavorito)}</span></div>` : "",
-      CONFIG.datoBonito ? `<div class="fila-dato"><b>💙 Dato:</b><span>${esc(CONFIG.datoBonito)}</span></div>` : "",
-    ].join("");
+  function pintarRanking() {
+    const filas = lista(CONFIG.RANKING_SMASH).filter(r => r && r.nombre && Number(r.nota) > 0).sort((a, b) => b.nota - a.nota);
+    $("ranking-cont").hidden = !filas.length;
+    if (!filas.length) return;
+    $("ranking").innerHTML = `<ol>${filas.map((r, i) => `
+      <li>
+        <span class="puesto" aria-hidden="true">${i + 1}</span>
+        <div><b>${esc(r.nombre)}</b>${r.lugar ? `<span>${esc(r.lugar)}</span>` : ""}</div>
+        <span class="calif"><span class="sr">Nota de la guía: </span>${r.nota}/10</span>
+      </li>`).join("")}</ol>
+      ${CONFIG.notaRanking ? `<p class="nota-pie">${esc(CONFIG.notaRanking)}</p>` : ""}`;
   }
 
-  // ====== LOGROS (se calculan solos) ======
+  // ====== LOGROS (se calculan solos; solo se ven los desbloqueados) ======
   function pintarLogros() {
-    const cafes = lista(CONFIG.CAFES).filter(c => c && c.nombre && !c.muestra);
+    const cafes = lista(CONFIG.CAFES).filter(c => c && c.nombre);
     const tiene = palabra => AV.some(a => minus(a.nombre + " " + a.lugar + " " + a.texto).includes(palabra));
-    const dias = esFecha(CONFIG.fechaInicio) ? Math.floor((diaUTC(hoyPR()) - diaUTC(CONFIG.fechaInicio)) / 864e5) + 1 : 0;
+    const fue = id => AV.some(a => a.id === id);
     const LOGROS = [
       { e: "🧭", n: "Primera aventura", d: "El turista siguió a la guía por primera vez.", ok: AV.length >= 1 },
       { e: "🏖️", n: "Primera playa", d: "Arena, mar y cero llaves perdidas (casi).", ok: tiene("playa") },
-      { e: "🖐️", n: "5 aventuras", d: "Cinco sellos en el pasaporte.", ok: AV.length >= 5 },
-      { e: "🔟", n: "10 aventuras", d: "Diez historias juntos.", ok: AV.length >= 10 },
+      { e: "🖐️", n: "5 lugares", d: "Cinco sellos en el pasaporte.", ok: AV.length >= 5 },
+      { e: "🔟", n: "10 lugares", d: "Diez lugares juntos.", ok: AV.length >= 10 },
+      { e: "🗺️", n: "20 lugares", d: "Veinte pines y contando.", ok: AV.length >= 20 },
+      { e: "🏃", n: "Día maratón", d: "Cuatro o más lugares en un solo día.", ok: DIAS.some(d => d.lugares.length >= 4) },
+      { e: "🎓", n: "Donde todo empezó", d: "Volvieron a la UAGM de Cupey, donde se conocieron.", ok: fue("uagm") },
+      { e: "💙", n: "Primer beso", d: "El estacionamiento de Qdoba ya es histórico.", ok: fue("qdoba") },
+      { e: "🍔", n: "Ruta smash", d: "Probaron tres sitios de smash burgers.", ok: AV.filter(a => a.smash).length >= 3 },
       { e: "🤡", n: "Sobrevivió a los payasos", d: "La guía fue la valiente.", ok: tiene("payaso") },
       { e: "☕", n: "Primer café juntos", d: "El primer sello del pasaporte cafetero.", ok: cafes.length >= 1 },
-      { e: "🌱", n: "Cazadores de haciendas", d: "Visitaron una hacienda de café.", ok: tiene("hacienda") || cafes.some(c => minus(c.nombre + " " + c.lugar).includes("hacienda")) },
+      { e: "🫘", n: "Cafeteros de verdad", d: "Tres cafeterías probadas.", ok: cafes.length >= 3 },
       { e: "🌙", n: "Bajo la luna", d: "Una aventura de noche.", ok: tiene("luna") || tiene("noche") },
       { e: "🚗", n: "Fuera del área metro", d: "Salieron de San Juan y alrededores.", ok: AV.some(a => a.conPin && !a.sj) },
+      { e: "🌱", n: "Cazadores de haciendas", d: "Visitaron una hacienda de café.", ok: tiene("hacienda") || cafes.some(c => minus(c.nombre + " " + c.lugar).includes("hacienda")) },
       { e: "🏝️", n: "Isla nena", d: "Llegaron a Culebra o Vieques.", ok: tiene("culebra") || tiene("vieques") },
-      { e: "🫘", n: "Cafeteros de verdad", d: "Cinco cafeterías probadas.", ok: cafes.length >= 5 },
-      { e: "📅", n: "Un mes de aventuras", d: "30 días siguiendo a la guía.", ok: dias >= 30 },
-      { e: "💙", n: "Un año de aventuras", d: "365 días y contando.", ok: dias >= 365 },
-      { e: "💬", n: "Diario a cuatro manos", d: "La guía propuso una aventura.", ok: AV.some(a => a.propuesta && a.autor !== "turista") },
     ];
-    const ganados = LOGROS.filter(l => l.ok).length;
-    $("progresoLogros").textContent = `${ganados} de ${LOGROS.length} desbloqueados`;
-    $("logros").innerHTML = LOGROS.map(l => `
-      <div class="tarjeta logro${l.ok ? "" : " bloqueado"}">
-        <span class="medalla" aria-hidden="true">${l.ok ? l.e : "🔒"}</span>
-        <div><b>${l.n}</b><span>${l.ok ? l.d : "Bloqueado · " + l.d}</span></div>
+    const ganados = LOGROS.filter(l => l.ok), faltan = LOGROS.length - ganados.length;
+    $("progresoLogros").textContent = `${ganados.length} ${ganados.length === 1 ? "desbloqueado" : "desbloqueados"}`;
+    $("logros").innerHTML = ganados.map(l => `
+      <div class="tarjeta logro">
+        <span class="medalla" aria-hidden="true">${l.e}</span>
+        <div><b>${l.n}</b><span>${l.d}</span></div>
       </div>`).join("");
+    $("porDescubrir").textContent = faltan ? `${faltan} ${faltan === 1 ? "logro" : "logros"} por descubrir 🔒` : "";
   }
 
-  function todo(seleccionId) {
+  function todo() {
     prepararDatos();
     construirPines();
     pintarEncabezado();
@@ -1267,9 +1317,9 @@
     pintarPasaporte();
     pintarLogros();
     cambiarVista(vistaActual, true);
-    const id = seleccionId && AV.some(a => a.id === seleccionId) ? seleccionId : null;
-    if (AV.length) seleccionar(id || AV[0].id);
-    if (!id) { Object.values(pines).forEach(p => p.classList.remove("activo")); cambiarVista("isla", true); }
+    if (AV.length) seleccionar(AV[0].id);
+    Object.values(pines).forEach(p => p.classList.remove("activo"));
+    cambiarVista("isla", true);
   }
 
   // ====== TURISTA ======
@@ -1379,217 +1429,14 @@
   $("cerrar-carta").addEventListener("click", () => dlg.close ? dlg.close() : dlg.removeAttribute("open"));
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
-  // ====== FIREBASE (comentarios y aventuras propuestas) ======
-  // Solo se carga si CONFIG.firebase tiene apiKey y projectId. Si algo falla, la página sigue normal.
-  let FB = null;
-  const CLAVE_MIEMBRO = "vh-miembro";
-  const esMiembroLocal = () => { try { return localStorage.getItem(CLAVE_MIEMBRO) === "1"; } catch (e) { return false; } };
-
-  async function iniciarFirebase() {
-    const cfg = CONFIG.firebase || {};
-    if (!cfg.apiKey || !cfg.projectId) return;
-    try {
-      const base = "https://www.gstatic.com/firebasejs/10.12.2/";
-      const [appMod, fs, au] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-firestore.js"), import(base + "firebase-auth.js")]);
-      const app = appMod.initializeApp(cfg);
-      FB = { fs, au, db: fs.getFirestore(app), auth: au.getAuth(app), miembro: false };
-      document.querySelectorAll("[data-fb]").forEach(e => e.hidden = false);
-      fs.onSnapshot(fs.query(fs.collection(FB.db, "comentarios"), fs.orderBy("creado")), snap => {
-        COMENTARIOS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        pintarComentarios(); pintarLinea();
-      }, e => console.warn("Comentarios:", e.message));
-      fs.onSnapshot(fs.collection(FB.db, "propuestas"), snap => {
-        PROPUESTAS = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p && p.nombre);
-        todo(idActual);
-      }, e => console.warn("Propuestas:", e.message));
-      au.onAuthStateChanged(FB.auth, async user => {
-        FB.miembro = false;
-        if (user) {
-          try { FB.miembro = (await fs.getDoc(fs.doc(FB.db, "miembros", user.uid))).exists(); } catch (e) { FB.miembro = false; }
-        }
-        pintarAcceso(); pintarComentarios();
-      });
-      if (esMiembroLocal()) au.signInAnonymously(FB.auth).catch(() => {});
-      pintarAcceso();
-      if (idActual) seleccionar(idActual);
-    } catch (e) {
-      FB = null;
-      document.querySelectorAll("[data-fb]").forEach(el => el.hidden = true);
-      console.warn("Firebase no disponible:", e);
-    }
-  }
-
-  async function unirse(codigo) {
-    const { au, fs } = FB;
-    const cred = FB.auth.currentUser ? { user: FB.auth.currentUser } : await au.signInAnonymously(FB.auth);
-    const ref = fs.doc(FB.db, "miembros", cred.user.uid);
-    try { if ((await fs.getDoc(ref)).exists()) return true; } catch (e) {}
-    await fs.setDoc(ref, { codigo, creado: fs.serverTimestamp() });
-    return true;
-  }
-
-  function formularioCodigo(cont, alEntrar) {
-    cont.innerHTML = `
-      <form class="fila" style="align-items:end">
-        <div class="campo" style="flex:1;min-width:180px">
-          <label for="cod-${cont.id}">Código secreto 🔑</label>
-          <input type="password" id="cod-${cont.id}" autocomplete="off" maxlength="80" required>
-        </div>
-        <button class="btn chico" type="submit">Entrar</button>
-        <span role="status" class="msg-error" style="flex-basis:100%"></span>
-      </form>`;
-    const f = cont.querySelector("form"), msg = cont.querySelector("[role=status]");
-    f.addEventListener("submit", async e => {
-      e.preventDefault();
-      const v = f.querySelector("input").value.trim();
-      if (!v) return;
-      msg.textContent = "";
-      try {
-        await unirse(v);
-        FB.miembro = true;
-        try { localStorage.setItem(CLAVE_MIEMBRO, "1"); } catch (er) {}
-        alEntrar && alEntrar();
-        pintarAcceso(); pintarComentarios();
-      } catch (er) { msg.textContent = "Ese no es el código. Inténtalo otra vez."; }
-    });
-  }
-
-  function pintarAcceso() {
-    if (!FB) return;
-    const acc = $("acceso"), form = $("form-prop");
-    if (FB.miembro) { acc.hidden = true; form.hidden = false; return; }
-    acc.hidden = false; form.hidden = true;
-    acc.innerHTML = `<p>Para escribir aquí hace falta el código secreto que solo saben la guía y el turista.</p><div id="acc-form"></div>`;
-    formularioCodigo($("acc-form"));
-  }
-
-  const nombreAutor = a => a === "turista" ? "El turista ☕" : "La guía 💙";
-  function pintarComentarios() {
-    const l = $("coms-lista"), f = $("coms-form");
-    if (!FB || !l || !idActual) return;
-    const mios = COMENTARIOS.filter(c => c.aventuraId === idActual);
-    l.innerHTML = mios.length ? mios.map(c => `
-      <div class="com">
-        <div class="meta"><span>${nombreAutor(c.autor)}${c.creado && c.creado.toDate ? " · " + c.creado.toDate().toLocaleDateString("es-PR", { day: "numeric", month: "short", timeZone: ZONA_HORARIA }) : ""}</span>
-        ${FB.miembro ? `<button data-borrar="${esc(c.id)}" aria-label="Borrar comentario">Borrar</button>` : ""}</div>
-        <div>${esc(c.texto).replace(/\n/g, "<br>")}</div>
-      </div>`).join("") : `<p class="vacio-com">Todavía no hay comentarios.</p>`;
-    l.querySelectorAll("[data-borrar]").forEach(b => b.addEventListener("click", async () => {
-      if (!confirm("¿Borrar este comentario?")) return;
-      try { await FB.fs.deleteDoc(FB.fs.doc(FB.db, "comentarios", b.dataset.borrar)); } catch (e) { alert("No se pudo borrar."); }
-    }));
-    if (f.dataset.para === idActual + FB.miembro) return; // no borrar lo que se está escribiendo
-    f.dataset.para = idActual + FB.miembro;
-    if (!FB.miembro) {
-      f.innerHTML = `<button class="enlace" type="button">Escribir un comentario 🔑</button>`;
-      f.querySelector("button").addEventListener("click", () => formularioCodigo(f, () => { f.dataset.para = ""; }));
-      return;
-    }
-    f.innerHTML = `
-      <form class="com-form">
-        <label class="sr" for="com-texto">Tu comentario</label>
-        <textarea id="com-texto" class="entrada-txt" maxlength="500" placeholder="Escribe un recuerdo de este lugar..." required></textarea>
-        <div class="fila">
-          <select id="com-autor" class="entrada-txt" style="width:auto" aria-label="¿Quién escribe?">
-            <option value="guia">Soy la guía 💙</option><option value="turista">Soy el turista ☕</option>
-          </select>
-          <button class="btn chico" type="submit">Comentar</button>
-          <span role="status" class="msg-error"></span>
-        </div>
-      </form>`;
-    try { const q = localStorage.getItem("vh-autor"); if (q) f.querySelector("select").value = q; } catch (e) {}
-    const form = f.querySelector("form");
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const texto = form.querySelector("textarea").value.trim(), autor = form.querySelector("select").value;
-      if (!texto) return;
-      try { localStorage.setItem("vh-autor", autor); } catch (er) {}
-      try {
-        await FB.fs.addDoc(FB.fs.collection(FB.db, "comentarios"), { aventuraId: idActual, autor, texto: texto.slice(0, 500), creado: FB.fs.serverTimestamp() });
-        form.querySelector("textarea").value = "";
-      } catch (er) { form.querySelector("[role=status]").textContent = "No se pudo guardar. Revisa la conexión."; }
-    });
-  }
-
-  // Formulario de proponer aventura
-  const EMOJIS = ["☕", "🏖️", "🌊", "⛰️", "🌿", "🍦", "🍽️", "🎢", "🎳", "🎬", "🎶", "🏛️", "🌅", "📸", "💙"];
-  let pEmoji = "☕", pTacitas = 0, pAutor = "guia", marcando = false;
-  function opciones(cont, valores, actual, etiqueta, alCambiar) {
-    cont.innerHTML = "";
-    valores.forEach(([valor, texto]) => {
-      const b = document.createElement("button");
-      b.type = "button"; b.textContent = texto; b.setAttribute("aria-pressed", String(valor === actual));
-      b.setAttribute("aria-label", etiqueta(valor));
-      b.addEventListener("click", () => { cont.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); alCambiar(valor); });
-      cont.appendChild(b);
-    });
-  }
-  opciones($("p-autor"), [["guia", "La guía 💙"], ["turista", "El turista ☕"]], pAutor, v => v === "guia" ? "La guía" : "El turista", v => pAutor = v);
-  opciones($("p-emojis"), EMOJIS.map(e => [e, e]), pEmoji, v => "Emoji " + v, v => { pEmoji = v; if (nuevoPin) nuevoPin.querySelector(".ico").textContent = v; });
-  opciones($("p-tacitas"), [1, 2, 3, 4, 5].map(n => [n, "☕".repeat(n)]), 0, n => `${n} de 5 tacitas`, v => pTacitas = v);
-
-  function ponerMarca(lat, lon) {
-    marca = { lat: Math.round(lat * 10000) / 10000, lon: Math.round(lon * 10000) / 10000 };
-    if (!nuevoPin) {
-      nuevoPin = document.createElement("div");
-      nuevoPin.className = "pin nuevo";
-      nuevoPin.innerHTML = `<span class="gota"></span><span class="ico"></span>`;
-      mapa.appendChild(nuevoPin);
-    }
-    nuevoPin.querySelector(".ico").textContent = pEmoji;
-    $("ubic-estado").textContent = `✓ Pin listo (${marca.lat}, ${marca.lon})`;
-    pintar();
-  }
-  function salirMarcar() { marcando = false; mapa.classList.remove("marcando"); const av = mapa.querySelector(".aviso-marcar"); if (av) av.remove(); }
-  $("b-marcar").addEventListener("click", () => {
-    marcando = true; mapa.classList.add("marcando");
-    if (!mapa.querySelector(".aviso-marcar")) {
-      const av = document.createElement("div"); av.className = "aviso-marcar"; av.textContent = "Toca el lugar exacto en el mapa";
-      mapa.appendChild(av);
-    }
-    scrollA($("mapa-sec"));
-  });
-  mapa.addEventListener("click", e => {
-    if (!marcando) return;
-    const r = mapa.getBoundingClientRect();
-    const x = caja.x + (e.clientX - r.left) / r.width * caja.w, y = caja.y + (e.clientY - r.top) / r.height * caja.h;
-    const { lon, lat } = aLonLat(x, y);
-    ponerMarca(lat, lon); salirMarcar(); vibrar(20);
-    setTimeout(() => scrollA($("proponer-sec")), 500);
-  });
-  $("p-coords").addEventListener("input", e => {
-    const m = e.target.value.match(/(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/);
-    if (m) ponerMarca(Number(m[1]), Number(m[2]));
-  });
-  $("form-prop").addEventListener("submit", async e => {
-    e.preventDefault();
-    const msg = $("p-msg"), nombre = $("p-nombre").value.trim(), texto = $("p-texto").value.trim();
-    if (!nombre || !texto) { msg.innerHTML = `<span class="msg-error">Falta ${!nombre ? "el lugar" : "la historia"}.</span>`; (!nombre ? $("p-nombre") : $("p-texto")).focus(); return; }
-    if (!FB || !FB.miembro) return;
-    const datos = { nombre: nombre.slice(0, 40), texto: texto.slice(0, 600), emoji: pEmoji, autor: pAutor, creado: FB.fs.serverTimestamp() };
-    const lugar = $("p-lugar").value.trim(), fecha = $("p-fecha").value;
-    if (lugar) datos.lugar = lugar.slice(0, 60);
-    if (esFecha(fecha)) datos.fecha = fecha;
-    if (pTacitas) datos.tacitas = pTacitas;
-    if (marca) { datos.lat = marca.lat; datos.lon = marca.lon; }
-    msg.innerHTML = `<span class="msg-ok">Guardando…</span>`;
-    try {
-      const ref = await FB.fs.addDoc(FB.fs.collection(FB.db, "propuestas"), datos);
-      $("form-prop").reset(); marca = null; $("ubic-estado").textContent = "";
-      if (nuevoPin) { nuevoPin.remove(); nuevoPin = null; }
-      msg.innerHTML = `<span class="msg-ok">✓ ¡Guardada! Ya está en el mapa y en la línea de tiempo.</span>`;
-      setTimeout(() => { if (AV.some(a => a.id === "fb-" + ref.id)) verEnMapa("fb-" + ref.id); }, 600);
-    } catch (er) { msg.innerHTML = `<span class="msg-error">No se pudo guardar. Revisa la conexión.</span>`; }
-  });
-
   // ====== ARRANQUE ======
   prepararCancion();
-  pintarCafes();
   pintarPerfil();
+  pintarCafes();
+  pintarRanking();
   todo();
   dibujarRuta();
   fechaEspecial();
-  iniciarFirebase();
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
     addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
   }
