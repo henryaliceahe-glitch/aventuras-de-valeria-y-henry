@@ -398,6 +398,8 @@
   .foto-btn { display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: 12px; overflow: hidden; cursor: zoom-in; box-shadow: var(--sombra); }
   .foto-btn img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform .3s; }
   .foto-btn:hover img { transform: scale(1.03); }
+  .fotos-dia figure.ancha { width: min(420px, 100%); }
+  .fotos-dia figure.ancha .foto-btn img { aspect-ratio: 4 / 3; }
   .fotos-dia figcaption { font-size: 13px; color: var(--suave); margin-top: 6px; }
   dialog.visor { border: 0; padding: 12px; background: var(--crema); border-radius: 18px; max-width: min(560px, 94vw); margin: auto; box-shadow: var(--sombra-alta); color: var(--texto); }
   dialog.visor::backdrop { background: rgba(14, 26, 43, .75); backdrop-filter: blur(3px); }
@@ -789,6 +791,7 @@
       "2026-10-18": "Clasificado 🤫",
       "2026-10-19": "Estudio, llaves perdidas y tren",
       "2026-10-20": "La Malcriada",
+      "2026-10-23": "La acreditación 🎓",
     },
 
     // FOTOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -813,6 +816,10 @@
       "2026-10-19": [
         { foto: "fotos/2026-10-19-el-nido.jpg", texto: "El smash de El Nido: 8/10, el mejor hasta ahora 🍔",
           alt: "Hamburguesa smash con tocineta y papas fritas en una bandeja de cartón, con una tacita de kétchup" },
+      ],
+      "2026-10-23": [
+        { foto: "fotos/2026-10-23-acreditacion.webp", texto: "La acreditación de la Asociación de Finanzas y Economía 🎓",
+          alt: "Grupo de ocho personas en una tarima junto a un letrero de la Universidad Ana G. Méndez; uno sostiene un certificado" },
       ],
     },
 
@@ -1048,6 +1055,14 @@
       id: "malcriada", emoji: "🍔", nombre: "La Malcriada", lugar: "Cupey Bajo, San Juan", smash: true,
       lat: 18.3510, lon: -66.0560, zona: "sj", fecha: "2026-10-20", tipos: ["comida"], nota: 7, // VERIFICAR
       texto: "Otra smash burger, ahora en La Malcriada. Nota de la guía: 7/10. El Nido sigue ganando.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 11 · 23 de octubre ----------
+    {
+      id: "acreditacion", emoji: "🏅", nombre: "La acreditación", lugar: "Asociación de Finanzas y Economía · UAGM Cupey",
+      lat: 18.3606, lon: -66.0546, zona: "sj", fecha: "2026-10-23", tipos: ["especial"], // VERIFICAR (mismo punto que la UAGM)
+      texto: "La acreditación de la Asociación de Finanzas y Economía, en la UAGM de Cupey 🎓. Otra vez en el sitio donde empezó todo.",
       versionGuia: "",
     },
   ];
@@ -1686,6 +1701,11 @@
     </div>`;
   const visor = $("visor");
   function activarFotos(cont) {
+    // Las fotos horizontales se muestran completas y más anchas (no se recortan a vertical)
+    cont.querySelectorAll(".fotos-dia img").forEach(img => {
+      const marcar = () => { if (img.naturalWidth > img.naturalHeight) img.closest("figure").classList.add("ancha"); };
+      if (img.complete && img.naturalWidth) marcar(); else img.addEventListener("load", marcar, { once: true });
+    });
     cont.querySelectorAll("[data-foto]").forEach(b => b.addEventListener("click", () => {
       $("visor-img").src = b.dataset.foto;
       $("visor-img").alt = b.dataset.alt;
