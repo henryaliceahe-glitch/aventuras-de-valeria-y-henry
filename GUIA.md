@@ -52,6 +52,24 @@ Busca `TITULOS_DIAS` y añade una línea con la fecha y el título:
 
 Los lugares con la misma fecha salen juntos como un día ("Día 11 · 2 de noviembre — Cafecito en la montaña").
 
+## 4b. Añadir fotos a un día
+
+1. En GitHub, abre la carpeta `fotos` → **Add file → Upload files** → escoge la foto → **Commit changes**.
+   Ponle un nombre sencillo, sin espacios ni acentos, por ejemplo `2026-10-09-flores.jpg`.
+   (Si la foto es muy pesada, más de 1 MB, mándasela antes por WhatsApp a ti mismo y guárdala desde ahí: sale más liviana.)
+2. En `index.html`, busca `FOTOS_DIAS` y añade la fecha del día con su foto:
+
+```js
+"2026-10-09": [
+  { foto: "fotos/2026-10-09-flores.jpg", texto: "Las flores de ese día 💐" },
+],
+```
+
+Para varias fotos del mismo día, pon varias líneas `{ foto: ..., texto: ... },` dentro de los corchetes.
+Las fotos salen en la tarjeta de ese día en la línea de tiempo (y en "Un día como hoy") y se pueden tocar para verlas en grande.
+
+> Ojo: las fotos quedan públicas para quien tenga el link. Las fotos del iPhone pueden guardar la ubicación donde se tomaron; mandarlas por WhatsApp primero se la quita.
+
 ## 5. Pasar un deseo a visitado
 
 1. En `DESEOS`, busca el lugar (ej. Rincón) y **borra su línea**.

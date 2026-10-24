@@ -392,6 +392,20 @@
   .lista-cumulo button { text-align: left; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--texto); font-weight: 600; font-size: 15px; cursor: pointer; }
   .lista-cumulo button:hover, .lista-cumulo button:focus-visible { background: var(--azul-claro); }
 
+  /* ---------- Fotos de cada día ---------- */
+  .fotos-dia { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .fotos-dia figure { margin: 0; width: min(220px, 100%); }
+  .foto-btn { display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: 12px; overflow: hidden; cursor: zoom-in; box-shadow: var(--sombra); }
+  .foto-btn img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform .3s; }
+  .foto-btn:hover img { transform: scale(1.03); }
+  .fotos-dia figcaption { font-size: 13px; color: var(--suave); margin-top: 6px; }
+  dialog.visor { border: 0; padding: 12px; background: var(--crema); border-radius: 18px; max-width: min(560px, 94vw); margin: auto; box-shadow: var(--sombra-alta); color: var(--texto); }
+  dialog.visor::backdrop { background: rgba(14, 26, 43, .75); backdrop-filter: blur(3px); }
+  dialog.visor figure { margin: 0; }
+  dialog.visor img { width: 100%; max-height: 74vh; object-fit: contain; border-radius: 12px; }
+  dialog.visor figcaption { padding: 10px 4px 0; color: var(--suave); }
+  dialog.visor .btn { margin-top: 12px; width: 100%; }
+
   /* ---------- Títulos de los días, compartir ---------- */
   .titulo-dia { font-style: italic; font-weight: 500; color: var(--cafe); }
   .compartir { display: inline-flex; align-items: center; gap: 8px; }
@@ -715,6 +729,13 @@
     </div>
   </div>
 </dialog>
+<dialog class="visor" id="visor" aria-label="Foto en grande">
+  <figure>
+    <img id="visor-img" src="" alt="">
+    <figcaption id="visor-txt"></figcaption>
+  </figure>
+  <button class="btn" id="visor-cerrar" type="button">Cerrar</button>
+</dialog>
 <canvas id="confeti" aria-hidden="true" hidden></canvas>
 
 <script>
@@ -768,6 +789,15 @@
       "2026-10-18": "Clasificado 🤫",
       "2026-10-19": "Estudio, llaves perdidas y tren",
       "2026-10-20": "La Malcriada",
+    },
+
+    // FOTOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
+    // La foto se sube a la carpeta "fotos" del repositorio (mira GUIA.md).
+    FOTOS_DIAS: {
+      "2026-10-09": [
+        { foto: "fotos/2026-10-09-flores.jpg", texto: "Las flores de ese día 💐",
+          alt: "Ramo con un girasol, rosas rojas, un lirio y eucalipto, envuelto en papel kraft con una etiqueta de Pura Cepa" },
+      ],
     },
 
     // LISTA DE DESEOS: lugares a los que queremos ir. Salen en el mapa como pines
@@ -1116,7 +1146,10 @@
       const clave = esFecha(a.fecha) ? a.fecha : "";
       let dia = DIAS[DIAS.length - 1];
       if (!dia || dia.fecha !== clave) {
-        dia = { fecha: clave, n: DIAS.length + 1, titulo: (CONFIG.TITULOS_DIAS || {})[clave] || "", lugares: [] };
+        dia = {
+          fecha: clave, n: DIAS.length + 1, titulo: (CONFIG.TITULOS_DIAS || {})[clave] || "", lugares: [],
+          fotos: lista((CONFIG.FOTOS_DIAS || {})[clave]).filter(f => f && f.foto),
+        };
         DIAS.push(dia);
       }
       dia.lugares.push(r);
@@ -1525,10 +1558,12 @@
           <span class="ceja">📅 Un día como hoy, hace ${hace}...</span>
           <h3>${tituloDia(d)}${d.titulo ? `<span class="titulo-dia"> — ${esc(d.titulo)}</span>` : ""}</h3>
           <p>${d.lugares.map(a => `${a.emoji || "📍"} ${a.nombre}`).join(" · ")}</p>
+          ${fotosHTML(d)}
           <button class="enlace" data-ir-dia="${d.n}">Ver ese día →</button>
         </div>`;
     }).join("");
     cont.querySelectorAll("[data-ir-dia]").forEach(b => b.addEventListener("click", () => irADia(Number(b.dataset.irDia))));
+    activarFotos(cont);
   }
 
   function prepararCancion() {
@@ -1594,6 +1629,7 @@
           ${d.fecha ? `<div class="fecha">${fechaEs(d.fecha, { weekday: "long" })}</div>` : ""}
           <h3>${tituloDia(d)}${d.titulo ? `<span class="titulo-dia"> — ${esc(d.titulo)}</span>` : ""}</h3>
           <div class="cuantos">${plural(d.lugares.length, "parada", "paradas")}</div>
+          ${fotosHTML(d)}
           ${d.lugares.map(a => `
             <div class="parada" id="hito-${esc(a.id)}">
               <h4>${a.emoji || "📍"} ${a.nombre}</h4>
@@ -1612,6 +1648,7 @@
     });
     cont.querySelectorAll("[data-ver]").forEach(b => b.addEventListener("click", () => verEnMapa(b.dataset.ver)));
     activarCompartir(cont);
+    activarFotos(cont);
     boton.hidden = DIAS.length <= DIAS_VISIBLES;
     boton.textContent = verTodos ? `Ver solo los últimos ${DIAS_VISIBLES} días` : `Ver todos los días (${DIAS.length})`;
     boton.setAttribute("aria-expanded", String(verTodos));
@@ -1621,6 +1658,28 @@
     pintarLinea();
     if (!verTodos) scrollA($("tiempo-sec"));
   });
+  // ====== FOTOS DE CADA DÍA (se tocan para verlas en grande) ======
+  const fotosHTML = d => !d.fotos.length ? "" : `
+    <div class="fotos-dia">${d.fotos.map(f => `
+      <figure>
+        <button class="foto-btn" type="button" data-foto="${esc(f.foto)}" data-texto="${esc(f.texto || "")}" data-alt="${esc(f.alt || f.texto || "Foto del día")}" aria-label="Ver la foto en grande: ${esc(f.texto || f.alt || "foto del día")}">
+          <img src="${esc(f.foto)}" alt="${esc(f.alt || f.texto || "Foto del día")}" loading="lazy" decoding="async">
+        </button>
+        ${f.texto ? `<figcaption>${esc(f.texto)}</figcaption>` : ""}
+      </figure>`).join("")}
+    </div>`;
+  const visor = $("visor");
+  function activarFotos(cont) {
+    cont.querySelectorAll("[data-foto]").forEach(b => b.addEventListener("click", () => {
+      $("visor-img").src = b.dataset.foto;
+      $("visor-img").alt = b.dataset.alt;
+      $("visor-txt").textContent = b.dataset.texto;
+      if (typeof visor.showModal === "function") visor.showModal(); else visor.setAttribute("open", "");
+    }));
+  }
+  $("visor-cerrar").addEventListener("click", () => visor.close ? visor.close() : visor.removeAttribute("open"));
+  visor.addEventListener("click", e => { if (e.target === visor) visor.close(); });
+
   function irADia(n) {
     if (!$("dia-" + n)) { verTodos = true; pintarLinea(); }
     scrollA($("dia-" + n));
