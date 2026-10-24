@@ -70,6 +70,17 @@ Las fotos salen en la tarjeta de ese día en la línea de tiempo (y en "Un día 
 
 > Ojo: las fotos quedan públicas para quien tenga el link. Las fotos del iPhone pueden guardar la ubicación donde se tomaron; mandarlas por WhatsApp primero se la quita.
 
+## 4c. Añadir un lugar a "Lugares por descubrir"
+
+Busca `DESEOS` y añade una línea en la categoría que toque:
+
+```js
+{ nombre: "Nombre del sitio", emoji: "☕", lat: 18.4660, lon: -66.1160, tipos: ["cafe"], pueblo: "Viejo San Juan", nota: "Por qué queremos ir." },
+```
+
+Los `tipos` de la lista de deseos son: `"cafe"` (cafés y haciendas), `"playa"`, `"comida"`, `"diversion"` (go-karts y aventura) y `"paseo"` (turismo y naturaleza).
+En el mapa, el botón **por visitar** muestra u oculta todos estos pines.
+
 ## 5. Pasar un deseo a visitado
 
 1. En `DESEOS`, busca el lugar (ej. Rincón) y **borra su línea**.

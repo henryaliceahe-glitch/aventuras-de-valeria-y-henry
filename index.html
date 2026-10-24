@@ -392,6 +392,20 @@
   .lista-cumulo button { text-align: left; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--texto); font-weight: 600; font-size: 15px; cursor: pointer; }
   .lista-cumulo button:hover, .lista-cumulo button:focus-visible { background: var(--azul-claro); }
 
+  /* ---------- Lugares por descubrir ---------- */
+  .descubrir { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); margin-top: 6px; }
+  .deseo-card { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; padding: 16px; border-style: dashed; }
+  .deseo-card .e { font-size: 28px; line-height: 1; text-align: center; padding-top: 2px; }
+  .deseo-card h3 { font-family: var(--serif); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--tinta); }
+  .deseo-card .pueblo { font-size: 13px; font-weight: 700; color: var(--cafe); margin-top: 2px; }
+  .deseo-card .nota-deseo { font-size: 14.5px; color: var(--suave); margin-top: 4px; }
+  .deseo-card .enlace { min-height: 40px; padding: 6px 0 0; }
+  .mas-deseos { grid-column: 1 / -1; justify-self: center; font-weight: 700; color: var(--azul); padding: 10px; min-height: 44px; }
+  .ver-deseos { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--borde); background: transparent; color: var(--suave); font-size: 13px; font-weight: 700; cursor: pointer; }
+  .ver-deseos[aria-pressed="false"] { opacity: .55; text-decoration: line-through; }
+  .ver-deseos::after { content: ""; position: absolute; inset: -4px; }
+  .ver-deseos { position: relative; }
+
   /* ---------- Fotos de cada día ---------- */
   .fotos-dia { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
   .fotos-dia figure { margin: 0; width: min(220px, 100%); }
@@ -520,6 +534,7 @@
       <a href="#mapa-sec">Mapa</a>
       <a href="#tiempo-sec">Línea de tiempo</a>
       <a href="#pasaporte-sec">Pasaporte</a>
+      <a href="#descubrir-sec">Por descubrir</a>
       <a href="#cafes-sec">Cafés</a>
       <a href="#logros-sec">Logros</a>
     </nav>
@@ -572,7 +587,7 @@
               <button data-vista="sj" aria-pressed="false">San Juan</button>
               <button data-vista="caguas" aria-pressed="false">Caguas</button>
             </div>
-            <div class="leyenda" aria-hidden="true"><span><i class="l-ruta"></i>ruta</span><span><i class="l-deseo"></i>por visitar</span></div>
+            <div class="leyenda"><span aria-hidden="true"><i class="l-ruta"></i>ruta</span><button class="ver-deseos" id="b-deseos" type="button" aria-pressed="true"><i class="l-deseo" aria-hidden="true"></i>por visitar</button></div>
           </div>
           <div class="mapa" id="mapa">
             <svg id="svg" viewBox="0 0 2042 680" preserveAspectRatio="none" aria-hidden="true">
@@ -648,6 +663,18 @@
         <div class="hoja" id="sellos"></div>
         <div class="hoja" id="sellos-deseos"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="bloque" id="descubrir-sec" aria-labelledby="t-descubrir">
+    <div class="contenedor">
+      <div class="cabeza">
+        <div><span class="ceja">La lista de deseos</span><h2 id="t-descubrir">Lugares por descubrir</h2></div>
+        <p id="descubrir-resumen"></p>
+      </div>
+      <div class="filtros" id="descubrir-filtros" role="group" aria-label="Filtrar los lugares por descubrir"></div>
+      <div class="descubrir" id="descubrir"></div>
+      <div class="ver-todos"><button class="btn claro" id="b-descubrir" type="button" aria-expanded="false" aria-controls="descubrir" hidden></button></div>
     </div>
   </section>
 
@@ -828,13 +855,97 @@
     // transparentes y en el pasaporte como sellos "Por visitar".
     // CUANDO VISITEN UNO: bórrenlo de esta lista y copien sus datos (emoji, nombre,
     // lat, lon) a un bloque nuevo en AVENTURAS (más abajo), con su texto y su fecha.
+    // tipos: "cafe", "playa", "comida", "diversion" (go-karts y aventura), "paseo" (turismo y naturaleza).
+    // Las coordenadas son aproximadas (sirven para el pin); antes de ir, confirmen horario en Google Maps.
     DESEOS: [
-      { nombre: "El Yunque", emoji: "🌿", lat: 18.2950, lon: -65.7870, nota: "Bañarnos en una cascada y comer frituras de camino." },
-      { nombre: "Culebra", emoji: "🏝️", lat: 18.3297, lon: -65.3180, nota: "Playa Flamenco, la más bonita de la isla." },
-      { nombre: "Rincón", emoji: "🌅", lat: 18.3402, lon: -67.2499, nota: "Ver la puesta de sol en el oeste." },
-      { nombre: "Haciendas de café en Jayuya", emoji: "☕", lat: 18.2186, lon: -66.5916, nota: "Probar café recién tostado en la montaña." },
-      { nombre: "Haciendas de café en Yauco", emoji: "☕", lat: 18.0350, lon: -66.8499, nota: "El pueblo del café." },
-      { nombre: "Haciendas de café en Adjuntas", emoji: "☕", lat: 18.1627, lon: -66.7224, nota: "Montaña, neblina y cafecito." },
+      // Los primeros deseos
+      { nombre: "El Yunque", emoji: "🌿", lat: 18.2950, lon: -65.7870, tipos: ["paseo"], pueblo: "Río Grande", nota: "Bañarnos en una cascada y comer frituras de camino." },
+      { nombre: "Culebra", emoji: "🏝️", lat: 18.3297, lon: -65.3180, tipos: ["playa"], pueblo: "Culebra", nota: "Playa Flamenco, la más bonita de la isla." },
+      { nombre: "Rincón", emoji: "🌅", lat: 18.3402, lon: -67.2499, tipos: ["playa"], pueblo: "Rincón", nota: "Ver la puesta de sol en el oeste." },
+      { nombre: "Haciendas de café en Jayuya", emoji: "☕", lat: 18.2186, lon: -66.5916, tipos: ["cafe"], pueblo: "Jayuya", nota: "Probar café recién tostado en la montaña." },
+      { nombre: "Haciendas de café en Yauco", emoji: "☕", lat: 18.0350, lon: -66.8499, tipos: ["cafe"], pueblo: "Yauco", nota: "El pueblo del café." },
+      { nombre: "Haciendas de café en Adjuntas", emoji: "☕", lat: 18.1627, lon: -66.7224, tipos: ["cafe"], pueblo: "Adjuntas", nota: "Montaña, neblina y cafecito." },
+
+      // ☕ Coffee shops y haciendas (para seguir el ranking de café frío)
+      { nombre: "Café Cuatro Sombras", emoji: "☕", lat: 18.4660, lon: -66.1160, tipos: ["cafe"], pueblo: "Viejo San Juan", nota: "Tuestan su propio café ahí mismo." },
+      { nombre: "Café Don Ruiz", emoji: "☕", lat: 18.4675, lon: -66.1205, tipos: ["cafe"], pueblo: "Viejo San Juan", nota: "En el Cuartel de Ballajá, con café de su propia hacienda." },
+      { nombre: "Café Comunión", emoji: "☕", lat: 18.3990, lon: -66.0510, tipos: ["cafe"], pueblo: "Río Piedras", nota: "Café de especialidad, de los más queridos del área metro." },
+      { nombre: "Habitante Café", emoji: "☕", lat: 18.4470, lon: -66.0640, tipos: ["cafe"], pueblo: "Santurce", nota: "Barra de café de especialidad, ambiente tranquilo." },
+      { nombre: "Lavanda Café", emoji: "💜", lat: 18.4720, lon: -66.9390, tipos: ["cafe"], pueblo: "Quebradillas", nota: "Café bonito para una parada en el noroeste." },
+      { nombre: "787 Coffee", emoji: "☕", lat: 18.1800, lon: -66.9800, tipos: ["cafe"], pueblo: "Maricao", nota: "Café puertorriqueño de sus propias fincas en Maricao." },
+      { nombre: "Café Lareño", emoji: "☕", lat: 18.2950, lon: -66.8780, tipos: ["cafe"], pueblo: "Lares", nota: "Café cultivado a casi 4,000 pies de altura." },
+      { nombre: "Hacienda Lealtad", emoji: "🌱", lat: 18.2770, lon: -66.8480, tipos: ["cafe", "paseo"], pueblo: "Lares", nota: "Hacienda de los 1800 con café y restaurante con terraza." },
+      { nombre: "Hacienda San Pedro", emoji: "🌱", lat: 18.2230, lon: -66.5800, tipos: ["cafe", "paseo"], pueblo: "Jayuya", nota: "Tour por la finca y café con vista a los picos más altos." },
+      { nombre: "Hacienda Gripiñas", emoji: "🌱", lat: 18.2010, lon: -66.5640, tipos: ["cafe", "paseo"], pueblo: "Jayuya", nota: "Antigua hacienda cafetalera en la montaña." },
+      { nombre: "Hacienda Tres Ángeles", emoji: "🌱", lat: 18.1800, lon: -66.7600, tipos: ["cafe", "paseo"], pueblo: "Adjuntas", nota: "Café en la terraza con vista a la plantación." },
+      { nombre: "Café Bello", emoji: "🌱", lat: 18.1660, lon: -66.7300, tipos: ["cafe"], pueblo: "Adjuntas", nota: "Finca de café con tours en Adjuntas." },
+      { nombre: "Hacienda Iluminada", emoji: "🌱", lat: 18.1700, lon: -66.9600, tipos: ["cafe", "paseo"], pueblo: "Maricao", nota: "Caminata por la plantación (tour de unas 3 horas)." },
+      { nombre: "Hacienda Buena Vista", emoji: "🏛️", lat: 18.0640, lon: -66.6560, tipos: ["cafe", "paseo"], pueblo: "Ponce", nota: "Hacienda cafetalera histórica, con su maquinaria original." },
+
+      // 🌊 Playas
+      { nombre: "Playa Zoni", emoji: "🏝️", lat: 18.3280, lon: -65.2610, tipos: ["playa"], pueblo: "Culebra", nota: "La otra joya de Culebra, más tranquila que Flamenco." },
+      { nombre: "Playa La Chiva", emoji: "🏝️", lat: 18.1080, lon: -65.3900, tipos: ["playa"], pueblo: "Vieques", nota: "Agua turquesa en Vieques." },
+      { nombre: "Balneario Sun Bay", emoji: "🏖️", lat: 18.0950, lon: -65.4560, tipos: ["playa"], pueblo: "Vieques", nota: "Una bahía larguísima de arena blanca." },
+      { nombre: "Playa Negra", emoji: "🖤", lat: 18.1100, lon: -65.5130, tipos: ["playa"], pueblo: "Vieques", nota: "Arena negra volcánica." },
+      { nombre: "Balneario de Luquillo", emoji: "🏖️", lat: 18.3870, lon: -65.7250, tipos: ["playa"], pueblo: "Luquillo", nota: "La playa de las palmas, y al lado los kioskos." },
+      { nombre: "Playa Seven Seas", emoji: "🏖️", lat: 18.3700, lon: -65.6380, tipos: ["playa"], pueblo: "Fajardo", nota: "Agua calmadita, perfecta para flotar." },
+      { nombre: "Playa Escondida", emoji: "🤫", lat: 18.3760, lon: -65.6320, tipos: ["playa"], pueblo: "Fajardo", nota: "Se llega caminando desde Seven Seas." },
+      { nombre: "Playa Crash Boat", emoji: "🌊", lat: 18.4580, lon: -67.1650, tipos: ["playa"], pueblo: "Aguadilla", nota: "Agua cristalina y el muelle para tirarse." },
+      { nombre: "Playa Jobos", emoji: "🏄", lat: 18.5130, lon: -67.0770, tipos: ["playa"], pueblo: "Isabela", nota: "Surf, atardeceres y comida cerca." },
+      { nombre: "Playa Shacks", emoji: "🐠", lat: 18.5160, lon: -67.1010, tipos: ["playa"], pueblo: "Isabela", nota: "Para snorkel entre los arrecifes." },
+      { nombre: "Playa Sucia (La Playuela)", emoji: "🏝️", lat: 17.9370, lon: -67.1900, tipos: ["playa"], pueblo: "Cabo Rojo", nota: "Al lado del Faro y los acantilados." },
+      { nombre: "Playa Buyé", emoji: "🏖️", lat: 18.0560, lon: -67.2000, tipos: ["playa"], pueblo: "Cabo Rojo", nota: "Agua tranquila y transparente." },
+      { nombre: "Playa El Combate", emoji: "🌅", lat: 18.0090, lon: -67.2050, tipos: ["playa"], pueblo: "Cabo Rojo", nota: "Atardeceres del oeste." },
+      { nombre: "Balneario de Boquerón", emoji: "🏖️", lat: 18.0270, lon: -67.1740, tipos: ["playa"], pueblo: "Cabo Rojo", nota: "Playa y el poblado con ostiones al lado." },
+      { nombre: "Playa Steps", emoji: "🐢", lat: 18.3550, lon: -67.2600, tipos: ["playa"], pueblo: "Rincón", nota: "Snorkel en la reserva de Tres Palmas." },
+      { nombre: "Playa Mar Chiquita", emoji: "💎", lat: 18.4740, lon: -66.4850, tipos: ["playa"], pueblo: "Manatí", nota: "Una piscina natural entre rocas." },
+      { nombre: "Playa Cerro Gordo", emoji: "🏖️", lat: 18.4860, lon: -66.3400, tipos: ["playa"], pueblo: "Vega Alta", nota: "Balneario con arena dorada." },
+      { nombre: "Playa Puerto Nuevo", emoji: "🏖️", lat: 18.4920, lon: -66.3960, tipos: ["playa"], pueblo: "Vega Baja", nota: "Protegida por arrecife, agua calmada." },
+      { nombre: "Balneario Manuel Morales (Sardinera)", emoji: "🏖️", lat: 18.4750, lon: -66.2700, tipos: ["playa"], pueblo: "Dorado", nota: "Playa familiar en Dorado." },
+      { nombre: "Ocean Park", emoji: "🌊", lat: 18.4560, lon: -66.0520, tipos: ["playa"], pueblo: "San Juan", nota: "Playa del área metro para un atardecer rápido." },
+      { nombre: "Isla de Cabras", emoji: "🏰", lat: 18.4740, lon: -66.1380, tipos: ["playa", "paseo"], pueblo: "Toa Baja", nota: "Picnic con vista al Morro desde el otro lado." },
+      { nombre: "Piñones", emoji: "🌴", lat: 18.4430, lon: -65.9620, tipos: ["playa", "comida"], pueblo: "Loíza", nota: "Playa, ciclovía y alcapurrias de los kioskos." },
+      { nombre: "Isla Gilligan", emoji: "🛶", lat: 17.9440, lon: -66.8770, tipos: ["playa"], pueblo: "Guánica", nota: "Un cayo con mangles; se llega en lanchita." },
+      { nombre: "Playa Santa", emoji: "🏖️", lat: 17.9370, lon: -66.9550, tipos: ["playa"], pueblo: "Guánica", nota: "Agua calmada y kayaks." },
+      { nombre: "Playa Lucía", emoji: "🏖️", lat: 18.0430, lon: -65.8330, tipos: ["playa"], pueblo: "Yabucoa", nota: "Playa tranquila del sureste." },
+      { nombre: "Faro de Punta Tuna", emoji: "🗼", lat: 17.9900, lon: -65.8870, tipos: ["playa", "paseo"], pueblo: "Maunabo", nota: "Faro y playa al lado." },
+
+      // 🍽️ Comida
+      { nombre: "La Placita de Santurce", emoji: "🍹", lat: 18.4470, lon: -66.0660, tipos: ["comida"], pueblo: "Santurce", nota: "Comer y salir de noche en el corazón de Santurce." },
+      { nombre: "Lote 23", emoji: "🍔", lat: 18.4480, lon: -66.0590, tipos: ["comida"], pueblo: "Santurce", nota: "Food park con de todo un poco." },
+      { nombre: "Kioskos de Luquillo", emoji: "🥟", lat: 18.3850, lon: -65.7200, tipos: ["comida"], pueblo: "Luquillo", nota: "Decenas de kioskos frente a la playa." },
+      { nombre: "Lechoneras de Guavate", emoji: "🐖", lat: 18.1320, lon: -66.0780, tipos: ["comida"], pueblo: "Cayey", nota: "La Ruta del Lechón, con música los domingos." },
+      { nombre: "Malecón de Joyuda", emoji: "🦐", lat: 18.1200, lon: -67.1850, tipos: ["comida"], pueblo: "Cabo Rojo", nota: "Restaurantes de mariscos frente al mar." },
+      { nombre: "Paseo Tablado La Guancha", emoji: "🍦", lat: 17.9690, lon: -66.6170, tipos: ["comida", "paseo"], pueblo: "Ponce", nota: "Malecón con kioskos y helados." },
+      { nombre: "El Jibarito", emoji: "🍛", lat: 18.4650, lon: -66.1180, tipos: ["comida"], pueblo: "Viejo San Juan", nota: "Comida criolla clásica del Viejo San Juan." },
+
+      // 🏎️ Go-karts y aventura
+      { nombre: "K1 Speed Canóvanas", emoji: "🏎️", lat: 18.4030, lon: -65.8930, tipos: ["diversion"], pueblo: "Canóvanas", nota: "La otra pista de K1 Speed, en The Outlet 66 (Sector Sixty6)." },
+      { nombre: "Toro Verde", emoji: "🪂", lat: 18.2250, lon: -66.4180, tipos: ["diversion"], pueblo: "Orocovis", nota: "Ziplines gigantes entre montañas." },
+      { nombre: "Yunque Zipline", emoji: "🌿", lat: 18.3500, lon: -65.7500, tipos: ["diversion"], pueblo: "Luquillo", nota: "Ziplines al pie de El Yunque." },
+      { nombre: "Parque acuático Las Cascadas", emoji: "💦", lat: 18.4230, lon: -67.1500, tipos: ["diversion"], pueblo: "Aguadilla", nota: "Toboganes en el oeste (confirmar temporada)." },
+      { nombre: "Bahía bioluminiscente de Fajardo", emoji: "✨", lat: 18.3800, lon: -65.6290, tipos: ["diversion", "paseo"], pueblo: "Fajardo", nota: "Kayak de noche en la Laguna Grande." },
+      { nombre: "Bahía Mosquito", emoji: "✨", lat: 18.1030, lon: -65.4450, tipos: ["diversion", "paseo"], pueblo: "Vieques", nota: "La bahía bioluminiscente más brillante del mundo." },
+      { nombre: "La Parguera", emoji: "🚤", lat: 17.9730, lon: -67.0480, tipos: ["diversion", "paseo"], pueblo: "Lajas", nota: "Bahía bioluminiscente y cayos en lancha." },
+
+      // 🏛️ Turismo y naturaleza
+      { nombre: "Castillo San Felipe del Morro", emoji: "🏰", lat: 18.4710, lon: -66.1240, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "Chiringas en la grama y vista al mar." },
+      { nombre: "Castillo San Cristóbal", emoji: "🏰", lat: 18.4670, lon: -66.1110, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "El fuerte más grande de las Américas." },
+      { nombre: "Cueva Ventana", emoji: "🕳️", lat: 18.3740, lon: -66.6910, tipos: ["paseo"], pueblo: "Arecibo", nota: "Una cueva con ventana al valle del río." },
+      { nombre: "Cavernas del Río Camuy", emoji: "🦇", lat: 18.3410, lon: -66.8240, tipos: ["paseo"], pueblo: "Camuy", nota: "Uno de los sistemas de cuevas más grandes del mundo." },
+      { nombre: "Faro Los Morrillos", emoji: "🗼", lat: 17.9330, lon: -67.1920, tipos: ["paseo"], pueblo: "Cabo Rojo", nota: "Acantilados blancos al final de la isla." },
+      { nombre: "Charco Azul", emoji: "💧", lat: 18.0900, lon: -66.0400, tipos: ["paseo"], pueblo: "Patillas", nota: "Una poza en el Bosque de Carite." },
+      { nombre: "Gozalandia", emoji: "💦", lat: 18.3420, lon: -66.9800, tipos: ["paseo"], pueblo: "San Sebastián", nota: "Cascadas para bañarse." },
+      { nombre: "Cañón San Cristóbal", emoji: "⛰️", lat: 18.1800, lon: -66.3100, tipos: ["paseo"], pueblo: "Barranquitas", nota: "El cañón más profundo de la isla." },
+      { nombre: "Bosque Seco de Guánica", emoji: "🌵", lat: 17.9700, lon: -66.8700, tipos: ["paseo"], pueblo: "Guánica", nota: "Veredas con vista al Caribe." },
+      { nombre: "Castillo Serrallés", emoji: "🏛️", lat: 18.0160, lon: -66.6180, tipos: ["paseo"], pueblo: "Ponce", nota: "La casona del ron, con la Cruceta del Vigía al lado." },
+      { nombre: "Parque de Bombas", emoji: "🚒", lat: 18.0120, lon: -66.6140, tipos: ["paseo"], pueblo: "Ponce", nota: "La foto obligada en la plaza de Ponce." },
+      { nombre: "Bosque Toro Negro (Doña Juana)", emoji: "🌧️", lat: 18.1720, lon: -66.4920, tipos: ["paseo"], pueblo: "Orocovis", nota: "Cascada y bosque nublado." },
+      { nombre: "Las Cabezas de San Juan", emoji: "🗼", lat: 18.3800, lon: -65.6180, tipos: ["paseo"], pueblo: "Fajardo", nota: "Reserva natural con faro (con reservación)." },
+      { nombre: "Mirador Piedra Degetau", emoji: "🔭", lat: 18.1330, lon: -66.2610, tipos: ["paseo"], pueblo: "Aibonito", nota: "Mirador para ver medio Puerto Rico." },
+      { nombre: "Observatorio de Arecibo", emoji: "🔭", lat: 18.3440, lon: -66.7530, tipos: ["paseo"], pueblo: "Arecibo", nota: "Centro de ciencias donde estaba el radiotelescopio." },
+      { nombre: "Lago Dos Bocas", emoji: "⛴️", lat: 18.3330, lon: -66.6700, tipos: ["paseo", "comida"], pueblo: "Utuado", nota: "Lanchita gratis a los restaurantes del lago." },
+      { nombre: "Piedra Escrita", emoji: "🪨", lat: 18.2430, lon: -66.5480, tipos: ["paseo"], pueblo: "Jayuya", nota: "Petroglifos taínos en el río." },
     ],
 
     // PLANES para la ruleta "¿Qué hacemos hoy?" (además de la lista de deseos).
@@ -1244,7 +1355,9 @@
   const mapa = $("mapa"), svg = $("svg"), ruta = $("ruta"), rutaMascara = $("rutaMascara"), capaSJ = $("capaSJ");
   const tarjetaMapa = mapa.closest(".tarjeta-mapa");
   let vistaActual = "isla", caja = null, pines = {}, grupos = {}, cumulos = [], filtro = "todos";
-  const pasaFiltro = a => a.deseo ? filtro === "todos" : (filtro === "todos" || lista(a.tipos).includes(filtro));
+  let mostrarDeseos = true, idDeseo = null;
+  // Los pines de deseos solo salen en "Todos" (y si el botón "por visitar" está encendido)
+  const pasaFiltro = a => a.deseo ? (filtro === "todos" && mostrarDeseos) : (filtro === "todos" || lista(a.tipos).includes(filtro));
 
   function cajaPara(nombre) {
     const v = VISTAS[nombre];
@@ -1284,6 +1397,15 @@
     pintar();
   }
   contFiltros.addEventListener("click", e => { const b = e.target.closest("[data-filtro]"); if (b) ponerFiltro(b.dataset.filtro); });
+  // Botón "por visitar": muestra u oculta los pines de la lista de deseos
+  function ponerDeseos(si) {
+    mostrarDeseos = si;
+    $("b-deseos").setAttribute("aria-pressed", String(si));
+    $("b-deseos").setAttribute("aria-label", si ? "Ocultar los lugares por visitar del mapa" : "Mostrar los lugares por visitar en el mapa");
+    cerrarLista();
+    if (caja) pintar();
+  }
+  $("b-deseos").addEventListener("click", () => ponerDeseos(!mostrarDeseos));
 
   function construirPines() {
     mapa.querySelectorAll(".pin").forEach(p => p.remove());
@@ -1387,7 +1509,7 @@
       const html = `<span>${g[0].a.emoji || "📍"} ${g.length}</span>`;
       if (b.innerHTML !== html) b.innerHTML = html;
       b.setAttribute("aria-label", `${g.length} lugares juntos: ${g.map(v => textoPlano(v.a.nombre)).join(", ")}. Toca para elegir uno`);
-      b.classList.toggle("activo", g.some(v => v.a.id === idActual));
+      b.classList.toggle("activo", g.some(v => v.a.id === idActual || v.a.id === idDeseo));
     });
     for (let i = juntos.length; i < cumulos.length; i++) cumulos[i].hidden = true;
     Object.values(grupos).forEach(g => {
@@ -1467,7 +1589,7 @@
     const i = AV.findIndex(a => a.id === id);
     if (i < 0) return;
     if (id !== idActual) verGuia = false;
-    actual = i; idActual = id;
+    actual = i; idActual = id; idDeseo = null;
     const a = AV[actual];
     if (!pasaFiltro(a)) ponerFiltro("todos");
     Object.values(pines).forEach(p => p.classList.remove("activo"));
@@ -1512,10 +1634,11 @@
     if (!d) return;
     Object.values(pines).forEach(p => p.classList.remove("activo"));
     if (pines[id]) pines[id].classList.add("activo");
-    idActual = null;
+    idActual = null; idDeseo = id;
     detalle.innerHTML = `
       <div class="num">Lista de deseos · por visitar</div>
       <h3>${d.emoji || "📍"} ${esc(d.nombre)}</h3>
+      ${d.pueblo ? `<div class="lugar">📍 ${esc(d.pueblo)}</div>` : ""}
       ${d.nota ? `<p class="texto">${esc(d.nota)}</p>` : ""}
       <span class="etiqueta-chica">Todavía no hemos ido ✈️</span>
       <div class="pasos"><button class="paso" id="b-volver">◀ Volver a nuestros lugares</button></div>`;
@@ -1525,6 +1648,18 @@
   }
 
   function verEnMapa(id) { seleccionar(id); scrollA($("mapa-sec")); }
+
+  // Ver un deseo en el mapa: enciende sus pines, acerca a su zona y abre su tarjeta
+  function verDeseoEnMapa(id) {
+    const d = DES.find(x => x.id === id);
+    if (!d) return;
+    if (filtro !== "todos") ponerFiltro("todos");
+    if (!mostrarDeseos) ponerDeseos(true);
+    const destino = d.zonaMapa || "isla";
+    if (d.conPin && destino !== vistaActual) cambiarVista(destino);
+    verDeseo(id);
+    scrollA($("mapa-sec"));
+  }
 
   // Un enlace con #id (ej. #pergamino) abre esa aventura
   function abrirDesdeEnlace() {
@@ -1782,23 +1917,74 @@
       cont.appendChild(b);
     });
 
+    // En el pasaporte salen solo los primeros deseos; la lista completa está en "Lugares por descubrir"
+    const SELLOS_DESEOS = 12;
     const cd = $("sellos-deseos");
     cd.hidden = !DES.length;
     cd.innerHTML = `<span class="hoja-titulo">Por visitar · ${DES.length}</span>`;
-    DES.forEach(d => {
+    DES.slice(0, SELLOS_DESEOS).forEach(d => {
       const b = document.createElement("button");
       b.className = "estampa deseo";
       b.style.setProperty("--rot", d.rot + "deg");
       b.setAttribute("aria-label", `Por visitar: ${d.nombre}. Verlo en el mapa`);
       b.innerHTML = `<span aria-hidden="true">${d.emoji || "📍"}</span><b style="--tam:${tamNombre(d)}">${esc(d.nombre)}</b><small>Por visitar</small>`;
-      b.addEventListener("click", () => {
-        if (filtro !== "todos") ponerFiltro("todos");
-        if (d.conPin && vistaActual !== "isla" && d.zonaMapa !== vistaActual) cambiarVista("isla");
-        verDeseo(d.id); scrollA($("mapa-sec"));
-      });
+      b.addEventListener("click", () => verDeseoEnMapa(d.id));
       cd.appendChild(b);
     });
+    if (DES.length > SELLOS_DESEOS) {
+      const mas = document.createElement("a");
+      mas.className = "mas-deseos";
+      mas.href = "#descubrir-sec";
+      mas.textContent = `y ${DES.length - SELLOS_DESEOS} lugares más por descubrir →`;
+      cd.appendChild(mas);
+    }
   }
+
+  // ====== LUGARES POR DESCUBRIR (la lista de deseos completa, por categoría) ======
+  const CATEGORIAS_DESEOS = [
+    ["todos", "Todos"], ["cafe", "☕ Cafés y haciendas"], ["playa", "🌊 Playas"], ["comida", "🍽️ Comida"],
+    ["diversion", "🏎️ Go-karts y aventura"], ["paseo", "🏛️ Turismo y naturaleza"],
+  ];
+  const DESCUBRIR_VISIBLES = 12;
+  let categoriaDeseos = "todos", verTodosDeseos = false;
+  function pintarDescubrir() {
+    const sec = $("descubrir-sec");
+    sec.hidden = !DES.length;
+    if (!DES.length) return;
+    const cuenta = k => k === "todos" ? DES.length : DES.filter(d => lista(d.tipos).includes(k)).length;
+    $("descubrir-filtros").innerHTML = CATEGORIAS_DESEOS.filter(([k]) => cuenta(k))
+      .map(([k, t]) => `<button data-cat="${k}" aria-pressed="${k === categoriaDeseos}">${t} · ${cuenta(k)}</button>`).join("");
+    const pueblos = new Set(DES.map(d => d.pueblo).filter(Boolean));
+    $("descubrir-resumen").textContent = `${DES.length} lugares en ${pueblos.size} pueblos. Toquen uno para verlo en el mapa.`;
+    const todos = categoriaDeseos === "todos" ? DES : DES.filter(d => lista(d.tipos).includes(categoriaDeseos));
+    const lugares = verTodosDeseos ? todos : todos.slice(0, DESCUBRIR_VISIBLES);
+    $("descubrir").innerHTML = lugares.map(d => `
+      <article class="tarjeta deseo-card">
+        <span class="e" aria-hidden="true">${d.emoji || "📍"}</span>
+        <div>
+          <h3>${esc(d.nombre)}</h3>
+          ${d.pueblo ? `<p class="pueblo">📍 ${esc(d.pueblo)}</p>` : ""}
+          ${d.nota ? `<p class="nota-deseo">${esc(d.nota)}</p>` : ""}
+          ${d.conPin ? `<button class="enlace" data-deseo="${esc(d.id)}">Ver en el mapa →</button>` : ""}
+        </div>
+      </article>`).join("");
+    $("descubrir").querySelectorAll("[data-deseo]").forEach(b => b.addEventListener("click", () => verDeseoEnMapa(b.dataset.deseo)));
+    const boton = $("b-descubrir");
+    boton.hidden = todos.length <= DESCUBRIR_VISIBLES;
+    boton.textContent = verTodosDeseos ? "Ver menos" : `Ver los ${todos.length} lugares`;
+    boton.setAttribute("aria-expanded", String(verTodosDeseos));
+  }
+  $("descubrir-filtros").addEventListener("click", e => {
+    const b = e.target.closest("[data-cat]");
+    if (!b) return;
+    categoriaDeseos = b.dataset.cat; verTodosDeseos = false;
+    pintarDescubrir();
+  });
+  $("b-descubrir").addEventListener("click", () => {
+    verTodosDeseos = !verTodosDeseos;
+    pintarDescubrir();
+    if (!verTodosDeseos) scrollA($("descubrir-sec"));
+  });
 
   // ====== RULETA: ¿QUÉ HACEMOS HOY? ======
   let ultimoPlan = null, girando = false;
@@ -2020,6 +2206,7 @@
     pintarComoHoy();
     pintarLinea();
     pintarPasaporte();
+    pintarDescubrir();
     pintarRanking();
     pintarCuriosos();
     pintarLogros();
