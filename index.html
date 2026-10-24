@@ -250,7 +250,7 @@
   .parada .lugar { font-size: 14px; color: var(--suave); }
   .parada p.texto { margin-top: 6px; }
   .parada .pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 12px; margin-top: 4px; }
-  .ver-todos { display: flex; justify-content: center; margin-top: 26px; }
+  .ver-todos { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
   .nota { font-size: 13px; font-weight: 700; color: var(--cafe); margin-left: 6px; letter-spacing: 0; }
   .enlace { background: none; border: 0; cursor: pointer; font-weight: 700; font-size: 14px; color: var(--azul); text-decoration: underline; text-underline-offset: 3px; padding: 8px 0; min-height: 44px; }
   @media (min-width: 920px) {
@@ -674,7 +674,11 @@
       </div>
       <div class="filtros" id="descubrir-filtros" role="group" aria-label="Filtrar los lugares por descubrir"></div>
       <div class="descubrir" id="descubrir"></div>
-      <div class="ver-todos"><button class="btn claro" id="b-descubrir" type="button" aria-expanded="false" aria-controls="descubrir" hidden></button></div>
+      <div class="ver-todos">
+        <button class="btn" id="b-mezclar" type="button" aria-controls="descubrir">🔀 Mostrar otros al azar</button>
+        <button class="btn claro" id="b-descubrir" type="button" aria-expanded="false" aria-controls="descubrir" hidden></button>
+      </div>
+      <p class="sr" id="descubrir-anuncio" role="status"></p>
     </div>
   </section>
 
@@ -946,6 +950,56 @@
       { nombre: "Observatorio de Arecibo", emoji: "🔭", lat: 18.3440, lon: -66.7530, tipos: ["paseo"], pueblo: "Arecibo", nota: "Centro de ciencias donde estaba el radiotelescopio." },
       { nombre: "Lago Dos Bocas", emoji: "⛴️", lat: 18.3330, lon: -66.6700, tipos: ["paseo", "comida"], pueblo: "Utuado", nota: "Lanchita gratis a los restaurantes del lago." },
       { nombre: "Piedra Escrita", emoji: "🪨", lat: 18.2430, lon: -66.5480, tipos: ["paseo"], pueblo: "Jayuya", nota: "Petroglifos taínos en el río." },
+
+      // ---------- Más lugares ----------
+      // ☕ Más café
+      { nombre: "Kasalta", emoji: "🥐", lat: 18.4560, lon: -66.0480, tipos: ["cafe", "comida"], pueblo: "Ocean Park", nota: "La panadería icónica de Ocean Park: café con leche y quesitos." },
+      { nombre: "Gustos Coffee", emoji: "☕", lat: 18.4560, lon: -66.0630, tipos: ["cafe"], pueblo: "Condado", nota: "Café de especialidad para una parada en Condado." },
+      { nombre: "Hacienda Muñoz", emoji: "🌱", lat: 18.1570, lon: -65.9800, tipos: ["cafe", "paseo"], pueblo: "San Lorenzo", nota: "Tour de café cerca del área metro." },
+      { nombre: "Hacienda Pomarrosa", emoji: "🌱", lat: 18.1180, lon: -66.5800, tipos: ["cafe", "paseo"], pueblo: "Ponce", nota: "Finca de café en las montañas de Ponce." },
+      { nombre: "Hacienda Juanita", emoji: "🌱", lat: 18.1800, lon: -66.9500, tipos: ["cafe", "paseo"], pueblo: "Maricao", nota: "Antigua hacienda cafetalera convertida en parador." },
+
+      // 🌊 Más playas
+      { nombre: "Playa Tortuga (Culebrita)", emoji: "🐢", lat: 18.3220, lon: -65.2290, tipos: ["playa"], pueblo: "Culebra", nota: "En el cayo Culebrita, con su faro y piscinas naturales." },
+      { nombre: "Playa Carlos Rosario", emoji: "🐠", lat: 18.3260, lon: -65.3270, tipos: ["playa"], pueblo: "Culebra", nota: "De las mejores para snorkel en Culebra." },
+      { nombre: "Cayo Icacos", emoji: "🛥️", lat: 18.3900, lon: -65.5960, tipos: ["playa"], pueblo: "Fajardo", nota: "Un cayo de arena blanca; se llega en catamarán." },
+      { nombre: "Playa Azul", emoji: "🏖️", lat: 18.3800, lon: -65.7120, tipos: ["playa"], pueblo: "Luquillo", nota: "La playa del pueblo de Luquillo." },
+      { nombre: "Playa Domes", emoji: "🏄", lat: 18.3640, lon: -67.2680, tipos: ["playa"], pueblo: "Rincón", nota: "Surf frente a la antigua planta nuclear." },
+      { nombre: "Playa Peña Blanca", emoji: "🌊", lat: 18.4980, lon: -67.1370, tipos: ["playa"], pueblo: "Aguadilla", nota: "Rocas y agua azul en Aguadilla." },
+      { nombre: "Playa Wilderness", emoji: "🌊", lat: 18.4970, lon: -67.1650, tipos: ["playa"], pueblo: "Aguadilla", nota: "Playa salvaje con ruinas cerca." },
+      { nombre: "Playa Los Tubos", emoji: "🏖️", lat: 18.4890, lon: -66.4380, tipos: ["playa"], pueblo: "Manatí", nota: "Balneario de la costa norte." },
+      { nombre: "Poza del Obispo", emoji: "🌊", lat: 18.4890, lon: -66.6950, tipos: ["playa"], pueblo: "Arecibo", nota: "Una poza protegida al lado del faro de Arecibo." },
+      { nombre: "Playa Pozuelo", emoji: "🏖️", lat: 17.9370, lon: -66.1980, tipos: ["playa"], pueblo: "Guayama", nota: "Playa tranquila del sur." },
+      { nombre: "Balneario Punta Guilarte", emoji: "🏖️", lat: 17.9500, lon: -66.0430, tipos: ["playa"], pueblo: "Arroyo", nota: "Balneario con palmas en el sureste." },
+      { nombre: "Isla Caja de Muertos", emoji: "🛥️", lat: 17.8950, lon: -66.5240, tipos: ["playa", "paseo"], pueblo: "Ponce", nota: "Isla con faro y playas; se llega en lancha desde La Guancha." },
+      { nombre: "Playa Caña Gorda", emoji: "🏖️", lat: 17.9480, lon: -66.8810, tipos: ["playa"], pueblo: "Guánica", nota: "Balneario al lado del Bosque Seco." },
+
+      // 🍽️ Más comida
+      { nombre: "Heladería de Lares", emoji: "🍨", lat: 18.2950, lon: -66.8770, tipos: ["comida"], pueblo: "Lares", nota: "Helados de sabores locos: arroz con habichuelas, aguacate..." },
+      { nombre: "Café Manolín", emoji: "🍳", lat: 18.4655, lon: -66.1145, tipos: ["comida"], pueblo: "Viejo San Juan", nota: "Desayuno criollo de los de siempre." },
+      { nombre: "Raíces", emoji: "🍽️", lat: 18.4640, lon: -66.1150, tipos: ["comida"], pueblo: "Viejo San Juan", nota: "Mofongo y comida criolla en el Viejo San Juan." },
+      { nombre: "La Casita Blanca", emoji: "🏠", lat: 18.4420, lon: -66.0620, tipos: ["comida"], pueblo: "Santurce", nota: "Comida casera como la de abuela." },
+      { nombre: "Plaza del Mercado de Río Piedras", emoji: "🥭", lat: 18.3990, lon: -66.0500, tipos: ["comida"], pueblo: "Río Piedras", nota: "Frutas, batidas y comida criolla." },
+      { nombre: "Ola Lola's", emoji: "🍔", lat: 18.5170, lon: -67.0900, tipos: ["comida"], pueblo: "Isabela", nota: "Hamburguesas en un jardín cerca de la playa." },
+      { nombre: "Malecón de Naguabo", emoji: "🐟", lat: 18.2030, lon: -65.6970, tipos: ["comida", "paseo"], pueblo: "Naguabo", nota: "Kioskos de pescado frente al mar." },
+      { nombre: "Malecón de Esperanza", emoji: "🌴", lat: 18.0940, lon: -65.4710, tipos: ["comida", "paseo"], pueblo: "Vieques", nota: "El pueblito de Vieques para comer frente al mar." },
+
+      // 🏎️ Más aventura
+      { nombre: "Carabalí Rainforest Park", emoji: "🐎", lat: 18.3400, lon: -65.7400, tipos: ["diversion"], pueblo: "Luquillo", nota: "Caballos, four-tracks y ziplines al pie de El Yunque." },
+      { nombre: "Hacienda Campo Rico", emoji: "🛞", lat: 18.3870, lon: -65.8900, tipos: ["diversion"], pueblo: "Carolina", nota: "Four-tracks y paseos a caballo." },
+      { nombre: "Altitude Trampoline Park", emoji: "🤸", lat: 18.3800, lon: -66.1600, tipos: ["diversion"], pueblo: "Bayamón", nota: "Trampolines (la revancha del Trampoline Park)." },
+      { nombre: "Viking Arena", emoji: "🎯", lat: 18.4100, lon: -65.9430, tipos: ["diversion"], pueblo: "Carolina", nota: "Juegos bajo techo y trampolines frente a Los Colobos." },
+      { nombre: "Parque del Faro de Arecibo", emoji: "🏴‍☠️", lat: 18.4820, lon: -66.6990, tipos: ["diversion", "paseo"], pueblo: "Arecibo", nota: "Faro, réplicas de barcos piratas y vista al mar." },
+
+      // 🏛️ Más turismo y naturaleza
+      { nombre: "Calle de la Fortaleza (los paraguas)", emoji: "☂️", lat: 18.4645, lon: -66.1160, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "La calle de los paraguas de colores." },
+      { nombre: "Casa Bacardí", emoji: "🥃", lat: 18.4560, lon: -66.1400, tipos: ["paseo"], pueblo: "Cataño", nota: "Tour de la destilería (se llega en lancha desde el Viejo San Juan)." },
+      { nombre: "Jardín Botánico de Río Piedras", emoji: "🌺", lat: 18.3880, lon: -66.0500, tipos: ["paseo"], pueblo: "Río Piedras", nota: "Un bosque en medio de la ciudad." },
+      { nombre: "Cueva del Indio", emoji: "🌊", lat: 18.4900, lon: -66.6380, tipos: ["paseo"], pueblo: "Arecibo", nota: "Arcos de roca y petroglifos frente al mar." },
+      { nombre: "Parque Ceremonial Indígena de Caguana", emoji: "🪶", lat: 18.2930, lon: -66.7810, tipos: ["paseo"], pueblo: "Utuado", nota: "Bateyes y petroglifos taínos." },
+      { nombre: "Salinas de Cabo Rojo", emoji: "🩷", lat: 17.9520, lon: -67.1990, tipos: ["paseo"], pueblo: "Cabo Rojo", nota: "Las salinas rosadas camino al faro." },
+      { nombre: "Porta Coeli", emoji: "⛪", lat: 18.0820, lon: -67.0440, tipos: ["paseo"], pueblo: "San Germán", nota: "Una de las iglesias más antiguas de América." },
+      { nombre: "Cayo Santiago (la isla de los monos)", emoji: "🐒", lat: 18.1560, lon: -65.7330, tipos: ["paseo"], pueblo: "Humacao", nota: "Se ven los monos desde una lancha." },
     ],
 
     // PLANES para la ruleta "¿Qué hacemos hoy?" (además de la lista de deseos).
@@ -1903,6 +1957,19 @@
     scrollA(e, "center");
     if (e) { e.classList.add("enfocado"); setTimeout(() => e.classList.remove("enfocado"), 2200); }
   }
+  // Orden al azar de los deseos: cambia cada vez que abren la página o tocan "Mostrar otros al azar"
+  const barajar = arr => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  };
+  let ordenDeseos = null;
+  function deseosAlAzar() {
+    if (!ordenDeseos || ordenDeseos.length !== DES.length) ordenDeseos = barajar(DES.map(d => d.id));
+    const porId = new Map(DES.map(d => [d.id, d]));
+    return ordenDeseos.map(id => porId.get(id)).filter(Boolean);
+  }
+
   function pintarPasaporte() {
     const cont = $("sellos");
     cont.innerHTML = `<span class="hoja-titulo">Visitados · ${AV.length}</span>`;
@@ -1917,12 +1984,12 @@
       cont.appendChild(b);
     });
 
-    // En el pasaporte salen solo los primeros deseos; la lista completa está en "Lugares por descubrir"
+    // En el pasaporte salen 12 deseos al azar; la lista completa está en "Lugares por descubrir"
     const SELLOS_DESEOS = 12;
     const cd = $("sellos-deseos");
     cd.hidden = !DES.length;
     cd.innerHTML = `<span class="hoja-titulo">Por visitar · ${DES.length}</span>`;
-    DES.slice(0, SELLOS_DESEOS).forEach(d => {
+    deseosAlAzar().slice(0, SELLOS_DESEOS).forEach(d => {
       const b = document.createElement("button");
       b.className = "estampa deseo";
       b.style.setProperty("--rot", d.rot + "deg");
@@ -1955,8 +2022,9 @@
     $("descubrir-filtros").innerHTML = CATEGORIAS_DESEOS.filter(([k]) => cuenta(k))
       .map(([k, t]) => `<button data-cat="${k}" aria-pressed="${k === categoriaDeseos}">${t} · ${cuenta(k)}</button>`).join("");
     const pueblos = new Set(DES.map(d => d.pueblo).filter(Boolean));
-    $("descubrir-resumen").textContent = `${DES.length} lugares en ${pueblos.size} pueblos. Toquen uno para verlo en el mapa.`;
-    const todos = categoriaDeseos === "todos" ? DES : DES.filter(d => lista(d.tipos).includes(categoriaDeseos));
+    $("descubrir-resumen").textContent = `${DES.length} lugares en ${pueblos.size} pueblos, en orden al azar. Toquen uno para verlo en el mapa.`;
+    const alAzar = deseosAlAzar();
+    const todos = categoriaDeseos === "todos" ? alAzar : alAzar.filter(d => lista(d.tipos).includes(categoriaDeseos));
     const lugares = verTodosDeseos ? todos : todos.slice(0, DESCUBRIR_VISIBLES);
     $("descubrir").innerHTML = lugares.map(d => `
       <article class="tarjeta deseo-card">
@@ -1979,6 +2047,14 @@
     if (!b) return;
     categoriaDeseos = b.dataset.cat; verTodosDeseos = false;
     pintarDescubrir();
+  });
+  $("b-mezclar").addEventListener("click", () => {
+    ordenDeseos = null; verTodosDeseos = false;
+    pintarDescubrir();
+    pintarPasaporte();
+    const primero = document.querySelector("#descubrir .deseo-card h3");
+    $("descubrir-anuncio").textContent = primero ? `Nuevos lugares al azar, empezando por ${primero.textContent}` : "";
+    vibrar(15);
   });
   $("b-descubrir").addEventListener("click", () => {
     verTodosDeseos = !verTodosDeseos;
