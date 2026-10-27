@@ -21,10 +21,11 @@
   <rect x="70" y="118" width="356" height="44" rx="22" fill="#1F3A5F"/>
   <text x="248" y="147" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3" fill="#FFFFFF">DIARIO DE VIAJE · PUERTO RICO</text>
   <g font-family="Fraunces, Georgia, serif">
-    <text x="64" y="262" font-size="92" font-weight="600" letter-spacing="-2" fill="#1F3A5F">Aventuras de</text>
-    <text x="64" y="366" font-size="94" font-style="italic" font-weight="500" fill="#6F4E37">Valeria <tspan fill="#C08552">y</tspan> Henry</text>
+    <text x="64" y="236" font-size="80" font-weight="600" letter-spacing="-2" fill="#1F3A5F">Aventuras de</text>
+    <text x="64" y="322" font-size="84" font-style="italic" font-weight="500" fill="#6F4E37">Valeria <tspan fill="#C08552">y</tspan></text>
+    <text x="64" y="408" font-size="84" font-style="italic" font-weight="500" fill="#6F4E37">Henry Gabriel</text>
   </g>
-  <text x="70" y="440" font-family="DM Sans, Arial, sans-serif" font-size="31" fill="#6B5546">El mapa de la guía y su turista favorito ☕💙</text>
+  <text x="70" y="474" font-family="DM Sans, Arial, sans-serif" font-size="30" fill="#6B5546">El mapa de la guía y su turista favorito ☕💙</text>
   <!-- postal con el turista -->
   <g transform="translate(822 96) rotate(3)" filter="url(#sombra)">
     <rect x="0" y="0" width="320" height="410" rx="10" fill="#FFFCF8"/>
