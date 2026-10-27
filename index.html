@@ -825,6 +825,7 @@
       "2026-10-22": "Noche de película: Verity 🍿",
       "2026-10-23": "La acreditación 🎓",
       "2026-10-26": "Chili's y noche en Levittown 🌙",
+      "2026-10-27": "Skin care, tres leches y playa 🌊",
     },
 
     // FOTOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -1037,6 +1038,8 @@
       { nombre: "Pergamino Coffee", lugar: "Plaza Las Américas, Hato Rey", pidioGuia: "Café frío", pidioTurista: "Agua de coco", tacitas: 5, etiqueta: "Nuestro primer café" },
       { nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan (el turista no se acuerda del nombre 🙈)", pidioGuia: "Café", nota: 7 },
       { nombre: "Bookmar", lugar: "San Patricio, Guaynabo", pidioGuia: "Café frío", nota: 7 },
+      { nombre: "Cafetería del Mall of San Juan", lugar: "Mall of San Juan, San Juan", etiqueta: "Súper cara 💸" },
+      { nombre: "Bookmar Santurce", lugar: "Santurce, San Juan", pidioGuia: "Café frío", nota: 7, etiqueta: "Tres leches: 8/10 🍰" },
     ],
     // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
@@ -1260,6 +1263,50 @@
       id: "playalevittown", emoji: "🌙", nombre: "Playa en Levittown", lugar: "Levittown, Toa Baja",
       lat: 18.4700, lon: -66.1800, zona: "sj", fecha: "2026-10-26", tipos: ["playa"], // VERIFICAR
       texto: "Después, a una playa en Levittown. Noche en el carro, solo nosotros dos 🌙🔥 (los detalles se quedan clasificados 🤫).",
+      versionGuia: "",
+    },
+
+    // ---------- Día 14 · 27 de octubre ----------
+    {
+      id: "mimi", emoji: "🧴", nombre: "Mimi (skin care)", lugar: "Mall of San Juan, San Juan",
+      lat: 18.4400, lon: -66.0470, zona: "sj", fecha: "2026-10-27", tipos: ["paseo"], // VERIFICAR
+      texto: "Al Mall of San Juan, a Mimi a ver productos de skin care 🧴✨.",
+      versionGuia: "",
+    },
+    {
+      id: "cafemallsj", emoji: "💸", nombre: "Cafetería del Mall of San Juan", lugar: "Mall of San Juan, San Juan",
+      lat: 18.4405, lon: -66.0462, zona: "sj", fecha: "2026-10-27", tipos: ["cafe"], // VERIFICAR
+      texto: "Una cafetería en el Mall of San Juan… súper cara 💸.",
+      versionGuia: "",
+    },
+    {
+      id: "bookmarsanturce", emoji: "📚", nombre: "Bookmar Santurce", lugar: "Santurce, San Juan",
+      lat: 18.4490, lon: -66.0690, zona: "sj", fecha: "2026-10-27", tipos: ["cafe", "comida"], nota: 7, // VERIFICAR
+      texto: "Al Bookmar de Santurce. Probamos el tres leches: 8/10 🍰. Y el café frío de la guía: 7/10.",
+      versionGuia: "",
+    },
+    {
+      id: "plaza2", emoji: "🛍️", nombre: "Plaza Las Américas", lugar: "Hato Rey, San Juan",
+      lat: 18.4228, lon: -66.0710, zona: "sj", fecha: "2026-10-27", tipos: ["paseo"],
+      texto: "También pasamos por Plaza.",
+      versionGuia: "",
+    },
+    {
+      id: "walgreens", emoji: "🏪", nombre: "Walgreens", lugar: "San Juan",
+      lat: 18.4425, lon: -66.0215, zona: "sj", fecha: "2026-10-27", tipos: ["paseo"], // VERIFICAR (¿cuál Walgreens?)
+      texto: "Parada en Walgreens.",
+      versionGuia: "",
+    },
+    {
+      id: "tacomaker", emoji: "🌮", nombre: "Taco Maker", lugar: "Isla Verde, Carolina",
+      lat: 18.4418, lon: -66.0170, zona: "sj", fecha: "2026-10-27", tipos: ["comida"], // VERIFICAR
+      texto: "Tacos en el Taco Maker de Isla Verde 🌮.",
+      versionGuia: "",
+    },
+    {
+      id: "islaverde2", emoji: "🌊", nombre: "Playa de Isla Verde", lugar: "Isla Verde, Carolina",
+      lat: 18.4448, lon: -66.0188, zona: "sj", fecha: "2026-10-27", tipos: ["playa"],
+      texto: "Y terminamos el día en la playa de Isla Verde, otra vez 🌊💙.",
       versionGuia: "",
     },
   ];
@@ -2187,7 +2234,8 @@
     const pueblos = pueblosVisitados();
     const datos = [
       ["🍔", AV.filter(a => a.smash).length, "smash burgers probadas"],
-      ["🌊", AV.filter(a => a.tipos.includes("playa")).length, "playas visitadas"],
+      // Una playa a la que volvieron cuenta una sola vez (mismo punto del mapa, redondeado a ~1 km)
+      ["🌊", new Set(AV.filter(a => a.tipos.includes("playa")).map(a => a.conPin ? a.lat.toFixed(2) + "," + a.lon.toFixed(2) : a.id)).size, "playas visitadas"],
       ["🧊", cafes.filter(c => minus(c.pidioGuia).includes("frio")).length, "cafés fríos de la guía"],
       ["🏙️", pueblos.length, pueblos.length === 1 ? "pueblo visitado" : "pueblos visitados", pueblos.join(", ")],
       ["🔑", 1, "juego de llaves perdido (y encontrado)"],
