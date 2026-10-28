@@ -415,6 +415,9 @@
   .fotos-dia figure.ancha { width: min(420px, 100%); }
   .fotos-dia figure.ancha .foto-btn img { aspect-ratio: 4 / 3; }
   .fotos-dia figcaption { font-size: 13px; color: var(--suave); margin-top: 6px; }
+  /* Los videos se ven completos con su forma real (horizontal o vertical) */
+  .fotos-dia figure.video-dia { width: min(420px, 100%); }
+  .fotos-dia figure.video-dia video { display: block; width: 100%; height: auto; max-height: 70vh; border-radius: 12px; background: #000; box-shadow: var(--sombra); }
   dialog.visor { border: 0; padding: 12px; background: var(--crema); border-radius: 18px; max-width: min(560px, 94vw); margin: auto; box-shadow: var(--sombra-alta); color: var(--texto); }
   dialog.visor::backdrop { background: rgba(14, 26, 43, .75); backdrop-filter: blur(3px); }
   dialog.visor figure { margin: 0; }
@@ -828,7 +831,8 @@
       "2026-10-27": "Skin care, tres leches y playa 🌊",
     },
 
-    // FOTOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
+    // FOTOS Y VIDEOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
+    // Para un video (MP4): { video: "fotos/archivo.mp4", texto: "pie", alt: "qué se ve" }
     // La foto se sube a la carpeta "fotos" del repositorio (mira GUIA.md).
     FOTOS_DIAS: {
       "2026-10-08": [
@@ -850,6 +854,9 @@
       "2026-10-19": [
         { foto: "fotos/2026-10-19-el-nido.jpg", texto: "El smash de El Nido: 8/10, el mejor hasta ahora 🍔",
           alt: "Hamburguesa smash con tocineta y papas fritas en una bandeja de cartón, con una tacita de kétchup" },
+      ],
+      "2026-10-27": [
+        { video: "fotos/2026-10-27-video.mp4", texto: "Un video de ese día 🎥💙", alt: "Video de la guía en el carro, de noche" },
       ],
       "2026-10-23": [
         { foto: "fotos/2026-10-23-acreditacion.webp", texto: "La acreditación de la Asociación de Finanzas y Economía 🎓",
@@ -1423,7 +1430,7 @@
       if (!dia || dia.fecha !== clave) {
         dia = {
           fecha: clave, n: DIAS.length + 1, titulo: (CONFIG.TITULOS_DIAS || {})[clave] || "", lugares: [],
-          fotos: lista((CONFIG.FOTOS_DIAS || {})[clave]).filter(f => f && f.foto),
+          fotos: lista((CONFIG.FOTOS_DIAS || {})[clave]).filter(f => f && (f.foto || f.video)),
         };
         DIAS.push(dia);
       }
@@ -1959,7 +1966,11 @@
   });
   // ====== FOTOS DE CADA DÍA (se tocan para verlas en grande) ======
   const fotosHTML = d => !d.fotos.length ? "" : `
-    <div class="fotos-dia">${d.fotos.map(f => `
+    <div class="fotos-dia">${d.fotos.map(f => f.video ? `
+      <figure class="video-dia">
+        <video controls playsinline preload="metadata" src="${esc(f.video)}#t=0.5" aria-label="${esc(f.alt || f.texto || "Video del día")}"></video>
+        ${f.texto ? `<figcaption>${esc(f.texto)}</figcaption>` : ""}
+      </figure>` : `
       <figure>
         <button class="foto-btn" type="button" data-foto="${esc(f.foto)}" data-texto="${esc(f.texto || "")}" data-alt="${esc(f.alt || f.texto || "Foto del día")}" aria-label="Ver la foto en grande: ${esc(f.texto || f.alt || "foto del día")}">
           <img src="${esc(f.foto)}" alt="${esc(f.alt || f.texto || "Foto del día")}" loading="lazy" decoding="async">
