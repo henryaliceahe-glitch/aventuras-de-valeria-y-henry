@@ -873,6 +873,7 @@
       "2026-10-26": "Cena en Chili's 🌶️",
       "2026-10-27": "Skin care, tres leches y playa 🌊",
       "2026-10-28": "Cover nuevo, smash y mega té 🧋",
+      "2026-10-29": "Chapola y tacos en La Pachanga 🌮",
     },
 
     // FOTOS Y VIDEOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -901,6 +902,10 @@
       ],
       "2026-10-27": [
         { video: "fotos/2026-10-27-video.mp4", texto: "Un video de ese día 🎥💙", alt: "Video de la guía en el carro, de noche" },
+      ],
+      "2026-10-29": [
+        { foto: "fotos/2026-10-29-la-pachanga.jpg", texto: "La guía con sombrero en La Pachanga 🤠🌮",
+          alt: "Valeria sonriendo con un sombrero de paja, sentada a la mesa bajo luces rosadas y azules, con un mariachi pintado en la pared" },
       ],
       "2026-10-23": [
         { foto: "fotos/2026-10-23-acreditacion.webp", texto: "La acreditación de la Asociación de Finanzas y Economía 🎓",
@@ -1091,6 +1096,7 @@
       { nombre: "Bookmar", lugar: "San Patricio, Guaynabo", pidioGuia: "Café frío", nota: 7 },
       { nombre: "Cafetería del Mall of San Juan", lugar: "Mall of San Juan, San Juan", etiqueta: "Súper cara 💸" },
       { nombre: "Bookmar Santurce", lugar: "Santurce, San Juan", pidioGuia: "Café frío", nota: 7, etiqueta: "Tres leches: 8/10 🍰" },
+      { nombre: "Chapola Coffee Bar", lugar: "Por confirmar 📍", pidioGuia: "Café frío", pidioTurista: "Mantecado", nota: 7, etiqueta: "Un sólido 7/10" },
     ],
     // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
@@ -1379,6 +1385,20 @@
       id: "megate", emoji: "🧋", nombre: "Mega té", lugar: "Dealer de Toyota cerca de la Ana G. Méndez · Cupey",
       lat: 18.3595, lon: -66.0515, zona: "sj", fecha: "2026-10-28", tipos: ["comida"], nota: 10, // VERIFICAR (punto exacto)
       texto: "Mega té en el dealer de Toyota cerca de la Ana G. Méndez de Cupey, de una muchacha que Valeria conocía. A la guía le encantó: 10/10 🧋💙.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 17 · 29 de octubre ----------
+    {
+      id: "chapola", emoji: "☕", nombre: "Chapola Coffee Bar", lugar: "Por confirmar",
+      lat: 18.4000, lon: -66.0500, zona: "sj", fecha: "2026-10-29", tipos: ["cafe"], nota: 7, // VERIFICAR (pueblo y punto exacto)
+      texto: "Al Chapola Coffee Bar. La guía pidió su café frío y el turista un mantecado 🍦. Entre los dos: un sólido 7/10.",
+      versionGuia: "",
+    },
+    {
+      id: "lapachanga", emoji: "🌮", nombre: "La Pachanga", lugar: "Por confirmar",
+      lat: 18.4060, lon: -66.0560, zona: "sj", fecha: "2026-10-29", tipos: ["comida"], nota: 8, // VERIFICAR (pueblo y punto exacto)
+      texto: "Terminamos comiendo tacos en La Pachanga, con sombrero incluido 🤠. Nota: 8/10 🌮.",
       versionGuia: "",
     },
   ];
