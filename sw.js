@@ -1,6 +1,6 @@
 // Service worker sencillo: permite instalar la página y abrirla aunque no haya señal.
 // Si cambias algo y no se actualiza en el celular, sube el número de VERSION.
-const VERSION = "vh-v34";
+const VERSION = "vh-v35";
 const ARCHIVOS = ["./", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -15,10 +15,12 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return; // Spotify y las fuentes van directo
   if (req.headers.has("range") || /\.mp4($|\?|#)/i.test(req.url)) return; // los videos no se guardan (pesan mucho)
-  if (req.mode === "navigate") {
-    // La página: primero internet (para ver lo último), si no hay señal, la copia guardada
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put("index.html", c)); return r; })
-      .catch(() => caches.match("index.html")));
+  const lista = /clasificado\.json($|\?)/.test(req.url);
+  if (req.mode === "navigate" || lista) {
+    // La página y la lista con candado: primero internet (para ver lo último), si no hay señal, la copia guardada
+    const clave = lista ? "clasificado.json" : "index.html";
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put(clave, c)); return r; })
+      .catch(() => caches.match(clave)));
     return;
   }
   e.respondWith(caches.match(req).then(g => g || fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put(req, c)); return r; })));
