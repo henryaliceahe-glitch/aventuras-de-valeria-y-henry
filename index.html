@@ -873,7 +873,7 @@
       "2026-10-26": "Cena en Chili's 🌶️",
       "2026-10-27": "Skin care, tres leches y playa 🌊",
       "2026-10-28": "Cover nuevo, smash y mega té 🧋",
-      "2026-10-29": "Chapola y tacos en La Pachanga 🌮",
+      "2026-10-29": "Chapola y nachos en La Pachanga 🧀",
     },
 
     // FOTOS Y VIDEOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -904,7 +904,7 @@
         { video: "fotos/2026-10-27-video.mp4", texto: "Un video de ese día 🎥💙", alt: "Video de la guía en el carro, de noche" },
       ],
       "2026-10-29": [
-        { foto: "fotos/2026-10-29-la-pachanga.jpg", texto: "La guía con sombrero en La Pachanga 🤠🌮",
+        { foto: "fotos/2026-10-29-la-pachanga.jpg", texto: "La guía con sombrero en La Pachanga 🤠🧀",
           alt: "Valeria sonriendo con un sombrero de paja, sentada a la mesa bajo luces rosadas y azules, con un mariachi pintado en la pared" },
       ],
       "2026-10-23": [
@@ -1092,11 +1092,11 @@
     // (si no hay tacitas, se convierten: 7/10 = 3.5 tacitas). etiqueta: texto corto opcional.
     CAFES: [
       { nombre: "Pergamino Coffee", lugar: "Plaza Las Américas, Hato Rey", pidioGuia: "Café frío", pidioTurista: "Agua de coco", tacitas: 5, etiqueta: "Nuestro primer café" },
-      { nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan (el turista no se acuerda del nombre 🙈)", pidioGuia: "Café", nota: 7 },
+      { nombre: "Coffee Club Cafetería", lugar: "Cupey, San Juan", pidioGuia: "Café", nota: 7 },
       { nombre: "Bookmar", lugar: "San Patricio, Guaynabo", pidioGuia: "Café frío", nota: 7 },
-      { nombre: "Cafetería del Mall of San Juan", lugar: "Mall of San Juan, San Juan", etiqueta: "Súper cara 💸" },
+      { nombre: "The Coffee", lugar: "Mall of San Juan, San Juan", etiqueta: "Súper cara 💸" },
       { nombre: "Bookmar Santurce", lugar: "Santurce, San Juan", pidioGuia: "Café frío", nota: 7, etiqueta: "Tres leches: 8/10 🍰" },
-      { nombre: "Chapola Coffee Bar", lugar: "Por confirmar 📍", pidioGuia: "Café frío", pidioTurista: "Mantecado", nota: 7, etiqueta: "Un sólido 7/10" },
+      { nombre: "Chapola Coffee Bar", lugar: "Río Piedras, San Juan", pidioGuia: "Café frío", pidioTurista: "Mantecado", nota: 7, etiqueta: "Un sólido 7/10" },
     ],
     // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
@@ -1194,9 +1194,9 @@
 
     // ---------- Día 5 · 13 de octubre ----------
     {
-      id: "cafecupey", emoji: "☕", nombre: "Cafetería en Cupey", lugar: "Cupey, San Juan",
+      id: "cafecupey", emoji: "☕", nombre: "Coffee Club Cafetería", lugar: "Cupey, San Juan",
       lat: 18.3598, lon: -66.0500, zona: "sj", fecha: "2026-10-13", tipos: ["cafe"], nota: 7,
-      texto: "La acompañé a una cafetería en Cupey. El turista no se acuerda del nombre 🙈. Nota de la guía: 7/10.",
+      texto: "La acompañé a Coffee Club Cafetería, en Cupey. Nota de la guía: 7/10.",
       versionGuia: "",
     },
     {
@@ -1332,9 +1332,9 @@
       versionGuia: "",
     },
     {
-      id: "cafemallsj", emoji: "💸", nombre: "Cafetería del Mall of San Juan", lugar: "Mall of San Juan, San Juan",
+      id: "cafemallsj", emoji: "💸", nombre: "The Coffee", lugar: "Mall of San Juan, San Juan",
       lat: 18.4405, lon: -66.0462, zona: "sj", fecha: "2026-10-27", tipos: ["cafe"], // VERIFICAR
-      texto: "Una cafetería en el Mall of San Juan… súper cara 💸.",
+      texto: "The Coffee, en el Mall of San Juan… súper cara 💸.",
       versionGuia: "",
     },
     {
@@ -1390,15 +1390,15 @@
 
     // ---------- Día 17 · 29 de octubre ----------
     {
-      id: "chapola", emoji: "☕", nombre: "Chapola Coffee Bar", lugar: "Por confirmar",
-      lat: 18.4000, lon: -66.0500, zona: "sj", fecha: "2026-10-29", tipos: ["cafe"], nota: 7, // VERIFICAR (pueblo y punto exacto)
+      id: "chapola", emoji: "☕", nombre: "Chapola Coffee Bar", lugar: "Río Piedras, San Juan",
+      lat: 18.3990, lon: -66.0505, zona: "sj", fecha: "2026-10-29", tipos: ["cafe"], nota: 7, // VERIFICAR (punto exacto)
       texto: "Al Chapola Coffee Bar. La guía pidió su café frío y el turista un mantecado 🍦. Entre los dos: un sólido 7/10.",
       versionGuia: "",
     },
     {
-      id: "lapachanga", emoji: "🌮", nombre: "La Pachanga", lugar: "Por confirmar",
-      lat: 18.4060, lon: -66.0560, zona: "sj", fecha: "2026-10-29", tipos: ["comida"], nota: 8, // VERIFICAR (pueblo y punto exacto)
-      texto: "Terminamos comiendo tacos en La Pachanga, con sombrero incluido 🤠. Nota: 8/10 🌮.",
+      id: "lapachanga", emoji: "🧀", nombre: "La Pachanga", lugar: "Guaynabo",
+      lat: 18.3575, lon: -66.1110, zona: "sj", fecha: "2026-10-29", tipos: ["comida"], nota: 8, // VERIFICAR (punto exacto)
+      texto: "Terminamos comiendo nachos en La Pachanga, en Guaynabo, con sombrero incluido 🤠. Nota: 8/10 🧀.",
       versionGuia: "",
     },
   ];
