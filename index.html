@@ -874,6 +874,9 @@
       "2026-10-27": "Skin care, tres leches y playa 🌊",
       "2026-10-28": "Cover nuevo, smash y mega té 🧋",
       "2026-10-29": "Chapola y nachos en La Pachanga 🧀",
+      "2026-10-30": "Casa embrujada y pizza en el Distrito 🎃",
+      "2026-10-31": "Picnic y película en Sabor Arte 🎬",
+      "2026-11-02": "Smash, Chili y carrera al Morro 🏃",
     },
 
     // FOTOS Y VIDEOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -1097,6 +1100,7 @@
       { nombre: "The Coffee", lugar: "Mall of San Juan, San Juan", etiqueta: "Súper cara 💸" },
       { nombre: "Bookmar Santurce", lugar: "Santurce, San Juan", pidioGuia: "Café frío", nota: 7, etiqueta: "Tres leches: 8/10 🍰" },
       { nombre: "Chapola Coffee Bar", lugar: "Río Piedras, San Juan", pidioGuia: "Café frío", pidioTurista: "Mantecado", nota: 7, etiqueta: "Un sólido 7/10" },
+      { nombre: "Cafetería del Parque Luis Muñoz Rivera", lugar: "Puerta de Tierra, San Juan", pidioGuia: "Café", nota: 8, etiqueta: "Después de correr al Morro 🏃" },
     ],
     // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
@@ -1399,6 +1403,48 @@
       id: "lapachanga", emoji: "🧀", nombre: "La Pachanga", lugar: "Guaynabo",
       lat: 18.3575, lon: -66.1110, zona: "sj", fecha: "2026-10-29", tipos: ["comida"], nota: 8, // VERIFICAR (punto exacto)
       texto: "Terminamos comiendo nachos en La Pachanga, en Guaynabo, con sombrero incluido 🤠. Nota: 8/10 🧀.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 18 · 30 de octubre ----------
+    {
+      id: "templeterror", emoji: "🎃", nombre: "Casa embrujada del Distrito T-Mobile", lugar: "Distrito T-Mobile, San Juan",
+      lat: 18.4555, lon: -66.0915, zona: "sj", fecha: "2026-10-30", tipos: ["diversion"],
+      texto: "Al Distrito T-Mobile a la casa embrujada (Temple of Terror) 🎃👻. Sustos garantizados.",
+      versionGuia: "",
+    },
+    {
+      id: "pudgespizza", emoji: "🍕", nombre: "Pudge's Pizza", lugar: "Distrito T-Mobile, San Juan",
+      lat: 18.4559, lon: -66.0908, zona: "sj", fecha: "2026-10-30", tipos: ["comida"], nota: 7,
+      texto: "Cenamos en la pizzería del Distrito. Los dos le dimos 7/10 🍕.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 19 · 31 de octubre ----------
+    {
+      id: "saborarte", emoji: "🎬", nombre: "Sabor Arte Picnic", lugar: "Parque Luis Muñoz Rivera, Puerta de Tierra",
+      lat: 18.4640, lon: -66.0925, zona: "sj", fecha: "2026-10-31", tipos: ["comida", "especial"],
+      texto: "Noche de picnic con película bajo los árboles en Sabor Arte 🎬🧺. Comimos pasta: la del turista de pollo y la de la guía de churrasco 🍝.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 20 · 2 de noviembre ----------
+    {
+      id: "smashplaza", emoji: "🍔", nombre: "Smash Burger de Plaza", lugar: "Plaza Las Américas, Hato Rey", smash: true,
+      lat: 18.4232, lon: -66.0703, zona: "sj", fecha: "2026-11-02", tipos: ["comida"], nota: 8,
+      texto: "Smash burger en Plaza Las Américas. Nota: 8/10 🍔.",
+      versionGuia: "",
+    },
+    {
+      id: "plazadelsol", emoji: "🛍️", nombre: "Plaza del Sol", lugar: "Bayamón",
+      lat: 18.3985, lon: -66.1555, zona: "sj", fecha: "2026-11-02", tipos: ["paseo"],
+      texto: "A Plaza del Sol a buscar comida y ropa… que no conseguimos 😅. Después fuimos a buscar a Chili, el perro de la guía 🐶.",
+      versionGuia: "",
+    },
+    {
+      id: "carreramorro", emoji: "🏃", nombre: "Carrera al Morro", lugar: "Parque Luis Muñoz Rivera → El Morro, Viejo San Juan",
+      lat: 18.4705, lon: -66.1235, zona: "sj", fecha: "2026-11-02", tipos: ["paseo"],
+      texto: "Corrimos desde el Parque Luis Muñoz Rivera hasta la entrada del Morro y viramos 🏃‍♀️🏃. De premio, la guía probó el café de la cafetería del parque: 8/10 ☕.",
       versionGuia: "",
     },
   ];
