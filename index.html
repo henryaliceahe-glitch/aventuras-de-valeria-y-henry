@@ -981,8 +981,8 @@
       { nombre: "Castillo San Cristóbal", emoji: "🏰", lat: 18.4670, lon: -66.1110, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "El fuerte más grande de las Américas." },
       { nombre: "Cueva Ventana", emoji: "🕳️", lat: 18.3740, lon: -66.6910, tipos: ["paseo"], pueblo: "Arecibo", nota: "Una cueva con ventana al valle del río." },
       { nombre: "Faro Los Morrillos", emoji: "🗼", lat: 17.9330, lon: -67.1920, tipos: ["paseo"], pueblo: "Cabo Rojo", nota: "Acantilados blancos al final de la isla." },
-      { nombre: "Charco Azul", emoji: "💧", lat: 18.0900, lon: -66.0400, tipos: ["paseo"], pueblo: "Patillas", nota: "Una poza en el Bosque de Carite." },
-      { nombre: "Gozalandia", emoji: "💦", lat: 18.3420, lon: -66.9800, tipos: ["paseo"], pueblo: "San Sebastián", nota: "Cascadas para bañarse." },
+      { nombre: "Charco Azul", emoji: "💧", lat: 18.0900, lon: -66.0400, tipos: ["rio", "paseo"], pueblo: "Patillas", nota: "Una poza en el Bosque de Carite." },
+      { nombre: "Gozalandia", emoji: "💦", lat: 18.3420, lon: -66.9800, tipos: ["rio", "paseo"], pueblo: "San Sebastián", nota: "Cascadas para bañarse." },
       { nombre: "Cañón San Cristóbal", emoji: "⛰️", lat: 18.1800, lon: -66.3100, tipos: ["paseo"], pueblo: "Barranquitas", nota: "El cañón más profundo de la isla." },
       { nombre: "Bosque Seco de Guánica", emoji: "🌵", lat: 17.9700, lon: -66.8700, tipos: ["paseo"], pueblo: "Guánica", nota: "Veredas con vista al Caribe." },
       { nombre: "Castillo Serrallés", emoji: "🏛️", lat: 18.0160, lon: -66.6180, tipos: ["paseo"], pueblo: "Ponce", nota: "La casona del ron, con la Cruceta del Vigía al lado." },
@@ -991,7 +991,7 @@
       { nombre: "Las Cabezas de San Juan", emoji: "🗼", lat: 18.3800, lon: -65.6180, tipos: ["paseo"], pueblo: "Fajardo", nota: "Reserva natural con faro (con reservación)." },
       { nombre: "Observatorio de Arecibo", emoji: "🔭", lat: 18.3440, lon: -66.7530, tipos: ["paseo"], pueblo: "Arecibo", nota: "Centro de ciencias donde estaba el radiotelescopio." },
       { nombre: "Lago Dos Bocas", emoji: "⛴️", lat: 18.3330, lon: -66.6700, tipos: ["paseo", "comida"], pueblo: "Utuado", nota: "Lanchita gratis a los restaurantes del lago." },
-      { nombre: "Piedra Escrita", emoji: "🪨", lat: 18.2430, lon: -66.5480, tipos: ["paseo"], pueblo: "Jayuya", nota: "Petroglifos taínos en el río." },
+      { nombre: "Piedra Escrita", emoji: "🪨", lat: 18.2430, lon: -66.5480, tipos: ["rio", "paseo"], pueblo: "Jayuya", nota: "Petroglifos taínos en el río." },
 
       // ---------- Más lugares ----------
       // ☕ Más café
@@ -1053,6 +1053,12 @@
       { nombre: "Cenote Mexican & Fusion Bar", emoji: "🌯", lat: 18.33, lon: -65.655, tipos: ["comida"], pueblo: "Fajardo", nota: "Fusión mexicana, japonesa y caribeña: sushi burritos." },
       { nombre: "La Tribu BBQ", emoji: "🍖", lat: 18.34, lon: -67.251, tipos: ["comida"], pueblo: "Rincón", nota: "Barbecue ahumado, ideal después de la playa en Rincón." },
       { nombre: "Mimosa Farmer's Table", emoji: "🥞", lat: 18.35, lon: -66.99, tipos: ["comida","paseo"], pueblo: "San Sebastián", nota: "Brunch nuevo con experiencias en la finca." },
+      // 🏞️ Ríos y charcos (verificados en línea, nov. 2026). Puntos aproximados. No ir con lluvia: los ríos crecen rápido.
+      { nombre: "Las Paylas", emoji: "🛝", lat: 18.34, lon: -65.728, tipos: ["rio", "paseo"], pueblo: "Luquillo", nota: "Dos chorreras naturales de roca en un río que baja de El Yunque." },
+      { nombre: "Charco El Hippie", emoji: "💧", lat: 18.238, lon: -65.785, tipos: ["rio", "paseo"], pueblo: "Naguabo", nota: "Agua clarita en el río Blanco, rodeado de verde." },
+      { nombre: "Cascada Juan Diego", emoji: "💦", lat: 18.301, lon: -65.782, tipos: ["rio", "paseo"], pueblo: "Río Grande", nota: "Cascada y poza al lado de la carretera 191 en El Yunque (La Mina sigue cerrada)." },
+      { nombre: "Río Espíritu Santo", emoji: "🛶", lat: 18.4, lon: -65.815, tipos: ["rio", "paseo"], pueblo: "Río Grande", nota: "El único río navegable de la Isla: paseo en bote por el manglar." },
+      { nombre: "Río Tanamá", emoji: "🛟", lat: 18.333, lon: -66.683, tipos: ["rio", "paseo"], pueblo: "Arecibo", nota: "Tubing por cuevas y caminata por el río, con guía." },
     ],
 
     // PLANES para la ruleta "¿Qué hacemos hoy?" (además de la lista de deseos).
@@ -1502,7 +1508,7 @@
   // ==================================================================
   const PALETA = ["#1F3A5F", "#6F4E37", "#2F5D8A", "#8A5A3B", "#3E6E9E", "#4A3020", "#24507A", "#9A6435"];
   // Color de cada lugar según su primer tipo (azules y cafés)
-  const COLOR_TIPO = { cafe: "#6F4E37", comida: "#8A5A3B", playa: "#2F5D8A", diversion: "#1F3A5F", paseo: "#3E6E9E", especial: "#24507A" };
+  const COLOR_TIPO = { cafe: "#6F4E37", comida: "#8A5A3B", playa: "#2F5D8A", diversion: "#1F3A5F", paseo: "#3E6E9E", rio: "#2C6E7A", especial: "#24507A" };
   const FILTROS = [
     ["todos", "Todos"], ["cafe", "☕ Cafés"], ["comida", "🍔 Comida"], ["playa", "🌊 Playas"],
     ["diversion", "🎢 Diversión"], ["paseo", "🚶 Paseos"], ["especial", "💙 Especiales"],
@@ -2240,7 +2246,7 @@
   // ====== LUGARES POR DESCUBRIR (la lista de deseos completa, por categoría) ======
   const CATEGORIAS_DESEOS = [
     ["todos", "Todos"], ["cafe", "☕ Cafés y haciendas"], ["playa", "🌊 Playas"], ["comida", "🍽️ Comida"],
-    ["diversion", "🏎️ Go-karts y aventura"], ["paseo", "🏛️ Turismo y naturaleza"],
+    ["rio", "🏞️ Ríos y charcos"], ["diversion", "🏎️ Go-karts y aventura"], ["paseo", "🏛️ Turismo y naturaleza"],
   ];
   const DESCUBRIR_VISIBLES = 12;
   let categoriaDeseos = "todos", verTodosDeseos = false;
