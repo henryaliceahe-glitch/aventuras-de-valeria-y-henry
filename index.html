@@ -877,6 +877,7 @@
       "2026-10-30": "Casa embrujada y pizza en el Distrito 🎃",
       "2026-10-31": "Picnic y película en Sabor Arte 🎬",
       "2026-11-02": "Smash, Chili y carrera al Morro 🏃",
+      "2026-11-06": "Viaje a Culebra 🏝️",
     },
 
     // FOTOS Y VIDEOS DE CADA DÍA: "fecha": [ { foto: "fotos/archivo.jpg", texto: "pie de foto", alt: "qué se ve (opcional)" } ]
@@ -910,6 +911,16 @@
         { foto: "fotos/2026-10-29-la-pachanga.jpg", texto: "La guía con sombrero en La Pachanga 🤠🧀",
           alt: "Valeria sonriendo con un sombrero de paja, sentada a la mesa bajo luces rosadas y azules, con un mariachi pintado en la pared" },
       ],
+      "2026-11-06": [
+        { foto: "fotos/2026-11-06-blac-flamingo.webp", texto: "Desayuno en Blac Flamingo Coffee: tostadas con frutas y café con Nutella ☕🍓",
+          alt: "Valeria sonriendo con un tenedor en la mano frente a unas tostadas con fresas, kiwi y arándanos y una taza de café" },
+        { foto: "fotos/2026-11-06-flamenco.webp", texto: "La entrada a Playa Flamenco 🌴",
+          alt: "Puente de madera que lleva a una playa de arena blanca y agua turquesa, con palmas y un monte al fondo" },
+        { foto: "fotos/2026-11-06-playa.webp", texto: "La guía entre palmas 🌴",
+          alt: "Valeria sonriendo en la playa con camisa negra de manga larga, entre palmas de coco" },
+        { foto: "fotos/2026-11-06-playa-2.webp", texto: "Y esta pose 😛",
+          alt: "Valeria con los ojos cerrados sacando la lengua mientras se recoge el pelo, en la playa entre palmas" },
+      ],
       "2026-10-23": [
         { foto: "fotos/2026-10-23-acreditacion.webp", texto: "La acreditación de la Asociación de Finanzas y Economía 🎓",
           alt: "Grupo de ocho personas en una tarima junto a un letrero de la Universidad Ana G. Méndez; uno sostiene un certificado" },
@@ -925,7 +936,6 @@
     DESEOS: [
       // Los primeros deseos
       { nombre: "El Yunque", emoji: "🌿", lat: 18.2950, lon: -65.7870, tipos: ["paseo"], pueblo: "Río Grande", nota: "Bañarnos en una cascada y comer frituras de camino." },
-      { nombre: "Culebra", emoji: "🏝️", lat: 18.3297, lon: -65.3180, tipos: ["playa"], pueblo: "Culebra", nota: "Playa Flamenco, la más bonita de la isla." },
       { nombre: "Rincón", emoji: "🌅", lat: 18.3402, lon: -67.2499, tipos: ["playa"], pueblo: "Rincón", nota: "Ver la puesta de sol en el oeste." },
       { nombre: "Haciendas de café en Jayuya", emoji: "☕", lat: 18.2186, lon: -66.5916, tipos: ["cafe"], pueblo: "Jayuya", nota: "Probar café recién tostado en la montaña." },
       { nombre: "Haciendas de café en Yauco", emoji: "☕", lat: 18.0350, lon: -66.8499, tipos: ["cafe"], pueblo: "Yauco", nota: "El pueblo del café." },
@@ -948,7 +958,6 @@
       { nombre: "Hacienda Buena Vista", emoji: "🏛️", lat: 18.0640, lon: -66.6560, tipos: ["cafe", "paseo"], pueblo: "Ponce", nota: "Hacienda cafetalera histórica, con su maquinaria original." },
 
       // 🌊 Playas
-      { nombre: "Playa Zoni", emoji: "🏝️", lat: 18.3280, lon: -65.2610, tipos: ["playa"], pueblo: "Culebra", nota: "La otra joya de Culebra, más tranquila que Flamenco." },
       { nombre: "Playa La Chiva", emoji: "🏝️", lat: 18.1080, lon: -65.3900, tipos: ["playa"], pueblo: "Vieques", nota: "Agua turquesa en Vieques." },
       { nombre: "Balneario Sun Bay", emoji: "🏖️", lat: 18.0950, lon: -65.4560, tipos: ["playa"], pueblo: "Vieques", nota: "Una bahía larguísima de arena blanca." },
       { nombre: "Playa Negra", emoji: "🖤", lat: 18.1100, lon: -65.5130, tipos: ["playa"], pueblo: "Vieques", nota: "Arena negra volcánica." },
@@ -1022,7 +1031,6 @@
 
       // 🌊 Más playas
       { nombre: "Playa Tortuga (Culebrita)", emoji: "🐢", lat: 18.3220, lon: -65.2290, tipos: ["playa"], pueblo: "Culebra", nota: "En el cayo Culebrita, con su faro y piscinas naturales." },
-      { nombre: "Playa Carlos Rosario", emoji: "🐠", lat: 18.3260, lon: -65.3270, tipos: ["playa"], pueblo: "Culebra", nota: "De las mejores para snorkel en Culebra." },
       { nombre: "Cayo Icacos", emoji: "🛥️", lat: 18.3900, lon: -65.5960, tipos: ["playa"], pueblo: "Fajardo", nota: "Un cayo de arena blanca; se llega en catamarán." },
       { nombre: "Playa Azul", emoji: "🏖️", lat: 18.3800, lon: -65.7120, tipos: ["playa"], pueblo: "Luquillo", nota: "La playa del pueblo de Luquillo." },
       { nombre: "Playa Domes", emoji: "🏄", lat: 18.3640, lon: -67.2680, tipos: ["playa"], pueblo: "Rincón", nota: "Surf frente a la antigua planta nuclear." },
@@ -1101,6 +1109,7 @@
       { nombre: "Bookmar Santurce", lugar: "Santurce, San Juan", pidioGuia: "Café frío", nota: 7, etiqueta: "Tres leches: 8/10 🍰" },
       { nombre: "Chapola Coffee Bar", lugar: "Río Piedras, San Juan", pidioGuia: "Café frío", pidioTurista: "Mantecado", nota: 7, etiqueta: "Un sólido 7/10" },
       { nombre: "Cafetería del Parque Luis Muñoz Rivera", lugar: "Puerta de Tierra, San Juan", pidioGuia: "Café", nota: 8, etiqueta: "Después de correr al Morro 🏃" },
+      { nombre: "Blac Flamingo Coffee", lugar: "Culebra", pidioGuia: "Café con Nutella", pidioTurista: "Croissant y agua de coco", nota: 9, etiqueta: "Desayuno en Culebra 🏝️" },
     ],
     // El "Ranking de smash de la guía" se calcula solo con los lugares que tienen smash: true y nota.
   };
@@ -1445,6 +1454,50 @@
       id: "carreramorro", emoji: "🏃", nombre: "Carrera al Morro", lugar: "Parque Luis Muñoz Rivera → El Morro, Viejo San Juan",
       lat: 18.4705, lon: -66.1235, zona: "sj", fecha: "2026-11-02", tipos: ["paseo"],
       texto: "Corrimos desde el Parque Luis Muñoz Rivera hasta la entrada del Morro y viramos 🏃‍♀️🏃. De premio, la guía probó el café de la cafetería del parque: 8/10 ☕.",
+      versionGuia: "",
+    },
+
+    // ---------- Día 21 · 6 de noviembre · Culebra ----------
+    {
+      id: "blacflamingo", emoji: "☕", nombre: "Blac Flamingo Coffee", lugar: "Culebra",
+      lat: 18.3075, lon: -65.3010, fecha: "2026-11-06", tipos: ["cafe","comida"], nota: 9, // VERIFICAR (punto exacto)
+      texto: "¡Viaje a Culebra! Alquilamos una Jeep Compass 🚙 y empezamos con desayuno en Blac Flamingo Coffee. La guía: café con Nutella y tostadas con frutas, 9/10. El turista: croissant con agua de coco, 10/10 🥐🥥.",
+      versionGuia: "",
+    },
+    {
+      id: "flamenco", emoji: "🏝️", nombre: "Playa Flamenco", lugar: "Culebra",
+      lat: 18.3297, lon: -65.3180, fecha: "2026-11-06", tipos: ["playa"],
+      texto: "Playa Flamenco, la más famosa de Culebra 🌴💙.",
+      versionGuia: "",
+    },
+    {
+      id: "datiles", emoji: "🏝️", nombre: "Playa Dátiles", lugar: "Culebra",
+      lat: 18.2995, lon: -65.2980, fecha: "2026-11-06", tipos: ["playa"], // VERIFICAR (punto exacto)
+      texto: "Playa Dátiles 🌊.",
+      versionGuia: "",
+    },
+    {
+      id: "tamarindo", emoji: "🏝️", nombre: "Tamarindo Beach", lugar: "Culebra",
+      lat: 18.3190, lon: -65.3190, fecha: "2026-11-06", tipos: ["playa"], // VERIFICAR (punto exacto)
+      texto: "Tamarindo Beach 🐢.",
+      versionGuia: "",
+    },
+    {
+      id: "carlosrosario", emoji: "🏝️", nombre: "Playa Carlos Rosario", lugar: "Culebra",
+      lat: 18.3260, lon: -65.3270, fecha: "2026-11-06", tipos: ["playa"], // VERIFICAR (punto exacto)
+      texto: "Playa Carlos Rosario 🐠.",
+      versionGuia: "",
+    },
+    {
+      id: "zoni", emoji: "🏝️", nombre: "Playa Zoni", lugar: "Culebra",
+      lat: 18.3280, lon: -65.2610, fecha: "2026-11-06", tipos: ["playa"],
+      texto: "Y Playa Zoni, la más tranquila 🌅. Cinco playas en un día.",
+      versionGuia: "",
+    },
+    {
+      id: "rollsofheaven", emoji: "🍨", nombre: "Rolls of Heaven", lugar: "Culebra",
+      lat: 18.3025, lon: -65.3015, fecha: "2026-11-06", tipos: ["comida"], nota: 10, // VERIFICAR (punto exacto)
+      texto: "Para cerrar, un banana split en Rolls of Heaven. Súper rico: 10/10 🍌🍨.",
       versionGuia: "",
     },
   ];
