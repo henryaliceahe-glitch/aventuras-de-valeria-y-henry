@@ -72,6 +72,8 @@ Las fotos salen en la tarjeta de ese día en la línea de tiempo (y en "Un día 
 
 ## 4c. Añadir un lugar a "Lugares por descubrir"
 
+Antes de añadirlo, búscalo en Google: que siga abierto o que tenga fotos recientes. Si no encuentras ninguna de las dos cosas, mejor no lo pongas.
+
 Busca `DESEOS` y añade una línea en la categoría que toque:
 
 ```js
@@ -86,17 +88,7 @@ En el mapa, el botón **por visitar** muestra u oculta todos estos pines.
 1. En `DESEOS`, busca el lugar (ej. Rincón) y **borra su línea**.
 2. Añádelo como lugar nuevo en `AVENTURAS` (paso 2), copiando su emoji, nombre, `lat` y `lon`, y poniéndole la fecha y la historia.
 
-## 6. Añadir una frase célebre
-
-Busca `FRASES` y añade una línea:
-
-```js
-{ texto: "Lo que dijo", quien: "La guía", donde: "en Caguas" },
-```
-
-Con 1 o 2 frases se ven fijas; con 3 o más se convierten solas en carrusel.
-
-## 7. Escribir una cápsula del tiempo
+## 6. Escribir una cápsula del tiempo
 
 Busca `CAPSULAS`. Cada una tiene su fecha; escribe la carta dentro de `carta: "..."`. Para bajar de línea usa `\n`:
 
@@ -108,7 +100,7 @@ Busca `CAPSULAS`. Cada una tiene su fecha; escribe la carta dentro de `carta: ".
 - Antes de su fecha sale con candado y "Faltan X días"; desde ese día (hora de Puerto Rico) se puede leer.
 - Ojo: la carta va dentro del código de la página, así que alguien que sepa ver el código podría leerla antes.
 
-## 8. Otros datos de `CONFIG`
+## 7. Otros datos de `CONFIG`
 
 | Campo | Qué es |
 |---|---|
@@ -122,17 +114,17 @@ Busca `CAPSULAS`. Cada una tiene su fecha; escribe la carta dentro de `carta: ".
 
 Para las frases que dice el turista al tocarlo, busca `const FRASES = [` (más abajo, en la parte del turista) y añade una línea entre comillas.
 
-## 9. Probar fechas sin esperar
+## 8. Probar fechas sin esperar
 
 Añade al final del enlace:
 - `?hoy=2026-11-08` hace que la página crea que hoy es ese día (mensaje del mes, "Un día como hoy", cápsulas, logros).
 - `?probar=cumple`, `?probar=cumpleHenry`, `?probar=aniversario` o `?probar=mes` muestran ese mensaje especial.
 
-## 10. Compartir una aventura
+## 9. Compartir una aventura
 
 Cada aventura tiene **Compartir**: en el celular abre el menú de compartir; en la computadora copia el link. El link lleva directo a esa aventura (termina en `#nombre`, por ejemplo `#pergamino`).
 
-## 11. Dominio propio (ej. valeriayhenry.com)
+## 10. Dominio propio (ej. valeriayhenry.com)
 
 Cuesta unos $10–15 al año (no es gratis).
 
@@ -144,7 +136,7 @@ Cuesta unos $10–15 al año (no es gratis).
 4. Espera (de minutos a 24 h) y marca **Enforce HTTPS**.
 5. En `index.html` cambia las direcciones de `og:url`, `og:image` y `twitter:image` al dominio nuevo.
 
-## 12. Instalarla en el celular
+## 11. Instalarla en el celular
 
 - **iPhone (Safari):** botón Compartir → **Agregar a pantalla de inicio**.
 - **Android (Chrome):** menú ⋮ → **Instalar app** (o "Agregar a la pantalla principal").

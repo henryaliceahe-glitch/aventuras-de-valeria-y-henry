@@ -437,17 +437,6 @@
   .como-hoy h3 { font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--tinta); margin-top: 2px; }
   .como-hoy p { color: var(--suave); margin-top: 4px; }
 
-  /* ---------- Frases célebres ---------- */
-  .frases { display: grid; gap: 18px; }
-  @media (min-width: 720px) { .frases:not(.carrusel) { grid-template-columns: 1fr 1fr; } }
-  .frases.carrusel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 10px; }
-  .frases.carrusel::-webkit-scrollbar { display: none; }
-  .frases.carrusel .frase-celebre { flex: 0 0 min(560px, 88%); scroll-snap-align: start; }
-  .frase-celebre { position: relative; margin: 0; padding: 34px 26px 22px; }
-  .frase-celebre::before { content: "“"; position: absolute; top: -8px; left: 16px; font-family: var(--serif); font-size: 92px; line-height: 1; color: var(--caramelo); }
-  .frase-celebre blockquote { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(22px, 3.2vw, 29px); line-height: 1.3; color: var(--tinta); }
-  .frase-celebre blockquote::after { content: "”"; color: var(--caramelo); }
-  .frase-celebre figcaption { margin-top: 14px; font-weight: 700; color: var(--cafe); }
 
   /* ---------- Ruleta ---------- */
   .ruleta { padding: 28px 22px; text-align: center; }
@@ -663,14 +652,6 @@
     </div>
   </section>
 
-  <section class="bloque" id="frases-sec" aria-labelledby="t-frases" hidden>
-    <div class="contenedor">
-      <div class="cabeza">
-        <div><span class="ceja">Para la historia</span><h2 id="t-frases">Frases célebres</h2></div>
-      </div>
-      <div class="frases" id="frases"></div>
-    </div>
-  </section>
 
   <div class="separador" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 13h16v6a8 8 0 0 1-16 0z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M22 15h2.5a3 3 0 0 1 0 6H22" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 28h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
 
@@ -937,9 +918,6 @@
       // Los primeros deseos
       { nombre: "El Yunque", emoji: "🌿", lat: 18.2950, lon: -65.7870, tipos: ["paseo"], pueblo: "Río Grande", nota: "Bañarnos en una cascada y comer frituras de camino." },
       { nombre: "Rincón", emoji: "🌅", lat: 18.3402, lon: -67.2499, tipos: ["playa"], pueblo: "Rincón", nota: "Ver la puesta de sol en el oeste." },
-      { nombre: "Haciendas de café en Jayuya", emoji: "☕", lat: 18.2186, lon: -66.5916, tipos: ["cafe"], pueblo: "Jayuya", nota: "Probar café recién tostado en la montaña." },
-      { nombre: "Haciendas de café en Yauco", emoji: "☕", lat: 18.0350, lon: -66.8499, tipos: ["cafe"], pueblo: "Yauco", nota: "El pueblo del café." },
-      { nombre: "Haciendas de café en Adjuntas", emoji: "☕", lat: 18.1627, lon: -66.7224, tipos: ["cafe"], pueblo: "Adjuntas", nota: "Montaña, neblina y cafecito." },
 
       // ☕ Coffee shops y haciendas (para seguir el ranking de café frío)
       { nombre: "Café Cuatro Sombras", emoji: "☕", lat: 18.4660, lon: -66.1160, tipos: ["cafe"], pueblo: "Viejo San Juan", nota: "Tuestan su propio café ahí mismo." },
@@ -947,13 +925,11 @@
       { nombre: "Café Comunión", emoji: "☕", lat: 18.3990, lon: -66.0510, tipos: ["cafe"], pueblo: "Río Piedras", nota: "Café de especialidad, de los más queridos del área metro." },
       { nombre: "Habitante Café", emoji: "☕", lat: 18.4470, lon: -66.0640, tipos: ["cafe"], pueblo: "Santurce", nota: "Barra de café de especialidad, ambiente tranquilo." },
       { nombre: "Lavanda Café", emoji: "💜", lat: 18.4720, lon: -66.9390, tipos: ["cafe"], pueblo: "Quebradillas", nota: "Café bonito para una parada en el noroeste." },
-      { nombre: "787 Coffee", emoji: "☕", lat: 18.1800, lon: -66.9800, tipos: ["cafe"], pueblo: "Maricao", nota: "Café puertorriqueño de sus propias fincas en Maricao." },
       { nombre: "Café Lareño", emoji: "☕", lat: 18.2950, lon: -66.8780, tipos: ["cafe"], pueblo: "Lares", nota: "Café cultivado a casi 4,000 pies de altura." },
       { nombre: "Hacienda Lealtad", emoji: "🌱", lat: 18.2770, lon: -66.8480, tipos: ["cafe", "paseo"], pueblo: "Lares", nota: "Hacienda de los 1800 con café y restaurante con terraza." },
       { nombre: "Hacienda San Pedro", emoji: "🌱", lat: 18.2230, lon: -66.5800, tipos: ["cafe", "paseo"], pueblo: "Jayuya", nota: "Tour por la finca y café con vista a los picos más altos." },
       { nombre: "Hacienda Gripiñas", emoji: "🌱", lat: 18.2010, lon: -66.5640, tipos: ["cafe", "paseo"], pueblo: "Jayuya", nota: "Antigua hacienda cafetalera en la montaña." },
       { nombre: "Hacienda Tres Ángeles", emoji: "🌱", lat: 18.1800, lon: -66.7600, tipos: ["cafe", "paseo"], pueblo: "Adjuntas", nota: "Café en la terraza con vista a la plantación." },
-      { nombre: "Café Bello", emoji: "🌱", lat: 18.1660, lon: -66.7300, tipos: ["cafe"], pueblo: "Adjuntas", nota: "Finca de café con tours en Adjuntas." },
       { nombre: "Hacienda Iluminada", emoji: "🌱", lat: 18.1700, lon: -66.9600, tipos: ["cafe", "paseo"], pueblo: "Maricao", nota: "Caminata por la plantación (tour de unas 3 horas)." },
       { nombre: "Hacienda Buena Vista", emoji: "🏛️", lat: 18.0640, lon: -66.6560, tipos: ["cafe", "paseo"], pueblo: "Ponce", nota: "Hacienda cafetalera histórica, con su maquinaria original." },
 
@@ -986,7 +962,6 @@
 
       // 🍽️ Comida
       { nombre: "La Placita de Santurce", emoji: "🍹", lat: 18.4470, lon: -66.0660, tipos: ["comida"], pueblo: "Santurce", nota: "Comer y salir de noche en el corazón de Santurce." },
-      { nombre: "Lote 23", emoji: "🍔", lat: 18.4480, lon: -66.0590, tipos: ["comida"], pueblo: "Santurce", nota: "Food park con de todo un poco." },
       { nombre: "Kioskos de Luquillo", emoji: "🥟", lat: 18.3850, lon: -65.7200, tipos: ["comida"], pueblo: "Luquillo", nota: "Decenas de kioskos frente a la playa." },
       { nombre: "Lechoneras de Guavate", emoji: "🐖", lat: 18.1320, lon: -66.0780, tipos: ["comida"], pueblo: "Cayey", nota: "La Ruta del Lechón, con música los domingos." },
       { nombre: "Malecón de Joyuda", emoji: "🦐", lat: 18.1200, lon: -67.1850, tipos: ["comida"], pueblo: "Cabo Rojo", nota: "Restaurantes de mariscos frente al mar." },
@@ -997,7 +972,6 @@
       { nombre: "K1 Speed Canóvanas", emoji: "🏎️", lat: 18.4030, lon: -65.8930, tipos: ["diversion"], pueblo: "Canóvanas", nota: "La otra pista de K1 Speed, en The Outlet 66 (Sector Sixty6)." },
       { nombre: "Toro Verde", emoji: "🪂", lat: 18.2250, lon: -66.4180, tipos: ["diversion"], pueblo: "Orocovis", nota: "Ziplines gigantes entre montañas." },
       { nombre: "Yunque Zipline", emoji: "🌿", lat: 18.3500, lon: -65.7500, tipos: ["diversion"], pueblo: "Luquillo", nota: "Ziplines al pie de El Yunque." },
-      { nombre: "Parque acuático Las Cascadas", emoji: "💦", lat: 18.4230, lon: -67.1500, tipos: ["diversion"], pueblo: "Aguadilla", nota: "Toboganes en el oeste (confirmar temporada)." },
       { nombre: "Bahía bioluminiscente de Fajardo", emoji: "✨", lat: 18.3800, lon: -65.6290, tipos: ["diversion", "paseo"], pueblo: "Fajardo", nota: "Kayak de noche en la Laguna Grande." },
       { nombre: "Bahía Mosquito", emoji: "✨", lat: 18.1030, lon: -65.4450, tipos: ["diversion", "paseo"], pueblo: "Vieques", nota: "La bahía bioluminiscente más brillante del mundo." },
       { nombre: "La Parguera", emoji: "🚤", lat: 17.9730, lon: -67.0480, tipos: ["diversion", "paseo"], pueblo: "Lajas", nota: "Bahía bioluminiscente y cayos en lancha." },
@@ -1006,7 +980,6 @@
       { nombre: "Castillo San Felipe del Morro", emoji: "🏰", lat: 18.4710, lon: -66.1240, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "Chiringas en la grama y vista al mar." },
       { nombre: "Castillo San Cristóbal", emoji: "🏰", lat: 18.4670, lon: -66.1110, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "El fuerte más grande de las Américas." },
       { nombre: "Cueva Ventana", emoji: "🕳️", lat: 18.3740, lon: -66.6910, tipos: ["paseo"], pueblo: "Arecibo", nota: "Una cueva con ventana al valle del río." },
-      { nombre: "Cavernas del Río Camuy", emoji: "🦇", lat: 18.3410, lon: -66.8240, tipos: ["paseo"], pueblo: "Camuy", nota: "Uno de los sistemas de cuevas más grandes del mundo." },
       { nombre: "Faro Los Morrillos", emoji: "🗼", lat: 17.9330, lon: -67.1920, tipos: ["paseo"], pueblo: "Cabo Rojo", nota: "Acantilados blancos al final de la isla." },
       { nombre: "Charco Azul", emoji: "💧", lat: 18.0900, lon: -66.0400, tipos: ["paseo"], pueblo: "Patillas", nota: "Una poza en el Bosque de Carite." },
       { nombre: "Gozalandia", emoji: "💦", lat: 18.3420, lon: -66.9800, tipos: ["paseo"], pueblo: "San Sebastián", nota: "Cascadas para bañarse." },
@@ -1016,7 +989,6 @@
       { nombre: "Parque de Bombas", emoji: "🚒", lat: 18.0120, lon: -66.6140, tipos: ["paseo"], pueblo: "Ponce", nota: "La foto obligada en la plaza de Ponce." },
       { nombre: "Bosque Toro Negro (Doña Juana)", emoji: "🌧️", lat: 18.1720, lon: -66.4920, tipos: ["paseo"], pueblo: "Orocovis", nota: "Cascada y bosque nublado." },
       { nombre: "Las Cabezas de San Juan", emoji: "🗼", lat: 18.3800, lon: -65.6180, tipos: ["paseo"], pueblo: "Fajardo", nota: "Reserva natural con faro (con reservación)." },
-      { nombre: "Mirador Piedra Degetau", emoji: "🔭", lat: 18.1330, lon: -66.2610, tipos: ["paseo"], pueblo: "Aibonito", nota: "Mirador para ver medio Puerto Rico." },
       { nombre: "Observatorio de Arecibo", emoji: "🔭", lat: 18.3440, lon: -66.7530, tipos: ["paseo"], pueblo: "Arecibo", nota: "Centro de ciencias donde estaba el radiotelescopio." },
       { nombre: "Lago Dos Bocas", emoji: "⛴️", lat: 18.3330, lon: -66.6700, tipos: ["paseo", "comida"], pueblo: "Utuado", nota: "Lanchita gratis a los restaurantes del lago." },
       { nombre: "Piedra Escrita", emoji: "🪨", lat: 18.2430, lon: -66.5480, tipos: ["paseo"], pueblo: "Jayuya", nota: "Petroglifos taínos en el río." },
@@ -1024,7 +996,6 @@
       // ---------- Más lugares ----------
       // ☕ Más café
       { nombre: "Kasalta", emoji: "🥐", lat: 18.4560, lon: -66.0480, tipos: ["cafe", "comida"], pueblo: "Ocean Park", nota: "La panadería icónica de Ocean Park: café con leche y quesitos." },
-      { nombre: "Gustos Coffee", emoji: "☕", lat: 18.4560, lon: -66.0630, tipos: ["cafe"], pueblo: "Condado", nota: "Café de especialidad para una parada en Condado." },
       { nombre: "Hacienda Muñoz", emoji: "🌱", lat: 18.1570, lon: -65.9800, tipos: ["cafe", "paseo"], pueblo: "San Lorenzo", nota: "Tour de café cerca del área metro." },
       { nombre: "Hacienda Pomarrosa", emoji: "🌱", lat: 18.1180, lon: -66.5800, tipos: ["cafe", "paseo"], pueblo: "Ponce", nota: "Finca de café en las montañas de Ponce." },
       { nombre: "Hacienda Juanita", emoji: "🌱", lat: 18.1800, lon: -66.9500, tipos: ["cafe", "paseo"], pueblo: "Maricao", nota: "Antigua hacienda cafetalera convertida en parador." },
@@ -1044,24 +1015,19 @@
       { nombre: "Playa Caña Gorda", emoji: "🏖️", lat: 17.9480, lon: -66.8810, tipos: ["playa"], pueblo: "Guánica", nota: "Balneario al lado del Bosque Seco." },
 
       // 🍽️ Más comida
-      { nombre: "Heladería de Lares", emoji: "🍨", lat: 18.2950, lon: -66.8770, tipos: ["comida"], pueblo: "Lares", nota: "Helados de sabores locos: arroz con habichuelas, aguacate..." },
       { nombre: "Café Manolín", emoji: "🍳", lat: 18.4655, lon: -66.1145, tipos: ["comida"], pueblo: "Viejo San Juan", nota: "Desayuno criollo de los de siempre." },
       { nombre: "Raíces", emoji: "🍽️", lat: 18.4640, lon: -66.1150, tipos: ["comida"], pueblo: "Viejo San Juan", nota: "Mofongo y comida criolla en el Viejo San Juan." },
-      { nombre: "La Casita Blanca", emoji: "🏠", lat: 18.4420, lon: -66.0620, tipos: ["comida"], pueblo: "Santurce", nota: "Comida casera como la de abuela." },
       { nombre: "Plaza del Mercado de Río Piedras", emoji: "🥭", lat: 18.3990, lon: -66.0500, tipos: ["comida"], pueblo: "Río Piedras", nota: "Frutas, batidas y comida criolla." },
-      { nombre: "Ola Lola's", emoji: "🍔", lat: 18.5170, lon: -67.0900, tipos: ["comida"], pueblo: "Isabela", nota: "Hamburguesas en un jardín cerca de la playa." },
       { nombre: "Malecón de Naguabo", emoji: "🐟", lat: 18.2030, lon: -65.6970, tipos: ["comida", "paseo"], pueblo: "Naguabo", nota: "Kioskos de pescado frente al mar." },
       { nombre: "Malecón de Esperanza", emoji: "🌴", lat: 18.0940, lon: -65.4710, tipos: ["comida", "paseo"], pueblo: "Vieques", nota: "El pueblito de Vieques para comer frente al mar." },
 
       // 🏎️ Más aventura
       { nombre: "Carabalí Rainforest Park", emoji: "🐎", lat: 18.3400, lon: -65.7400, tipos: ["diversion"], pueblo: "Luquillo", nota: "Caballos, four-tracks y ziplines al pie de El Yunque." },
       { nombre: "Hacienda Campo Rico", emoji: "🛞", lat: 18.3870, lon: -65.8900, tipos: ["diversion"], pueblo: "Carolina", nota: "Four-tracks y paseos a caballo." },
-      { nombre: "Altitude Trampoline Park", emoji: "🤸", lat: 18.3800, lon: -66.1600, tipos: ["diversion"], pueblo: "Bayamón", nota: "Trampolines (la revancha del Trampoline Park)." },
       { nombre: "Viking Arena", emoji: "🎯", lat: 18.4100, lon: -65.9430, tipos: ["diversion"], pueblo: "Carolina", nota: "Juegos bajo techo y trampolines frente a Los Colobos." },
       { nombre: "Parque del Faro de Arecibo", emoji: "🏴‍☠️", lat: 18.4820, lon: -66.6990, tipos: ["diversion", "paseo"], pueblo: "Arecibo", nota: "Faro, réplicas de barcos piratas y vista al mar." },
 
       // 🏛️ Más turismo y naturaleza
-      { nombre: "Calle de la Fortaleza (los paraguas)", emoji: "☂️", lat: 18.4645, lon: -66.1160, tipos: ["paseo"], pueblo: "Viejo San Juan", nota: "La calle de los paraguas de colores." },
       { nombre: "Casa Bacardí", emoji: "🥃", lat: 18.4560, lon: -66.1400, tipos: ["paseo"], pueblo: "Cataño", nota: "Tour de la destilería (se llega en lancha desde el Viejo San Juan)." },
       { nombre: "Jardín Botánico de Río Piedras", emoji: "🌺", lat: 18.3880, lon: -66.0500, tipos: ["paseo"], pueblo: "Río Piedras", nota: "Un bosque en medio de la ciudad." },
       { nombre: "Cueva del Indio", emoji: "🌊", lat: 18.4900, lon: -66.6380, tipos: ["paseo"], pueblo: "Arecibo", nota: "Arcos de roca y petroglifos frente al mar." },
@@ -1080,13 +1046,6 @@
       "Noche de película 🍿",
     ],
 
-    // FRASES CÉLEBRES: { texto, quien, donde }. Con 3 o más se convierten solas en carrusel.
-    FRASES: [
-      { texto: "Tú siempre me ganas, ya era hora que te ganara.", quien: "La guía", donde: "en la bolera" },
-      { texto: "Mami, me voy a quedar con Valeria, no me esperes.", quien: "El turista", donde: "" },
-      { texto: "Haz lo que tú quieras.", quien: "La guía", donde: "su frase icónica" },
-      { texto: "Cuéntame algo.", quien: "La guía", donde: "lo que más le encanta decir" },
-    ],
 
     // CÁPSULAS DEL TIEMPO: cartas que se abren solas en su fecha (hora de Puerto Rico).
     // Una cápsula con la carta vacía ("") no se muestra. Puedes bajar de línea con \n
@@ -2202,34 +2161,6 @@
     scrollA($("dia-" + n));
   }
 
-  // ====== FRASES CÉLEBRES ======
-  function pintarFrases() {
-    const frases = lista(CONFIG.FRASES).filter(f => f && textoPlano(f.texto).trim());
-    const sec = $("frases-sec"), cont = $("frases");
-    sec.hidden = !frases.length;
-    if (!frases.length) return;
-    const carrusel = frases.length >= 3;
-    cont.className = "frases" + (carrusel ? " carrusel" : "");
-    cont.innerHTML = frases.map(f => `
-      <figure class="tarjeta frase-celebre">
-        <blockquote>${esc(f.texto)}</blockquote>
-        <figcaption>— ${esc(f.quien || "")}${f.donde ? ", " + esc(f.donde) : ""}</figcaption>
-      </figure>`).join("");
-    if (!carrusel) return;
-    cont.setAttribute("tabindex", "0");
-    cont.setAttribute("aria-label", "Frases célebres, deslizable");
-    if (reducido) return;
-    // Pasa sola cada 6 segundos; se detiene un rato cuando la tocan, la pasan o la enfocan
-    let pausa = 0;
-    const pausar = () => { pausa = Date.now() + 12000; };
-    ["pointerdown", "wheel", "focusin", "mouseenter"].forEach(ev => cont.addEventListener(ev, pausar, { passive: true }));
-    setInterval(() => {
-      if (Date.now() < pausa || document.hidden) return;
-      const fin = cont.scrollLeft + cont.clientWidth >= cont.scrollWidth - 4;
-      cont.scrollTo({ left: fin ? 0 : cont.scrollLeft + cont.firstElementChild.offsetWidth + 16, behavior: "smooth" });
-    }, 6000);
-  }
-
   // ====== PASAPORTE ======
   const tamNombre = (a) => { const l = textoPlano(a.nombre).length; return l > 16 ? "9.5px" : l > 11 ? "10px" : "11px"; };
   function irAParada(id) {
@@ -2751,7 +2682,6 @@
   prepararCancion();
   pintarPerfil();
   pintarCafes();
-  pintarFrases();
   todo();
   pintarCapsulas();
   iniciarClasificado();
